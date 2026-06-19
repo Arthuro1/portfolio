@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -119,7 +120,22 @@ export default function ChatWidget() {
                       : "bg-gray-100 text-gray-800 rounded-bl-sm"
                   }`}
                 >
-                  {m.content || (
+                  {m.role === "user" ? (
+                    m.content
+                  ) : m.content ? (
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => <p className="mb-1.5 last:mb-0">{children}</p>,
+                        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                        ul: ({ children }) => <ul className="list-disc list-inside space-y-0.5 my-1">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside space-y-0.5 my-1">{children}</ol>,
+                        li: ({ children }) => <li className="leading-snug">{children}</li>,
+                        code: ({ children }) => <code className="bg-black/10 rounded px-1 text-xs font-mono">{children}</code>,
+                      }}
+                    >
+                      {m.content}
+                    </ReactMarkdown>
+                  ) : (
                     <span className="flex gap-1 items-center py-0.5">
                       <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                       <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
