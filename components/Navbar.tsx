@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Lang } from "@/lib/translations";
 
-const LANGS: { code: Lang; flag: string; label: string }[] = [
-  { code: "en", flag: "🇬🇧", label: "English" },
-  { code: "de", flag: "🇩🇪", label: "Deutsch" },
-  { code: "fr", flag: "🇫🇷", label: "Français" },
+const LANGS: { code: Lang; fi: string; label: string }[] = [
+  { code: "en", fi: "gb", label: "English" },
+  { code: "de", fi: "de", label: "Deutsch" },
+  { code: "fr", fi: "fr", label: "Français" },
 ];
 
 export default function Navbar() {
@@ -27,6 +27,7 @@ export default function Navbar() {
   }, []);
 
   const currentLang = LANGS.find((l) => l.code === lang)!;
+
 
   const links = [
     { label: t.nav.about, href: "#about" },
@@ -60,14 +61,14 @@ export default function Navbar() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:border-gray-300 transition-colors bg-white"
             >
-              <span>{currentLang.flag}</span>
+              <span className={`fi fi-${currentLang.fi} rounded-sm`} />
               <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {dropdownOpen && (
               <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50">
-                {LANGS.map(({ code, flag, label }) => (
+                {LANGS.map(({ code, fi, label }) => (
                   <button
                     key={code}
                     onClick={() => { setLang(code); setDropdownOpen(false); }}
@@ -75,7 +76,7 @@ export default function Navbar() {
                       lang === code ? "text-blue-700 font-medium bg-blue-50" : "text-gray-700"
                     }`}
                   >
-                    <span>{flag}</span>
+                    <span className={`fi fi-${fi} rounded-sm`} />
                     <span>{label}</span>
                   </button>
                 ))}
@@ -115,7 +116,7 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex flex-col gap-1 mt-4 border border-gray-200 rounded-lg overflow-hidden w-36">
-            {LANGS.map(({ code, flag, label }) => (
+            {LANGS.map(({ code, fi, label }) => (
               <button
                 key={code}
                 onClick={() => { setLang(code); setOpen(false); }}
@@ -123,7 +124,7 @@ export default function Navbar() {
                   lang === code ? "text-blue-700 font-medium bg-blue-50" : "text-gray-700"
                 }`}
               >
-                <span>{flag}</span>
+                <span className={`fi fi-${fi} rounded-sm`} />
                 <span>{label}</span>
               </button>
             ))}
