@@ -1,7 +1,7 @@
 const projects = [
   {
     title: "Knowledge Graph RAG System",
-    date: "2024 – present",
+    date: "2026 – present",
     type: "Personal Project",
     description:
       "Hybrid RAG system combining Neo4J knowledge graph traversal with semantic vector search (ChromaDB). Automatic entity and relation extraction from raw text via LLM. REST API with FastAPI, streaming support, and an integrated web UI.",
