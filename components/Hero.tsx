@@ -44,7 +44,7 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="https://linkedin.com/in/paul-arthur-meteng"
+            href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-500 hover:text-blue-700 transition-colors"
