@@ -20,6 +20,11 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000?style=flat-square&logo=vercel)
+![Claude](https://img.shields.io/badge/Claude_Haiku-AI_Assistant-orange?style=flat-square&logo=anthropic)
+
+## Features
+
+- **AI Assistant** — floating chat widget powered by Claude Haiku. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
 
 ## Sections
 
@@ -34,8 +39,21 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 
 ## Run locally
 
+1. Clone the repo and install dependencies:
+
 ```bash
 npm install
+```
+
+2. Add your Anthropic API key to `.env.local`:
+
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+3. Start the dev server:
+
+```bash
 npm run dev
 # → http://localhost:3000
 ```
@@ -49,3 +67,5 @@ npm run build
 ## Deploy
 
 Connected to [Vercel](https://vercel.com/) — auto-deploys on every push to `main`.
+
+Add `ANTHROPIC_API_KEY` in your Vercel project's **Environment Variables** for the AI assistant to work in production.
