@@ -26,7 +26,7 @@ export default function Contact() {
             }
             label="LinkedIn"
             value="paul-arthur-meteng"
-            href="https://linkedin.com/in/paul-arthur-meteng"
+            href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125/"
           />
           <ContactCard
             icon={
