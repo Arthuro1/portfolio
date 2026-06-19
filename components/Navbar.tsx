@@ -1,18 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Lang } from "@/lib/translations";
 
-const LANGS: { code: Lang; label: string }[] = [
-  { code: "en", label: "EN" },
-  { code: "de", label: "DE" },
-  { code: "fr", label: "FR" },
+const LANGS: { code: Lang; flag: string; label: string }[] = [
+  { code: "en", flag: "🇬🇧", label: "English" },
+  { code: "de", flag: "🇩🇪", label: "Deutsch" },
+  { code: "fr", flag: "🇫🇷", label: "Français" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { t, lang, setLang } = useLanguage();
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const currentLang = LANGS.find((l) => l.code === lang)!;
 
   const links = [
     { label: t.nav.about, href: "#about" },
@@ -40,19 +54,33 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Language switcher */}
-          <div className="flex gap-1 border border-gray-200 rounded-lg p-0.5">
-            {LANGS.map(({ code, label }) => (
-              <button
-                key={code}
-                onClick={() => setLang(code)}
-                className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                  lang === code ? "bg-blue-700 text-white" : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+          {/* Language dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:border-gray-300 transition-colors bg-white"
+            >
+              <span>{currentLang.flag}</span>
+              <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50">
+                {LANGS.map(({ code, flag, label }) => (
+                  <button
+                    key={code}
+                    onClick={() => { setLang(code); setDropdownOpen(false); }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${
+                      lang === code ? "text-blue-700 font-medium bg-blue-50" : "text-gray-700"
+                    }`}
+                  >
+                    <span>{flag}</span>
+                    <span>{label}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -86,16 +114,17 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          <div className="flex gap-1 border border-gray-200 rounded-lg p-0.5 w-fit mt-4">
-            {LANGS.map(({ code, label }) => (
+          <div className="flex flex-col gap-1 mt-4 border border-gray-200 rounded-lg overflow-hidden w-36">
+            {LANGS.map(({ code, flag, label }) => (
               <button
                 key={code}
-                onClick={() => setLang(code)}
-                className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                  lang === code ? "bg-blue-700 text-white" : "text-gray-500 hover:text-gray-900"
+                onClick={() => { setLang(code); setOpen(false); }}
+                className={`flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${
+                  lang === code ? "text-blue-700 font-medium bg-blue-50" : "text-gray-700"
                 }`}
               >
-                {label}
+                <span>{flag}</span>
+                <span>{label}</span>
               </button>
             ))}
           </div>
