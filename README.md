@@ -2,7 +2,7 @@
 
 Personal portfolio website built with Next.js and Tailwind CSS.
 
-**Live:** [arthuro1.github.io/portfolio](https://arthuro1.github.io/portfolio) *(update once deployed)*
+**Live:** [arthur.meteng/portfolio](https://portfolio-blush-rho-65.vercel.app/)
 
 ## Tech Stack
 
