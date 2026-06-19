@@ -1,17 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
+import { Lang } from "@/lib/translations";
 
-const links = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+const LANGS: { code: Lang; label: string }[] = [
+  { code: "en", label: "EN" },
+  { code: "de", label: "DE" },
+  { code: "fr", label: "FR" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { t, lang, setLang } = useLanguage();
+
+  const links = [
+    { label: t.nav.about, href: "#about" },
+    { label: t.nav.skills, href: "#skills" },
+    { label: t.nav.projects, href: "#projects" },
+    { label: t.nav.experience, href: "#experience" },
+    { label: t.nav.contact, href: "#contact" },
+  ];
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
@@ -20,19 +29,32 @@ export default function Navbar() {
           Paul Meteng
         </a>
 
-        {/* Desktop */}
-        <ul className="hidden md:flex gap-8">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors"
+        <div className="hidden md:flex items-center gap-8">
+          <ul className="flex gap-8">
+            {links.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} className="text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Language switcher */}
+          <div className="flex gap-1 border border-gray-200 rounded-lg p-0.5">
+            {LANGS.map(({ code, label }) => (
+              <button
+                key={code}
+                onClick={() => setLang(code)}
+                className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
+                  lang === code ? "bg-blue-700 text-white" : "text-gray-500 hover:text-gray-900"
+                }`}
               >
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -58,16 +80,25 @@ export default function Navbar() {
           <ul className="flex flex-col gap-3 pt-3">
             {links.map((l) => (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block text-sm font-medium text-gray-700 hover:text-blue-700"
-                >
+                <a href={l.href} onClick={() => setOpen(false)} className="block text-sm font-medium text-gray-700 hover:text-blue-700">
                   {l.label}
                 </a>
               </li>
             ))}
           </ul>
+          <div className="flex gap-1 border border-gray-200 rounded-lg p-0.5 w-fit mt-4">
+            {LANGS.map(({ code, label }) => (
+              <button
+                key={code}
+                onClick={() => setLang(code)}
+                className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
+                  lang === code ? "bg-blue-700 text-white" : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </header>
