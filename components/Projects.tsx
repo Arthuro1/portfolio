@@ -3,6 +3,7 @@
 import { useLanguage } from "@/context/LanguageContext";
 
 const tags = [
+  ["Next.js", "TypeScript", "Claude API", "Prompt Engineering", "TailwindCSS", "Vercel"],
   ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "Claude API", "Docker", "spaCy"],
   ["Python", "Flask", "Neo4J", "Angular", "NLP", "Machine Learning", "Knowledge Graph"],
   ["Python", "React", "Elasticsearch", "NLP", "Chatbot", "NoSQL"],
@@ -11,8 +12,9 @@ const tags = [
   ["React", "Redux", "TypeScript", "Node.js", "Express", "MongoDB"],
 ];
 
-const highlights = [true, true, false, false, false, false];
-const githubLinks = ["https://github.com/Arthuro1", "", "", "", "", "https://github.com/Arthuro1"];
+const highlights = [true, true, true, false, false, false, false];
+const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1", "", "", "", "", "https://github.com/Arthuro1"];
+const liveLinks = ["https://portfolio-blush-rho-65.vercel.app/", "", "", "", "", "", ""];
 
 export default function Projects() {
   const { t } = useLanguage();
@@ -33,6 +35,14 @@ export default function Projects() {
               <div>
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <h3 className="font-semibold text-gray-900 text-base leading-snug">{p.title}</h3>
+                  <div className="flex gap-2">
+                  {liveLinks[i] && (
+                    <a href={liveLinks[i]} target="_blank" rel="noopener noreferrer" className="shrink-0 text-gray-400 hover:text-blue-700 transition-colors" aria-label="Live">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  )}
                   {githubLinks[i] && (
                     <a href={githubLinks[i]} target="_blank" rel="noopener noreferrer" className="shrink-0 text-gray-400 hover:text-gray-700 transition-colors" aria-label="GitHub">
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -40,6 +50,7 @@ export default function Projects() {
                       </svg>
                     </a>
                   )}
+                  </div>
                 </div>
                 <p className="text-xs text-gray-400">{p.type} · {p.date}</p>
               </div>

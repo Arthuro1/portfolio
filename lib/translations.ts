@@ -45,6 +45,12 @@ export const translations = {
       subtitle: "AI projects, university research, and professional work.",
       items: [
         {
+          title: "AI-Powered Portfolio Website",
+          date: "2026 – present",
+          type: "Personal Project",
+          description: "Multilingual (EN/DE/FR) portfolio built with Next.js and Tailwind CSS, featuring an embedded Claude-powered chat assistant that answers recruiter questions about my experience in real time with streaming responses and markdown formatting.",
+        },
+        {
           title: "Knowledge Graph RAG System",
           date: "2026 – present",
           type: "Personal Project",
@@ -179,6 +185,12 @@ export const translations = {
       subtitle: "KI-Projekte, Universitätsprojekte und professionelle Arbeit.",
       items: [
         {
+          title: "KI-gestützte Portfolio-Website",
+          date: "2026 – present",
+          type: "Persönliches Projekt",
+          description: "Mehrsprachige (EN/DE/FR) Portfolio-Webseite mit Next.js und Tailwind CSS, inklusive eingebettetem Claude-basierten Chat-Assistenten, der Recruiter-Fragen zu meiner Erfahrung in Echtzeit mit Streaming und Markdown-Formatierung beantwortet.",
+        },
+        {
           title: "Knowledge Graph RAG System",
           date: "2026 – heute",
           type: "Persönliches Projekt",
@@ -312,6 +324,12 @@ export const translations = {
       title: "Projets",
       subtitle: "Projets IA, recherche universitaire et travail professionnel.",
       items: [
+        {
+          title: "Site portfolio avec assistant IA",
+          date: "2026 – present",
+          type: "Projet personnel",
+          description: "Portfolio multilingue (EN/DE/FR) développé avec Next.js et Tailwind CSS, avec un assistant conversationnel basé sur Claude qui répond en temps réel aux questions des recruteurs sur mon expérience, avec streaming et formatage Markdown.",
+        },
         {
           title: "Système RAG avec graphe de connaissances",
           date: "2026 – présent",
