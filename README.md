@@ -21,10 +21,12 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000?style=flat-square&logo=vercel)
 ![Claude](https://img.shields.io/badge/Claude_Haiku-AI_Assistant-orange?style=flat-square&logo=anthropic)
+![i18n](https://img.shields.io/badge/i18n-EN_·_DE_·_FR-4B5563?style=flat-square)
 
 ## Features
 
 - **AI Assistant** — floating chat widget powered by Claude Haiku. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
+- **Multilingual** — full EN / DE / FR support via a language switcher in the navbar. All sections, descriptions, and chat suggestions switch instantly.
 
 ## Sections
 
