@@ -6,10 +6,10 @@ export default function Contact() {
   const { t } = useLanguage();
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.contact.title}</h2>
-        <p className="text-gray-500 mb-12 max-w-xl">{t.contact.subtitle}</p>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t.contact.title}</h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-12 max-w-xl">{t.contact.subtitle}</p>
 
         <div className="grid sm:grid-cols-3 gap-6">
           <ContactCard
@@ -39,11 +39,11 @@ export default function Contact() {
 function ContactCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: string; href: string }) {
   return (
     <a href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer"
-      className="flex items-start gap-4 p-5 border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-sm transition-all group">
-      <span className="text-blue-700 mt-0.5">{icon}</span>
+      className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm transition-all group bg-white dark:bg-gray-900">
+      <span className="text-blue-700 dark:text-blue-400 mt-0.5">{icon}</span>
       <div>
-        <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-        <p className="text-sm font-medium text-gray-800 group-hover:text-blue-700 transition-colors break-all">{value}</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">{label}</p>
+        <p className="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors break-all">{value}</p>
       </div>
     </a>
   );

@@ -73,7 +73,7 @@ export default function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden" style={{ maxHeight: "520px" }}>
+        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden" style={{ maxHeight: "520px" }}>
           <div className="bg-blue-700 px-4 py-3 flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold">P</div>
             <div>
@@ -85,11 +85,11 @@ export default function ChatWidget() {
           <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0" style={{ maxHeight: "340px" }}>
             {messages.length === 0 && (
               <div className="space-y-3">
-                <p className="text-sm text-gray-500 text-center py-2">{chat.greeting}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-2">{chat.greeting}</p>
                 <div className="space-y-2">
                   {chat.suggestions.map((s) => (
                     <button key={s} onClick={() => send(s)}
-                      className="w-full text-left text-sm px-3 py-2 rounded-lg border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-colors">
+                      className="w-full text-left text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-600 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
                       {s}
                     </button>
                   ))}
@@ -100,7 +100,7 @@ export default function ChatWidget() {
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
-                  m.role === "user" ? "bg-blue-700 text-white rounded-br-sm" : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                  m.role === "user" ? "bg-blue-700 text-white rounded-br-sm" : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-sm"
                 }`}>
                   {m.role === "user" ? (
                     m.content
@@ -130,14 +130,14 @@ export default function ChatWidget() {
             <div ref={bottomRef} />
           </div>
 
-          <div className="border-t border-gray-100 p-3 flex gap-2">
+          <div className="border-t border-gray-100 dark:border-gray-800 p-3 flex gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send(input)}
               placeholder={chat.placeholder}
-              className="flex-1 text-sm px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-blue-400 bg-gray-50"
+              className="flex-1 text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
               disabled={loading}
             />
             <button onClick={() => send(input)} disabled={loading || !input.trim()}
