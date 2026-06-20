@@ -13,7 +13,7 @@ const tags = [
 ];
 
 const highlights = [true, true, true, false, false, false, false];
-const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1", "", "", "", "", "https://github.com/Arthuro1"];
+const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1/knowledge-graph-rag", "", "", "https://github.com/Arthuro1/Courses_Recommender", "", "https://github.com/Arthuro1/AWT_Project"];
 const liveLinks = ["https://portfolio-blush-rho-65.vercel.app/", "", "", "", "", "", ""];
 
 export default function Projects() {
