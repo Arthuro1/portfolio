@@ -4,6 +4,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const tags = [
   ["Next.js", "TypeScript", "Claude API", "Prompt Engineering", "TailwindCSS", "Vercel"],
+  ["React", "Tailwind CSS", "Supabase", "Claude API", "Zustand", "Vite", "Vercel"],
   ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "Claude API", "Docker", "spaCy"],
   ["Python", "Flask", "Neo4J", "Angular", "NLP", "Machine Learning", "Knowledge Graph"],
   ["Python", "React", "Elasticsearch", "NLP", "Chatbot", "NoSQL"],
@@ -12,9 +13,9 @@ const tags = [
   ["React", "Redux", "TypeScript", "Node.js", "Express", "MongoDB"],
 ];
 
-const highlights = [true, true, true, false, false, false, false];
-const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1/knowledge-graph-rag", "", "", "https://github.com/Arthuro1/Courses_Recommender", "", "https://github.com/Arthuro1/AWT_Project"];
-const liveLinks = ["https://portfolio-blush-rho-65.vercel.app/", "", "", "", "", "", ""];
+const highlights = [true, true, true, false, false, false, false, false];
+const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1/pray-for-me", "https://github.com/Arthuro1/knowledge-graph-rag", "", "", "https://github.com/Arthuro1/Courses_Recommender", "", "https://github.com/Arthuro1/AWT_Project"];
+const liveLinks = ["https://portfolio-blush-rho-65.vercel.app/", "", "", "", "", "", "", ""];
 
 export default function Projects() {
   const { t } = useLanguage();

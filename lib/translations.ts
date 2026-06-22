@@ -51,6 +51,12 @@ export const translations = {
           description: "Multilingual (EN/DE/FR) portfolio built with Next.js and Tailwind CSS, featuring an embedded Claude-powered chat assistant that answers recruiter questions about my experience in real time with streaming responses and markdown formatting.",
         },
         {
+          title: "Pray For Me — AI Prayer Companion",
+          date: "2025",
+          type: "Personal Project",
+          description: "Full-stack prayer management app with AI-powered prayer suggestions and Bible verse references via Claude Haiku. Features multilingual support (EN/DE/FR/PT), weekly prayer planning, follow-up notifications, and secure authentication with Supabase (Row Level Security).",
+        },
+        {
           title: "Knowledge Graph RAG System",
           date: "2026 – present",
           type: "Personal Project",
@@ -191,6 +197,12 @@ export const translations = {
           description: "Mehrsprachige (EN/DE/FR) Portfolio-Webseite mit Next.js und Tailwind CSS, inklusive eingebettetem Claude-basierten Chat-Assistenten, der Recruiter-Fragen zu meiner Erfahrung in Echtzeit mit Streaming und Markdown-Formatierung beantwortet.",
         },
         {
+          title: "Pray For Me — KI-Gebetsbegleiter",
+          date: "2025",
+          type: "Persönliches Projekt",
+          description: "Full-Stack-Gebets-App mit KI-gestützten Gebetsvorschlägen und Bibelvers-Referenzen via Claude Haiku. Mehrsprachig (EN/DE/FR/PT), wöchentliche Gebetsplanung, Erinnerungen und sichere Authentifizierung mit Supabase (Row Level Security).",
+        },
+        {
           title: "Knowledge Graph RAG System",
           date: "2026 – heute",
           type: "Persönliches Projekt",
@@ -329,6 +341,12 @@ export const translations = {
           date: "2026 – present",
           type: "Projet personnel",
           description: "Portfolio multilingue (EN/DE/FR) développé avec Next.js et Tailwind CSS, avec un assistant conversationnel basé sur Claude qui répond en temps réel aux questions des recruteurs sur mon expérience, avec streaming et formatage Markdown.",
+        },
+        {
+          title: "Pray For Me — Compagnon de prière IA",
+          date: "2025",
+          type: "Projet personnel",
+          description: "Application full-stack de gestion de prières avec suggestions de prières générées par Claude Haiku et références bibliques. Multilingue (EN/DE/FR/PT), planification hebdomadaire, rappels et authentification sécurisée avec Supabase (Row Level Security).",
         },
         {
           title: "Système RAG avec graphe de connaissances",
