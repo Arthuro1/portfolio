@@ -4,6 +4,7 @@ import Providers from "@/components/Providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
+  icons: { icon: "/favicon.svg" },
   title: "Paul Arthur Meteng — AI Engineer",
   description:
     "Portfolio of Paul Arthur Meteng — Software Engineer specialising in AI Engineering, RAG systems, LLMs and Conversational AI.",
