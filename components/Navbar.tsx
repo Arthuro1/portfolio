@@ -43,8 +43,8 @@ export default function Navbar() {
       <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <a href="#" className="flex items-center gap-2" aria-label="Home">
           <svg width="36" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect x="3" y="3" width="58" height="58" rx="12" fill="white" stroke="#1d4ed8" strokeWidth="4" className="dark:[fill:#111827] dark:[stroke:#3b82f6]"/>
-            <text x="32" y="42" fontFamily="monospace" fontSize="18" fontWeight="700" fill="#1d4ed8" textAnchor="middle" className="dark:[fill:#3b82f6]">&lt;PAM/&gt;</text>
+            <rect x="2" y="2" width="60" height="60" rx="12" fill="#1d4ed8"/>
+            <text x="32" y="42" fontFamily="monospace" fontSize="18" fontWeight="700" fill="white" textAnchor="middle">&lt;PAM/&gt;</text>
           </svg>
           <span className="text-lg font-semibold tracking-tight text-gray-900 dark:text-gray-100">Paul Meteng</span>
         </a>
