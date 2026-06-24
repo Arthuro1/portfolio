@@ -54,7 +54,7 @@ export const translations = {
           title: "Pray For Me — AI Prayer Companion",
           date: "2025",
           type: "Personal Project",
-          description: "Full-stack prayer management app with AI-powered prayer suggestions and Bible verse references via Claude Haiku. Features multilingual support (EN/DE/FR/PT), weekly prayer planning, follow-up notifications, and secure authentication with Supabase (Row Level Security).",
+          description: "Full-stack PWA prayer journal with AI-generated prayer points and Bible verse references via Claude Haiku. Features 16-language support, daily shared Bible verses via Supabase Edge Functions, scripture search with Bible.com integration, weekly prayer planning, native push notifications, Google OAuth, and offline support.",
         },
         {
           title: "Knowledge Graph RAG System",
@@ -200,7 +200,7 @@ export const translations = {
           title: "Pray For Me — KI-Gebetsbegleiter",
           date: "2025",
           type: "Persönliches Projekt",
-          description: "Full-Stack-Gebets-App mit KI-gestützten Gebetsvorschlägen und Bibelvers-Referenzen via Claude Haiku. Mehrsprachig (EN/DE/FR/PT), wöchentliche Gebetsplanung, Erinnerungen und sichere Authentifizierung mit Supabase (Row Level Security).",
+          description: "Progressive Web App für Gebetstagebücher mit KI-generierten Gebetspunkten und Bibelvers-Referenzen via Claude Haiku. Unterstützt 16 Sprachen, tägliche Bibelverse per Supabase Edge Functions, Bibelsuche mit Bible.com-Integration, wöchentliche Planung, Push-Benachrichtigungen, Google OAuth und Offline-Support.",
         },
         {
           title: "Knowledge Graph RAG System",
@@ -346,7 +346,7 @@ export const translations = {
           title: "Pray For Me — Compagnon de prière IA",
           date: "2025",
           type: "Projet personnel",
-          description: "Application full-stack de gestion de prières avec suggestions de prières générées par Claude Haiku et références bibliques. Multilingue (EN/DE/FR/PT), planification hebdomadaire, rappels et authentification sécurisée avec Supabase (Row Level Security).",
+          description: "PWA de journal de prière avec points de prière générés par Claude Haiku et références bibliques. Support de 16 langues, verset biblique quotidien partagé via Supabase Edge Functions, recherche de versets avec intégration Bible.com, planification hebdomadaire, notifications push natives, Google OAuth et support hors-ligne.",
         },
         {
           title: "Système RAG avec graphe de connaissances",
