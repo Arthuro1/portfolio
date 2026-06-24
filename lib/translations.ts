@@ -54,7 +54,7 @@ export const translations = {
           title: "Pray For Me — AI Prayer Companion",
           date: "2025",
           type: "Personal Project",
-          description: "Full-stack PWA prayer journal with AI-generated prayer points and Bible verse references via Claude Haiku. Features 16-language support, daily shared Bible verses via Supabase Edge Functions, scripture search with Bible.com integration, weekly prayer planning, native push notifications, Google OAuth, and offline support.",
+          description: "Full-stack PWA prayer journal with AI-generated prayer points via Claude Haiku, 16-language support, and community features (groups, QR invite codes, shared testimonies, prayer reactions). Includes scripture search, daily Bible verses via Edge Functions, prayer streaks, web push notifications, offline mode, Google OAuth, and data export.",
         },
         {
           title: "Knowledge Graph RAG System",
@@ -200,7 +200,7 @@ export const translations = {
           title: "Pray For Me — KI-Gebetsbegleiter",
           date: "2025",
           type: "Persönliches Projekt",
-          description: "Progressive Web App für Gebetstagebücher mit KI-generierten Gebetspunkten und Bibelvers-Referenzen via Claude Haiku. Unterstützt 16 Sprachen, tägliche Bibelverse per Supabase Edge Functions, Bibelsuche mit Bible.com-Integration, wöchentliche Planung, Push-Benachrichtigungen, Google OAuth und Offline-Support.",
+          description: "Progressive Web App für Gebetstagebücher mit KI-generierten Gebetspunkten via Claude Haiku, 16 Sprachen und Community-Funktionen (Gruppen, QR-Einladungen, geteilte Zeugnisse, Gebetsreaktionen). Bibelsuche, tägliche Verse per Edge Functions, Gebets-Streaks, Web-Push-Benachrichtigungen, Offline-Modus, Google OAuth und Datenexport.",
         },
         {
           title: "Knowledge Graph RAG System",
@@ -346,7 +346,7 @@ export const translations = {
           title: "Pray For Me — Compagnon de prière IA",
           date: "2025",
           type: "Projet personnel",
-          description: "PWA de journal de prière avec points de prière générés par Claude Haiku et références bibliques. Support de 16 langues, verset biblique quotidien partagé via Supabase Edge Functions, recherche de versets avec intégration Bible.com, planification hebdomadaire, notifications push natives, Google OAuth et support hors-ligne.",
+          description: "PWA de journal de prière avec points de prière générés par Claude Haiku, support 16 langues et fonctionnalités communautaires (groupes, QR d'invitation, témoignages partagés, réactions). Recherche de versets, verset quotidien via Edge Functions, suivi de séries, notifications push web, mode hors-ligne, Google OAuth et export de données.",
         },
         {
           title: "Système RAG avec graphe de connaissances",

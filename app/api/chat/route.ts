@@ -40,7 +40,7 @@ Designed and built customised chatbots (GovBot) for municipalities across German
 ## Key Projects
 
 **Pray For Me — AI Prayer Companion** (2025, Personal)
-Full-stack PWA prayer journal with AI-generated prayer points and Bible verse references via Claude Haiku. Supports 16 languages, daily shared Bible verse via Supabase Edge Functions, scripture search with Bible.com integration, weekly prayer planning, native push notifications, Google OAuth, and offline support. Live at pray4me.space. Stack: React 18, Tailwind CSS, Vite (PWA), Zustand, Supabase, Claude API, Vercel. GitHub: github.com/Arthuro1/pray-for-me
+Full-stack PWA prayer journal with AI-generated prayer points via Claude Haiku, 16-language support, and community features: groups, QR invite codes, shared testimonies, and prayer reactions. Also includes scripture search, daily Bible verses via Supabase Edge Functions, prayer streaks, web push notifications, offline mode, Google OAuth, and data export. Live at pray4me.space. Stack: React 18, Tailwind CSS, Vite (PWA), Zustand, Supabase, Claude API, Vercel. GitHub: github.com/Arthuro1/pray-for-me
 
 **Knowledge Graph RAG System** (2026 – present, Personal)
 Hybrid RAG combining Neo4J knowledge graph traversal with semantic vector search (ChromaDB). Automatic entity/relation extraction via LLM. REST API with FastAPI, streaming, web UI. Stack: Python, LangChain, Neo4J, ChromaDB, FastAPI, Claude API, Docker, spaCy.
