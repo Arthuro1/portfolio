@@ -1,6 +1,59 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+export const runtime = "nodejs";
+
+// --- Abuse protection -------------------------------------------------------
+const MAX_MESSAGES = 15; // conversation length cap
+const MAX_CONTENT_LENGTH = 2000; // per-message character cap
+const RATE_LIMIT = 12; // requests...
+const RATE_WINDOW_MS = 60_000; // ...per minute, per IP
+
+// Best-effort in-memory rate limiter. On serverless this is per-instance, so
+// it reliably stops a single client hammering a warm function but is not a
+// distributed guarantee. For strict, global limits use @upstash/ratelimit +
+// Upstash Redis (free tier) and swap rateLimit() for it.
+const hits = new Map<string, number[]>();
+
+function rateLimit(ip: string): boolean {
+  const now = Date.now();
+  const windowStart = now - RATE_WINDOW_MS;
+  const timestamps = (hits.get(ip) ?? []).filter((t) => t > windowStart);
+  timestamps.push(now);
+  hits.set(ip, timestamps);
+
+  // Opportunistic cleanup so the map can't grow unbounded.
+  if (hits.size > 5000) {
+    hits.forEach((ts, key) => {
+      if (ts.every((t) => t <= windowStart)) hits.delete(key);
+    });
+  }
+
+  return timestamps.length <= RATE_LIMIT;
+}
+
+type ChatMessage = { role: "user" | "assistant"; content: string };
+
+function isValidMessages(messages: unknown): messages is ChatMessage[] {
+  if (!Array.isArray(messages)) return false;
+  if (messages.length === 0 || messages.length > MAX_MESSAGES) return false;
+  return messages.every(
+    (m) =>
+      !!m &&
+      typeof m === "object" &&
+      ((m as ChatMessage).role === "user" ||
+        (m as ChatMessage).role === "assistant") &&
+      typeof (m as ChatMessage).content === "string" &&
+      (m as ChatMessage).content.length > 0 &&
+      (m as ChatMessage).content.length <= MAX_CONTENT_LENGTH,
+  );
+}
+
+// Lazily created so a missing key doesn't blow up at module load / build time.
+let client: Anthropic | null = null;
+function getClient() {
+  if (!client) client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  return client;
+}
 
 const SYSTEM_PROMPT = `You are Paul's portfolio assistant. You help recruiters and visitors learn about Paul Arthur Meteng — a Software Engineer transitioning to AI Engineering.
 
@@ -70,32 +123,83 @@ MERN stack app helping students find books for their courses with ratings and di
 Paul is targeting **AI Engineer** roles — building LLM applications, RAG systems, conversational AI, and intelligent agents. He is open to both product and consulting environments, and is comfortable working in German and English.`;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  // Only allow calls originating from our own site in production. This blocks
+  // casual cross-site embedding; it is not a hard guarantee (Origin can be
+  // spoofed by scripts), so rate limiting + validation below are the real
+  // protection. Skipped in dev so localhost works.
+  const origin = req.headers.get("origin");
+  const allowed = [
+    "https://paulmeteng.space",
+    "https://www.paulmeteng.space",
+  ];
+  if (
+    process.env.NODE_ENV === "production" &&
+    origin &&
+    !allowed.includes(origin)
+  ) {
+    return new Response("Forbidden", { status: 403 });
+  }
 
-  const stream = await client.messages.stream({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 500,
-    system: SYSTEM_PROMPT,
-    messages,
-  });
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown")
+    .split(",")[0]
+    .trim();
+  if (!rateLimit(ip)) {
+    return new Response("Too many requests. Please slow down.", {
+      status: 429,
+    });
+  }
 
-  const encoder = new TextEncoder();
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return new Response("Invalid JSON", { status: 400 });
+  }
 
-  const readable = new ReadableStream({
-    async start(controller) {
-      for await (const chunk of stream) {
-        if (
-          chunk.type === "content_block_delta" &&
-          chunk.delta.type === "text_delta"
-        ) {
-          controller.enqueue(encoder.encode(chunk.delta.text));
+  const { messages } = (body ?? {}) as { messages?: unknown };
+  if (!isValidMessages(messages)) {
+    return new Response("Invalid request", { status: 400 });
+  }
+
+  try {
+    const stream = await getClient().messages.stream({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 500,
+      system: SYSTEM_PROMPT,
+      messages,
+    });
+
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if (
+              chunk.type === "content_block_delta" &&
+              chunk.delta.type === "text_delta"
+            ) {
+              controller.enqueue(encoder.encode(chunk.delta.text));
+            }
+          }
+        } catch {
+          controller.enqueue(
+            encoder.encode("\n\n[The assistant is unavailable right now.]"),
+          );
+        } finally {
+          controller.close();
         }
-      }
-      controller.close();
-    },
-  });
+      },
+    });
 
-  return new Response(readable, {
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+    return new Response(readable, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch {
+    return new Response("The assistant is temporarily unavailable.", {
+      status: 503,
+    });
+  }
 }
