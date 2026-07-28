@@ -8,12 +8,22 @@ out/
 # production
 build/
 
-# env files
+# env files (never commit real secrets)
 .env
 .env.local
 .env.*.local
 
+# typescript / build artifacts
+*.tsbuildinfo
+
+# test coverage
+coverage/
+
+# vercel
+.vercel
+
 # misc
 .DS_Store
 *.pem
+*.key
 npm-debug.log*

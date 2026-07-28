@@ -1,41 +1,18 @@
 /** @type {import('next').NextConfig} */
 
-// Content-Security-Policy tuned for this site: Next.js, Tailwind/styled-jsx
-// (need inline styles) and Vercel Speed Insights. 'unsafe-eval' is kept so
-// `next dev` HMR works; production doesn't rely on it.
-const ContentSecurityPolicy = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https:",
-  "font-src 'self' data:",
-  "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "object-src 'none'",
-  "upgrade-insecure-requests",
-].join("; ");
+// Security headers + CSP live in a single shared module so the production
+// policy can be unit-tested (see lib/__tests__/security-headers.test.ts) and
+// so `'unsafe-eval'` is provably dev-only.
+const { buildSecurityHeaders } = require("./lib/security-headers");
 
-const securityHeaders = [
-  { key: "Content-Security-Policy", value: ContentSecurityPolicy },
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  {
-    key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-  },
-  {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
-  },
-];
+// `next dev` runs with NODE_ENV=development; `next build`/`next start` run with
+// NODE_ENV=production. HMR only needs 'unsafe-eval' in development.
+const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig = {
   poweredByHeader: false, // hide the "X-Powered-By: Next.js" fingerprint
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [{ source: "/:path*", headers: buildSecurityHeaders(isDev) }];
   },
 };
 

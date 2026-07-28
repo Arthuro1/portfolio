@@ -144,6 +144,12 @@ export const translations = {
         "Tell me about his RAG experience",
         "What's his tech stack?",
       ],
+      errors: {
+        generic: "Something went wrong. Please try again.",
+        rateLimited: "You're sending messages too quickly. Please wait a moment.",
+        tooLong: "That message is too long. Please shorten it.",
+        unavailable: "The assistant is unavailable right now. Please try again later.",
+      },
     },
   },
 
@@ -290,6 +296,12 @@ export const translations = {
         "Erzähl mir von seiner RAG-Erfahrung",
         "Was ist sein Tech-Stack?",
       ],
+      errors: {
+        generic: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+        rateLimited: "Sie senden Nachrichten zu schnell. Bitte warten Sie einen Moment.",
+        tooLong: "Diese Nachricht ist zu lang. Bitte kürzen Sie sie.",
+        unavailable: "Der Assistent ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut.",
+      },
     },
   },
 
@@ -436,6 +448,12 @@ export const translations = {
         "Parlez-moi de son expérience RAG",
         "Quel est son stack technique ?",
       ],
+      errors: {
+        generic: "Une erreur s'est produite. Veuillez réessayer.",
+        rateLimited: "Vous envoyez des messages trop rapidement. Veuillez patienter un instant.",
+        tooLong: "Ce message est trop long. Veuillez le raccourcir.",
+        unavailable: "L'assistant est momentanément indisponible. Veuillez réessayer plus tard.",
+      },
     },
   },
 } as const;
@@ -449,5 +467,12 @@ export type Translations = {
   experience: { title: string; educationTitle: string; items: { role: string; company: string; period: string; description: string }[]; education: { degree: string; institution: string; period: string }[] };
   contact: { title: string; subtitle: string };
   footer: string;
-  chat: { title: string; subtitle: string; greeting: string; placeholder: string; suggestions: string[] };
+  chat: {
+    title: string;
+    subtitle: string;
+    greeting: string;
+    placeholder: string;
+    suggestions: string[];
+    errors: { generic: string; rateLimited: string; tooLong: string; unavailable: string };
+  };
 };

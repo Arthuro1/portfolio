@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from "@/context/LanguageContext";
+import { resolveSafeHref } from "@/lib/safe-url";
 
 type Message = { role: "user" | "assistant"; content: string };
+
+// Keep in sync with CHAT_MAX_MESSAGE_LENGTH default; purely a UX guard, the
+// server is the real authority.
+const MAX_INPUT_LENGTH = 1500;
 
 export default function ChatWidget() {
   const { t } = useLanguage();
@@ -14,52 +19,116 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  }, [messages, loading, error]);
 
-  async function send(text: string) {
-    if (!text.trim() || loading) return;
-    const userMsg: Message = { role: "user", content: text };
-    const next = [...messages, userMsg];
-    setMessages(next);
-    setInput("");
-    setLoading(true);
+  // Cancel any in-flight request when the component unmounts.
+  useEffect(() => {
+    return () => abortRef.current?.abort();
+  }, []);
 
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: next }),
-    });
+  // Cancel any in-flight request when the panel is closed.
+  useEffect(() => {
+    if (!open) abortRef.current?.abort();
+  }, [open]);
 
-    const reader = res.body!.getReader();
-    const decoder = new TextDecoder();
-    let assistantText = "";
+  const send = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      // Prevent empty or duplicate concurrent submissions.
+      if (!trimmed || loading) return;
 
-    setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
+      setError(null);
+      setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
+      setInput("");
+      setLoading(true);
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      assistantText += decoder.decode(value);
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = { role: "assistant", content: assistantText };
-        return updated;
-      });
-    }
+      const controller = new AbortController();
+      abortRef.current = controller;
 
-    setLoading(false);
-  }
+      try {
+        // Stateless contract: only the current message is sent. The visible
+        // transcript is kept in local React state and never trusted by the API.
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: trimmed }),
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          setError(errorMessageFor(res, chat.errors));
+          return;
+        }
+        if (!res.body) {
+          setError(chat.errors.unavailable);
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let assistantText = "";
+        let opened = false;
+
+        // Only create the assistant bubble once real content arrives, so a
+        // failed request never leaves an empty bubble behind.
+        const commit = (text: string) => {
+          if (!opened) {
+            opened = true;
+            setMessages((prev) => [...prev, { role: "assistant", content: text }]);
+          } else {
+            setMessages((prev) => {
+              const updated = [...prev];
+              updated[updated.length - 1] = { role: "assistant", content: text };
+              return updated;
+            });
+          }
+        };
+
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const piece = decoder.decode(value, { stream: true });
+          if (!piece) continue;
+          assistantText += piece;
+          commit(assistantText);
+        }
+
+        const tail = decoder.decode();
+        if (tail) {
+          assistantText += tail;
+          commit(assistantText);
+        }
+
+        if (!opened) {
+          // Stream produced nothing at all.
+          setError(chat.errors.unavailable);
+        }
+      } catch (err) {
+        // Aborts (unmount / panel close) are intentional and silent.
+        if (!(err instanceof DOMException && err.name === "AbortError")) {
+          setError(chat.errors.generic);
+        }
+      } finally {
+        setLoading(false);
+        abortRef.current = null;
+      }
+    },
+    [loading, chat.errors],
+  );
 
   return (
     <>
       <button
         onClick={() => setOpen(!open)}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-700 text-white shadow-lg hover:bg-blue-800 transition-colors flex items-center justify-center"
-        aria-label="Open assistant"
+        aria-label={open ? "Close assistant" : "Open assistant"}
+        aria-expanded={open}
       >
         {open ? (
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +142,7 @@ export default function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden" style={{ maxHeight: "520px" }}>
+        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden" style={{ maxHeight: "520px" }} role="dialog" aria-label={chat.title}>
           <div className="bg-blue-700 px-4 py-3 flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold">P</div>
             <div>
@@ -106,6 +175,11 @@ export default function ChatWidget() {
                     m.content
                   ) : m.content ? (
                     <ReactMarkdown
+                      // Raw HTML stays disabled (no rehype-raw). Images and any
+                      // non-allowlisted links are stripped; model output is
+                      // never treated as HTML.
+                      disallowedElements={["img"]}
+                      unwrapDisallowed
                       components={{
                         p: ({ children }) => <p className="mb-1.5 last:mb-0">{children}</p>,
                         strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
@@ -113,6 +187,21 @@ export default function ChatWidget() {
                         ol: ({ children }) => <ol className="list-decimal list-inside space-y-0.5 my-1">{children}</ol>,
                         li: ({ children }) => <li className="leading-snug">{children}</li>,
                         code: ({ children }) => <code className="bg-black/10 rounded px-1 text-xs font-mono">{children}</code>,
+                        a: ({ href, children }) => {
+                          const safe = resolveSafeHref(href);
+                          if (!safe.safe) return <>{children}</>;
+                          return (
+                            <a
+                              href={safe.href}
+                              className="underline text-blue-700 dark:text-blue-400"
+                              {...(safe.external
+                                ? { target: "_blank", rel: "noopener noreferrer" }
+                                : {})}
+                            >
+                              {children}
+                            </a>
+                          );
+                        },
                       }}
                     >
                       {m.content}
@@ -127,6 +216,24 @@ export default function ChatWidget() {
                 </div>
               </div>
             ))}
+
+            {loading && messages.length > 0 && messages[messages.length - 1].role === "user" && (
+              <div className="flex justify-start">
+                <div className="max-w-[85%] px-3 py-2 rounded-2xl rounded-bl-sm bg-gray-100 dark:bg-gray-800">
+                  <span className="flex gap-1 items-center py-0.5">
+                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div role="alert" className="text-xs text-red-600 dark:text-red-400 text-center px-2 py-1">
+                {error}
+              </div>
+            )}
             <div ref={bottomRef} />
           </div>
 
@@ -137,6 +244,8 @@ export default function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && send(input)}
               placeholder={chat.placeholder}
+              aria-label={chat.placeholder}
+              maxLength={MAX_INPUT_LENGTH}
               className="flex-1 text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
               disabled={loading}
             />
@@ -151,4 +260,24 @@ export default function ChatWidget() {
       )}
     </>
   );
+}
+
+function errorMessageFor(
+  res: Response,
+  errors: { generic: string; rateLimited: string; tooLong: string; unavailable: string },
+): string {
+  switch (res.status) {
+    case 429: {
+      const retryAfter = res.headers.get("Retry-After");
+      return retryAfter
+        ? `${errors.rateLimited} (${retryAfter}s)`
+        : errors.rateLimited;
+    }
+    case 413:
+      return errors.tooLong;
+    case 503:
+      return errors.unavailable;
+    default:
+      return errors.generic;
+  }
 }

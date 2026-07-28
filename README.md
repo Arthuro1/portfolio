@@ -16,7 +16,8 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 
 ## Tech Stack
 
-![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=flat-square&logo=nextdotjs)
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=flat-square&logo=nextdotjs)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000?style=flat-square&logo=vercel)
@@ -29,6 +30,7 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 - **AI Assistant** — floating chat widget powered by Claude Haiku. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
 - **Multilingual** — full EN / DE / FR support via a language switcher in the navbar. All sections, descriptions, and chat suggestions switch instantly.
 - **Dark / Light Mode** — dark mode by default, toggled via the sun/moon button in the navbar. Preference is persisted in `localStorage`.
+- **Hardened chat endpoint** — distributed rate limiting (Upstash), request-size limits, strict input validation, prompt-injection–resistant system prompt, per-client concurrency guard, request timeouts, a kill switch, a strict Content-Security-Policy, and safe Markdown rendering. See [SECURITY.md](SECURITY.md) and [docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).
 
 ## Sections
 
@@ -43,17 +45,22 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 
 ## Run locally
 
-1. Clone the repo and install dependencies:
+1. Clone the repo and install dependencies from a clean state:
 
 ```bash
-npm install
+npm ci
 ```
 
-2. Add your Anthropic API key to `.env.local`:
+2. Create your local env file and add your Anthropic API key:
 
-```env
-ANTHROPIC_API_KEY=sk-ant-...
+```bash
+cp .env.example .env.local
+# then set ANTHROPIC_API_KEY=sk-ant-... in .env.local
 ```
+
+`.env.example` documents every supported variable. Upstash Redis is optional
+locally (rate limiting falls back to a best-effort in-memory limiter), but is
+required in production — see [docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).
 
 3. Start the dev server:
 
@@ -62,14 +69,24 @@ npm run dev
 # → http://localhost:3000
 ```
 
-## Build
+## Scripts
 
 ```bash
-npm run build
+npm run dev         # start the dev server
+npm run typecheck   # tsc --noEmit
+npm run lint        # eslint
+npm test            # vitest (unit + API route tests)
+npm run build       # production build
+npm audit --omit=dev
 ```
 
 ## Deploy
 
 Connected to [Vercel](https://vercel.com/) — auto-deploys on every push to `main`.
+CI (GitHub Actions) runs typecheck, lint, tests, build, and a production
+dependency audit on every PR and push to `main`.
 
-Add `ANTHROPIC_API_KEY` in your Vercel project's **Environment Variables** for the AI assistant to work in production.
+Configure the required environment variables in your Vercel project's
+**Settings → Environment Variables** (Production and Preview scopes). The full
+list, plus Upstash, Anthropic, and Vercel Firewall setup, is in
+[docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).
