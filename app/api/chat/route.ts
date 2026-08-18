@@ -54,7 +54,7 @@ Paul Arthur Meteng is a Software Engineer based in Germany with a Master's in Ap
 
 ## Work Experience
 
-**IT Consultant — Vision Consulting GmbH** (Jan 2024 – present)
+**IT Consultant — Vision Consulting GmbH** (Jan 2024 – Jun 2026)
 Migration of the StundE project from ISA-Dialog to Java (KDialog). UI development, rebuilding frontend logic, JUnit tests.
 
 **Java Developer — Cosinex GmbH** (May 2023 – Nov 2023)

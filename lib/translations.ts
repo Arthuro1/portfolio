@@ -101,7 +101,7 @@ export const translations = {
         {
           role: "IT Consultant",
           company: "Vision Consulting GmbH",
-          period: "Jan 2024 – present",
+          period: "Jan 2024 – Jun 2026",
           description: "Migration of the StundE project from ISA-Dialog to Java (KDialog). UI development, rebuilding frontend logic, and implementing tests with JUnit.",
         },
         {
@@ -253,7 +253,7 @@ export const translations = {
         {
           role: "IT-Berater",
           company: "Vision Consulting GmbH",
-          period: "Jan 2024 – heute",
+          period: "Jan 2024 – Jun 2026",
           description: "Migration des StundE-Projekts von ISA-Dialog zu Java (KDialog). UI-Entwicklung, Nachbau der Frontend-Logik und Implementierung von Tests mit JUnit.",
         },
         {
@@ -405,7 +405,7 @@ export const translations = {
         {
           role: "Consultant IT",
           company: "Vision Consulting GmbH",
-          period: "Jan 2024 – présent",
+          period: "Jan 2024 – Juin 2026",
           description: "Migration du projet StundE d'ISA-Dialog vers Java (KDialog). Développement UI, reconstruction de la logique frontend et implémentation de tests avec JUnit.",
         },
         {
