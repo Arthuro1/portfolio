@@ -1,50 +1,72 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import Section from "@/components/Section";
+import Reveal from "@/components/Reveal";
+import { openChat } from "@/lib/chat-events";
+import { GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
+
+const EMAIL = "arthur.meteng@yahoo.com";
 
 export default function Contact() {
   const { t } = useLanguage();
+  const c = t.contact;
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t.contact.title}</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-12 max-w-xl">{t.contact.subtitle}</p>
+    <Section id="contact" index={5} kicker={c.kicker} title={c.title}>
+      <Reveal>
+        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/80 px-6 py-12 sm:px-12 text-center">
+          <div className="ndop-lattice opacity-70" aria-hidden="true" />
+          <div className="relative">
+            <p className="mx-auto max-w-xl text-xl leading-relaxed text-ink">{c.subtitle}</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="inline-flex items-center gap-2 rounded-full bg-brand-fill px-6 py-3 font-bold text-white shadow-[0_10px_30px_-10px_rgb(var(--brand-fill)/0.8)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+              >
+                <MailIcon className="w-4 h-4" />
+                {c.email}
+              </a>
+              <button
+                type="button"
+                onClick={openChat}
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+              >
+                <SparkleIcon className="w-4 h-4" />
+                {c.ask}
+              </button>
+            </div>
 
-        <div className="grid sm:grid-cols-3 gap-6">
-          <ContactCard
-            icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
-            label="Email"
-            value="arthur.meteng@yahoo.com"
-            href="mailto:arthur.meteng@yahoo.com"
-          />
-          <ContactCard
-            icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>}
-            label="LinkedIn"
-            value="paul-arthur-meteng"
-            href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125/"
-          />
-          <ContactCard
-            icon={<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" /></svg>}
-            label="GitHub"
-            value="github.com/Arthuro1"
-            href="https://github.com/Arthuro1"
-          />
+            <div className="mt-12 grid gap-4 text-left sm:grid-cols-3">
+              <ContactCard icon={<MailIcon className="w-5 h-5" />} label="Email" value={EMAIL} href={`mailto:${EMAIL}`} />
+              <ContactCard
+                icon={<LinkedInIcon className="w-5 h-5" />}
+                label="LinkedIn"
+                value="paul-arthur-meteng"
+                href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125/"
+              />
+              <ContactCard icon={<GitHubIcon className="w-5 h-5" />} label="GitHub" value="github.com/Arthuro1" href="https://github.com/Arthuro1" />
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   );
 }
 
 function ContactCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: string; href: string }) {
+  const external = !href.startsWith("mailto");
   return (
-    <a href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer"
-      className="flex items-start gap-4 p-5 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-sm transition-all group bg-white dark:bg-gray-900">
-      <span className="text-blue-700 dark:text-blue-400 mt-0.5">{icon}</span>
-      <div>
-        <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">{label}</p>
-        <p className="text-sm font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors break-all">{value}</p>
-      </div>
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="group flex items-start gap-4 rounded-xl border border-line bg-bg/40 p-5 transition-all hover:-translate-y-0.5 hover:border-accent-bright"
+    >
+      <span className="mt-0.5 text-brand group-hover:text-accent transition-colors">{icon}</span>
+      <span className="min-w-0">
+        <span className="block font-mono text-xs text-muted">{label}</span>
+        <span className="block break-all text-sm font-bold text-ink">{value}</span>
+      </span>
     </a>
   );
 }

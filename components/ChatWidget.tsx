@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import { useLanguage } from "@/context/LanguageContext";
 import { resolveSafeHref } from "@/lib/safe-url";
+import { OPEN_CHAT_EVENT } from "@/lib/chat-events";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -36,6 +37,13 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!open) abortRef.current?.abort();
   }, [open]);
+
+  // Other buttons on the page ("Ask my AI assistant") open the panel.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_CHAT_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen);
+  }, []);
 
   const send = useCallback(
     async (text: string) => {
@@ -126,7 +134,7 @@ export default function ChatWidget() {
     <>
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-700 text-white shadow-lg hover:bg-blue-800 transition-colors flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-brand-fill text-white shadow-[0_10px_30px_-8px_rgb(var(--brand-fill)/0.9)] ring-2 ring-accent-bright/0 hover:ring-accent-bright transition-all hover:-translate-y-0.5 flex items-center justify-center"
         aria-label={open ? "Close assistant" : "Open assistant"}
         aria-expanded={open}
       >
@@ -142,23 +150,23 @@ export default function ChatWidget() {
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden" style={{ maxHeight: "520px" }} role="dialog" aria-label={chat.title}>
-          <div className="bg-blue-700 px-4 py-3 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold">P</div>
+        <div className="panel-in fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden" style={{ maxHeight: "520px" }} role="dialog" aria-label={chat.title}>
+          <div className="bg-brand-fill px-4 py-3 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold font-display">P</div>
             <div>
               <p className="text-white text-sm font-semibold leading-none">{chat.title}</p>
-              <p className="text-blue-200 text-xs mt-0.5">{chat.subtitle}</p>
+              <p className="text-white/75 text-xs mt-0.5">{chat.subtitle}</p>
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0" style={{ maxHeight: "340px" }}>
             {messages.length === 0 && (
               <div className="space-y-3">
-                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-2">{chat.greeting}</p>
+                <p className="text-sm text-muted text-center py-2">{chat.greeting}</p>
                 <div className="space-y-2">
                   {chat.suggestions.map((s) => (
                     <button key={s} onClick={() => send(s)}
-                      className="w-full text-left text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-600 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+                      className="w-full text-left text-sm px-3 py-2 rounded-lg border border-line text-ink hover:border-accent-bright hover:text-accent transition-colors">
                       {s}
                     </button>
                   ))}
@@ -169,7 +177,7 @@ export default function ChatWidget() {
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
-                  m.role === "user" ? "bg-blue-700 text-white rounded-br-sm" : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-bl-sm"
+                  m.role === "user" ? "bg-brand-fill text-white rounded-br-sm" : "bg-raised text-ink rounded-bl-sm"
                 }`}>
                   {m.role === "user" ? (
                     m.content
@@ -193,7 +201,7 @@ export default function ChatWidget() {
                           return (
                             <a
                               href={safe.href}
-                              className="underline text-blue-700 dark:text-blue-400"
+                              className="underline text-brand"
                               {...(safe.external
                                 ? { target: "_blank", rel: "noopener noreferrer" }
                                 : {})}
@@ -208,9 +216,9 @@ export default function ChatWidget() {
                     </ReactMarkdown>
                   ) : (
                     <span className="flex gap-1 items-center py-0.5">
-                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                     </span>
                   )}
                 </div>
@@ -219,11 +227,11 @@ export default function ChatWidget() {
 
             {loading && messages.length > 0 && messages[messages.length - 1].role === "user" && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] px-3 py-2 rounded-2xl rounded-bl-sm bg-gray-100 dark:bg-gray-800">
+                <div className="max-w-[85%] px-3 py-2 rounded-2xl rounded-bl-sm bg-raised">
                   <span className="flex gap-1 items-center py-0.5">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 bg-muted rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                   </span>
                 </div>
               </div>
@@ -237,7 +245,7 @@ export default function ChatWidget() {
             <div ref={bottomRef} />
           </div>
 
-          <div className="border-t border-gray-100 dark:border-gray-800 p-3 flex gap-2">
+          <div className="border-t border-line p-3 flex gap-2">
             <input
               type="text"
               value={input}
@@ -246,11 +254,11 @@ export default function ChatWidget() {
               placeholder={chat.placeholder}
               aria-label={chat.placeholder}
               maxLength={MAX_INPUT_LENGTH}
-              className="flex-1 text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-400 dark:focus:border-blue-500 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+              className="flex-1 min-w-0 text-sm px-3 py-2 rounded-lg border border-line focus:outline-none focus:border-accent-bright bg-bg text-ink placeholder:text-muted"
               disabled={loading}
             />
             <button onClick={() => send(input)} disabled={loading || !input.trim()}
-              className="px-3 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 disabled:opacity-40 transition-colors" aria-label="Send">
+              className="px-3 py-2 bg-brand-fill text-white rounded-lg hover:brightness-110 disabled:opacity-40 transition" aria-label="Send">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>

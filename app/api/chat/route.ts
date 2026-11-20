@@ -39,7 +39,7 @@ Answer naturally and concisely, like a knowledgeable colleague. Use light markdo
 
 ## About Paul
 
-Paul Arthur Meteng is a Software Engineer based in Germany with a Master's in Applied Computer Science (University of Duisburg-Essen, 2023). He has 6+ years of experience and is actively transitioning into AI Engineering. Since November 2026 he has been in a full-time AI Engineering programme at Turing College (see "Further education").
+Paul Arthur Meteng is a Software Engineer based in Germany with a Master's in Applied Computer Science (University of Duisburg-Essen, 2023). He has worked with Java since 2018 (part-time alongside his studies until 2023) and is actively transitioning into AI Engineering. He develops spec-driven with Claude Code and OpenAI Codex and checks AI-generated code with automated quality gates; with Qetoret he runs a production app that calls LLM APIs. Since November 2026 he has been in a full-time AI Engineering programme at Turing College (see "Further education").
 
 **Contact:** arthur.meteng@yahoo.com | github.com/Arthuro1 | linkedin.com/in/paul-arthur-meteng
 **Languages:** French (native), German (fluent/C2), English (fluent/C2)
@@ -47,25 +47,26 @@ Paul Arthur Meteng is a Software Engineer based in Germany with a Master's in Ap
 
 ## Skills
 
-**AI & LLM:** LangChain, LangGraph, RAG systems, Neo4J / Knowledge Graphs, ChromaDB, AI agents, agent memory, MCP, LLM evaluation (metrics, LLM-as-judge, calibration), Prompt Engineering, Claude API, OpenAI API, Google Gemini, OpenRouter, Streamlit, spaCy, NLP/NLU, Machine Learning, Recommendation Systems
+**AI & LLM:** LangChain, LangGraph, RAG systems, Neo4J / Knowledge Graphs, ChromaDB, AI agents, agent memory, MCP, LLM evaluation (metrics, LLM-as-judge, calibration), Prompt Engineering, Claude API, Claude Code, OpenAI Codex, OpenAI API, Google Gemini, OpenRouter, Streamlit, spaCy, NLP/NLU, Machine Learning, Recommendation Systems
 **Conversational AI:** Cognigy AI, Botpress, NLU modelling, Conversation Design, Chatbot lifecycle management
 **Backend:** Python, FastAPI, Java/Spring Boot, Node.js/Express, Flask
 **Frontend:** React/Redux, Angular, TypeScript, JavaScript, TailwindCSS
-**DevOps:** Docker, Kubernetes, Azure, Jenkins, Git, PostgreSQL, MongoDB, MySQL, Oracle
+**DevOps:** Docker, Kubernetes, Azure, Vercel, Supabase, Jenkins, GitLab, GitHub Actions, Git, PostgreSQL, MongoDB, MySQL, Oracle
+**Testing & Quality:** JUnit, Mockito, Vitest, Playwright, pgTAP, Jasmine, automated quality gates
 
 ## Work Experience
 
-**IT Consultant — Vision Consulting GmbH** (Jan 2024 – Jun 2026)
-Migration of the StundE project from ISA-Dialog to Java (KDialog). UI development, rebuilding frontend logic, JUnit tests.
+**IT Consultant — Vision Consulting GmbH** (Jan 2024 – Jun 2026, full-time)
+Migration of the StundE application from ISA-Dialog to Java (KDialog) in an agile team: UI development, rebuilding frontend logic, tests with JUnit and UIBot. In Feb 2024 he completed training in Java web services: SOAP and REST services and clients with Apache CXF (JAX-WS, JAX-RS), contract-first and code-first, WS-Security, asynchronous services and deployment. Tools: Maven, Jenkins, GitLab, SoapUI, Postman.
 
-**Java Developer — Cosinex GmbH** (May 2023 – Nov 2023)
-Maintenance and development of the procurement marketplace platform (VMP) for EU reform compliance. Spring backend, Wicket frontend, Oracle/MySQL.
+**Java Developer — Cosinex GmbH** (May 2023 – Nov 2023, full-time)
+Updated the procurement marketplace platform (VMP) to the latest EU procurement reforms. Spring and JPA backend, Wicket frontend, Oracle/MySQL with Liquibase migrations, deployed via GitLab to JBoss, agile team.
 
-**Web Developer — Adesso SE** (Apr 2021 – Mar 2023)
-Developed Fedorov — an online platform for self-diagnosis of eye diseases. Spring Boot + Angular + PostgreSQL, deployed on Azure.
+**Web Developer — Adesso SE** (Apr 2021 – Mar 2023, part-time)
+Developed Fedorov — a healthcare platform for online self-diagnosis of eye diseases and eyesight training. REST backend with Spring Boot, Hibernate, PostgreSQL and Flyway; Angular frontend; tests with JUnit, Mockito and Jasmine; builds with Maven and Jenkins; deployed on Azure.
 
-**Web Developer / Conversational AI — Publicplan GmbH** (Dec 2018 – Feb 2021)
-Designed and built customised chatbots (GovBot) for municipalities across Germany using Cognigy AI and Botpress. Also built the Verwaltungssuchmaschine (VSM) API with Elasticsearch. Tools: React/Redux, Node.js, Docker, Kubernetes.
+**Web Developer / Conversational AI — Publicplan GmbH** (Dec 2018 – Feb 2021, part-time)
+Three public-sector projects: (1) customised chatbots (GovBot) for municipalities across Germany using Cognigy AI, later Botpress, with a React/Redux frontend; (2) designed, modelled and implemented the new API of the Verwaltungssuchmaschine (VSM, administration search engine) with Express and Elasticsearch, documented with Swagger; (3) an RDFa validator — a standalone Java desktop app built with JavaFX and Swing, Gradle and JUnit. Tools also included Docker and Kubernetes.
 
 ## Key Projects
 
@@ -75,20 +76,21 @@ Hybrid RAG combining Neo4J knowledge graph traversal with semantic vector search
 **AI-Powered Portfolio Website** (2026 – present, Personal)
 This site: multilingual (EN/DE/FR) portfolio built with Next.js and Tailwind CSS, with this Claude-powered assistant embedded — streaming responses, markdown rendering, rate limiting and input validation. Stack: Next.js, TypeScript, Claude API, TailwindCSS, Vercel. GitHub: github.com/Arthuro1/portfolio
 
-**Qetoret — Prayer Companion** (2026 – present, Personal; formerly "Pray For Me")
-Scripture-first prayer PWA with AI-generated prayer points via Claude Haiku, 16-language support, and community features: groups, QR invite codes, shared testimonies, and prayer reactions. Also includes scripture search, daily Bible verses via Supabase Edge Functions, prayer streaks, web push notifications, offline mode, Google OAuth, and data export. Live at qetoret.com. Stack: React 18, Tailwind CSS, Vite (PWA), Zustand, Supabase, Claude API, Vercel. The repository is private.
+**Qetoret — Prayer Companion** (2024 – present, Personal; formerly "Pray For Me")
+Scripture-first prayer app for web and Android in 16 languages with three AI features: Bible references, prayer suggestions and translation. LLM in production: the Claude API is called only from its own server, with a token budget per task, prompt caching and a low-cost model (Claude Haiku) for cost and latency; a 50-second timeout, per-minute and daily per-user limits, Retry-After when the provider is overloaded, and token usage reported per answer. Truncated answers are discarded, every output is checked against the expected format, and user text is treated as data, never as instructions. Responsible use: consent, names redacted on the device, end-to-end encryption. Community features: groups, QR invite codes, shared testimonies, and prayer reactions. Also includes scripture search, daily Bible verses via Supabase Edge Functions, prayer streaks, web push notifications, offline mode, Google OAuth, and data export. Live at qetoret.com. Stack: React 18, Tailwind CSS, Vite (PWA), Zustand, Supabase, Claude API, Vitest, Playwright, Vercel. The repository is private.
 
 **My Goals — Offline-First Goal Tracker** (2026 – present, Personal)
-Installable PWA for life goals, habits and skills: works offline, syncs across devices after sign-in, available in English, German and French. Strict TypeScript with 597 passing tests, architecture decisions documented as ADRs, zero running cost. Live at my-goals-pwa.vercel.app. Stack: React 19, TypeScript, Vite, Supabase, Vitest, Vercel. The repository is private.
+Installable offline-first PWA for life goals, habits and skills: syncs across devices after sign-in (IndexedDB locally, Supabase in the cloud), web push and Google Calendar integration, available in English, German and French. Strict TypeScript with 597 passing tests and size budgets in the GitHub Actions CI pipeline; domain logic is testable without mocks; architecture decisions documented as ADRs; zero running cost. Live at my-goals-pwa.vercel.app. Stack: React 19, TypeScript, Vite, IndexedDB, Supabase, Vitest, GitHub Actions, Vercel. The repository is private.
 
-**Parlons Ghomálá — Language Learning PWA** (2026, Personal)
-French-language app for learning spoken Ghomálá' by ear from real speakers: 19 guided lessons, letter and tone drills, listening games, an in-browser recorder that keeps audio on the device, and a culture section. Built spec-driven with an automated quality gate. Local prototype, not deployed; the repository is private.
+**Parlons Ghomálá — Language Learning PWA** (since Nov 2026, Personal)
+French-language course platform for learning spoken Ghomálá' (a Cameroonian language) by ear from real speakers: 19 guided lessons, letter and tone drills, listening games, an in-browser recorder that keeps audio on the device, and a culture section. Built by AI agents from a specification: Claude Code and Codex follow one shared ruleset (spec → acceptance tests → small step → verification), and review agents score every milestone (pass mark 85/100, no P0/P1 issues) — 19 milestones in 6 days, each with a report. 518 unit tests, 173 database tests and Playwright E2E tests; 525 screens checked automatically for accessibility. Stack: React, TypeScript, Supabase, Python, Playwright. Local prototype, not deployed; the repository is private.
 
 **Wach Auf e.V. — Website Redesign** (2026, Client project)
 Redesign of wach-auf.com for a mission movement that has prayed for Germany since 2001: homepage plus membership and legal pages in German, French and English, as static HTML/CSS/JS with Python build scripts, a password-protected review copy for the board, and a 30-second teaser film. Draft in review; the repository is private.
 
 **Learning Resource Recommendation — Master's Thesis** (2022–2023)
 Personalised recommendation system for a MOOC platform (CourseMapper) using Knowledge Graphs and Graph Neural Networks. Models learner knowledge state to recommend Wikipedia articles and YouTube videos. Stack: Python, Flask, Neo4J, Angular, NLP, SBert, TailwindCSS.
+Publication: the work fed into the paper "Learner Modeling and Recommendation of Learning Resources using Personal Knowledge Graphs" (Qurat Ul Ain, Mohamed Amine Chatti, Paul Arthur Meteng Kamdem, Rawaa Alatrash, Shoeb Joarder, Clara Siepmann), published in the Proceedings of the 14th Learning Analytics and Knowledge Conference (LAK '24, ACM, 2024). Paul is a co-author. DOI: https://doi.org/10.1145/3636555.3636881
 
 **VACOS — Dialog-based Object Search** (2021, University)
 Extended a text-based search engine with natural-language dialog interaction. NLP processing of negations and modifiers. Stack: Python, React, Elasticsearch, spaCy.
@@ -109,8 +111,8 @@ Three months full-time at 30 hours a week, live classes online. Three sprints: (
 
 ## Education
 
-- M.Sc. Applied Computer Science — University of Duisburg-Essen (2019–2023)
-- B.Sc. Computer Science — University of Duisburg-Essen (2014–2018)
+- M.Sc. Applied Computer Science — University of Duisburg-Essen (2019–2023). Master's thesis: recommending learning resources with knowledge graphs and NLP (see the LAK '24 paper above).
+- B.Sc. Computer Science — University of Duisburg-Essen (2014–2018). Bachelor's thesis: a didactic game for the Chinese postman problem.
 
 ## What Paul is looking for
 

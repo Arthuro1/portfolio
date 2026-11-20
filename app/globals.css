@@ -1,23 +1,251 @@
+@import "flag-icons/css/flag-icons.min.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "flag-icons/css/flag-icons.min.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* "Indigo Ndop night map": deep indigo with ochre highlights, after the
+   indigo resist-dyed Ndop cloth of the Cameroonian grassfields. Values are
+   RGB triplets so Tailwind can apply alpha (see tailwind.config.ts). */
+:root {
+  --bg: 246 243 236;
+  --surface: 255 253 248;
+  --raised: 238 233 222;
+  --line: 218 210 192;
+  --ink: 20 26 51;
+  --muted: 84 92 122;
+  --brand: 42 58 168;
+  --brand-fill: 42 58 168;
+  --accent: 150 85 10;
+  --accent-bright: 224 160 48;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 9 13 31;
+  --surface: 16 22 48;
+  --raised: 24 32 66;
+  --line: 40 50 92;
+  --ink: 233 236 247;
+  --muted: 156 166 199;
+  --brand: 139 151 255;
+  --brand-fill: 79 91 230;
+  --accent: 242 181 68;
+  --accent-bright: 242 181 68;
+  color-scheme: dark;
+}
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  background-color: rgb(var(--bg));
+  color: rgb(var(--ink));
 }
 
-@layer utilities {
-  .section-padding {
-    @apply py-20 px-4 sm:px-6 lg:px-8;
+::selection {
+  background: rgb(var(--accent-bright) / 0.35);
+}
+
+/* Fixed backdrop: indigo and ochre glows plus a fine grain. */
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 10% -10%, rgb(var(--brand) / 0.16), transparent 60%),
+    radial-gradient(40rem 30rem at 100% 40%, rgb(var(--accent-bright) / 0.07), transparent 60%),
+    radial-gradient(50rem 40rem at 30% 110%, rgb(var(--brand) / 0.12), transparent 60%),
+    rgb(var(--bg));
+}
+.atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* In the components layer so Tailwind utilities can resize and place them. */
+@layer components {
+/* Ndop-style zigzag-and-lozenge band used between sections. */
+.ndop-band {
+  height: 20px;
+  background-color: rgb(var(--line));
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M0 9 L10 2 L20 9 L30 2 L40 9' fill='none' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M20 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z M0 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z M40 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z'/%3E%3C/svg%3E") repeat-x center;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M0 9 L10 2 L20 9 L30 2 L40 9' fill='none' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M20 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z M0 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z M40 12 l3.5 3.5 -3.5 3.5 -3.5 -3.5z'/%3E%3C/svg%3E") repeat-x center;
+}
+
+/* Lozenge lattice fading out from the centre, behind the hero and contact. */
+.ndop-lattice {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: rgb(var(--brand) / 0.22);
+  -webkit-mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 4 L52 28 L28 52 L4 28Z' fill='none' stroke='black' stroke-width='1'/%3E%3Ccircle cx='28' cy='28' r='2.5'/%3E%3C/svg%3E"),
+    radial-gradient(closest-side, black, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cpath d='M28 4 L52 28 L28 52 L4 28Z' fill='none' stroke='black' stroke-width='1'/%3E%3Ccircle cx='28' cy='28' r='2.5'/%3E%3C/svg%3E"),
+    radial-gradient(closest-side, black, transparent);
+  mask-composite: intersect;
+  mask-repeat: repeat, no-repeat;
+}
+}
+
+/* Scroll reveal (components/Reveal.tsx). */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Orchestrated hero load: children with .rise come up one after another. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
   }
-  .container-max {
-    @apply max-w-5xl mx-auto;
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.word-in {
+  display: inline-block;
+  animation: word-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.edge-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.2s ease-out forwards;
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.node-pop {
+  animation: pop 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.panel-in {
+  animation: panel-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.toast-in {
+  animation: toast-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes burst {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) rotate(45deg) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(45deg) scale(0.3);
+  }
+}
+.burst {
+  animation: burst 0.9s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burst {
+    display: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+  .rise,
+  .word-in,
+  .node-pop,
+  .float-slow,
+  .panel-in,
+  .toast-in,
+  .edge-draw {
+    animation: none;
+  }
+  .edge-draw {
+    stroke-dashoffset: 0;
   }
 }

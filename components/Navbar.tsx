@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
+import { useJourney } from "@/context/JourneyContext";
 import { Lang } from "@/lib/translations";
 
 const LANGS: { code: Lang; fi: string; label: string }[] = [
@@ -17,6 +18,30 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { t, lang, setLang } = useLanguage();
   const { theme, toggle } = useTheme();
+  const { active } = useJourney();
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  // Reading progress, written straight to the DOM to avoid re-rendering on scroll.
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${ratio})`;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -31,29 +56,35 @@ export default function Navbar() {
   const currentLang = LANGS.find((l) => l.code === lang)!;
 
   const links = [
-    { label: t.nav.about, href: "#about" },
-    { label: t.nav.skills, href: "#skills" },
-    { label: t.nav.projects, href: "#projects" },
-    { label: t.nav.experience, href: "#experience" },
-    { label: t.nav.contact, href: "#contact" },
+    { label: t.nav.about, id: "about" },
+    { label: t.nav.skills, id: "skills" },
+    { label: t.nav.projects, id: "projects" },
+    { label: t.nav.experience, id: "experience" },
+    { label: t.nav.contact, id: "contact" },
   ];
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800">
+    <header className="fixed top-0 inset-x-0 z-50 bg-bg/80 backdrop-blur-md border-b border-line/70">
       <nav className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <a href="#" className="flex items-center gap-2" aria-label="Home">
+        <a href="#top" className="flex items-center gap-2" aria-label="Home">
           <svg width="36" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="60" height="60" rx="12" fill="#1d4ed8"/>
+            <rect x="2" y="2" width="60" height="60" rx="12" className="fill-brand-fill"/>
             <text x="32" y="42" fontFamily="monospace" fontSize="18" fontWeight="700" fill="white" textAnchor="middle">&lt;PAM/&gt;</text>
           </svg>
-          <span className="text-lg font-semibold tracking-tight text-gray-900 dark:text-gray-100">Paul Meteng</span>
+          <span className="font-display text-lg font-bold tracking-tight text-ink">Paul Meteng</span>
         </a>
 
         <div className="hidden md:flex items-center gap-6">
           <ul className="flex gap-8">
             {links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+              <li key={l.id}>
+                <a
+                  href={`#${l.id}`}
+                  aria-current={active === l.id ? "location" : undefined}
+                  className={`relative py-1 text-sm font-bold transition-colors after:absolute after:left-1/2 after:-bottom-1 after:h-1.5 after:w-1.5 after:-translate-x-1/2 after:rotate-45 after:bg-accent-bright after:transition-opacity ${
+                    active === l.id ? "text-ink after:opacity-100" : "text-muted hover:text-ink after:opacity-0"
+                  }`}
+                >
                   {l.label}
                 </a>
               </li>
@@ -63,7 +94,7 @@ export default function Navbar() {
           {/* Dark mode toggle */}
           <button
             onClick={toggle}
-            className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+            className="p-2 rounded-lg border border-line text-muted hover:border-accent-bright hover:text-accent transition-colors"
             aria-label="Toggle dark mode"
           >
             {theme === "dark" ? (
@@ -81,21 +112,23 @@ export default function Navbar() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg hover:border-gray-300 dark:hover:border-gray-600 transition-colors bg-white dark:bg-gray-900"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-line rounded-lg hover:border-accent-bright transition-colors bg-surface"
+              aria-label="Language"
+              aria-expanded={dropdownOpen}
             >
               <span className={`fi fi-${currentLang.fi} rounded-sm`} />
-              <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3.5 h-3.5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-1 w-36 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden z-50">
+              <div className="absolute right-0 mt-1 w-36 bg-surface border border-line rounded-lg shadow-lg overflow-hidden z-50">
                 {LANGS.map(({ code, fi, label }) => (
                   <button
                     key={code}
                     onClick={() => { setLang(code); setDropdownOpen(false); }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                      lang === code ? "text-blue-700 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-950/50" : "text-gray-700 dark:text-gray-300"
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-raised transition-colors ${
+                      lang === code ? "text-accent font-bold bg-raised" : "text-ink"
                     }`}
                   >
                     <span className={`fi fi-${fi} rounded-sm`} />
@@ -109,7 +142,8 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+          className="md:hidden p-2 rounded-md text-muted hover:text-ink"
+          aria-expanded={open}
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -127,24 +161,29 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 px-4 pb-4">
+        <div className="md:hidden border-t border-line bg-bg px-4 pb-4">
           <ul className="flex flex-col gap-3 pt-3">
             {links.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} onClick={() => setOpen(false)} className="block text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-400">
+              <li key={l.id}>
+                <a
+                  href={`#${l.id}`}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 py-1 text-base font-bold ${active === l.id ? "text-accent" : "text-ink hover:text-brand"}`}
+                >
+                  <span className="font-mono text-xs text-muted">0{links.indexOf(l) + 1}</span>
                   {l.label}
                 </a>
               </li>
             ))}
           </ul>
           <div className="flex items-center justify-between mt-4">
-            <div className="flex flex-col gap-1 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden w-36">
+            <div className="flex flex-col gap-1 border border-line rounded-lg overflow-hidden w-36">
               {LANGS.map(({ code, fi, label }) => (
                 <button
                   key={code}
                   onClick={() => { setLang(code); setOpen(false); }}
-                  className={`flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
-                    lang === code ? "text-blue-700 dark:text-blue-400 font-medium bg-blue-50 dark:bg-blue-950/50" : "text-gray-700 dark:text-gray-300"
+                  className={`flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-raised transition-colors ${
+                    lang === code ? "text-accent font-bold bg-raised" : "text-ink"
                   }`}
                 >
                   <span className={`fi fi-${fi} rounded-sm`} />
@@ -154,7 +193,7 @@ export default function Navbar() {
             </div>
             <button
               onClick={toggle}
-              className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
+              className="p-2 rounded-lg border border-line text-muted"
               aria-label="Toggle dark mode"
             >
               {theme === "dark" ? (
@@ -170,6 +209,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      <div ref={progressRef} className="absolute bottom-0 left-0 h-0.5 w-full origin-left bg-accent-bright" style={{ transform: "scaleX(0)" }} aria-hidden="true" />
     </header>
   );
 }

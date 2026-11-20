@@ -1,101 +1,183 @@
 "use client";
 
+import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import Section from "@/components/Section";
+import Reveal from "@/components/Reveal";
+import { ExternalIcon, GitHubIcon, PaperIcon } from "@/components/icons";
 
-const tags = [
-  ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "LLM-as-Judge", "Evaluation", "Docker"],
-  ["Next.js", "TypeScript", "Claude API", "Prompt Engineering", "TailwindCSS", "Vercel"],
-  ["React", "Tailwind CSS", "Supabase", "Claude API", "Zustand", "Vite", "PWA", "Vercel"],
-  ["React 19", "TypeScript", "Vite", "Supabase", "PWA", "Vitest", "Vercel"],
-  ["React", "TypeScript", "Vite", "PWA", "Web Audio", "i18n"],
-  ["HTML", "CSS", "JavaScript", "Python", "Cloudflare Workers", "i18n"],
-  ["Python", "Flask", "Neo4J", "Angular", "NLP", "Machine Learning", "Knowledge Graph"],
-  ["Python", "React", "Elasticsearch", "NLP", "Chatbot", "NoSQL"],
-  ["Python", "Flask", "Elasticsearch", "Machine Learning", "MongoDB"],
-  ["Cognigy", "Botpress", "React", "Redux", "Node.js", "NLP", "Docker", "Kubernetes"],
-  ["React", "Redux", "TypeScript", "Node.js", "Express", "MongoDB"],
-];
+type Filter = "featured" | "ai" | "apps" | "work" | "uni" | "all";
+const FILTERS: Filter[] = ["featured", "ai", "apps", "work", "uni", "all"];
+const VISIBLE_TAGS = 4;
 
-const highlights = [true, true, true, true, false, false, false, false, false, false, false];
-const githubLinks = [
-  "https://github.com/Arthuro1/knowledge-graph-rag",
-  "https://github.com/Arthuro1/portfolio",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "https://github.com/Arthuro1/Courses_Recommender",
-  "",
-  "https://github.com/Arthuro1/AWT_Project",
-];
-const liveLinks = [
-  "",
-  "https://paulmeteng.space",
-  "https://qetoret.com",
-  "https://my-goals-pwa.vercel.app",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
+// Per-project data, in the order of t.projects.items.
+const PROJECTS: { tags: string[]; groups: Filter[]; live?: string; code?: string; paper?: string }[] = [
+  {
+    tags: ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "LLM-as-Judge", "Evaluation", "Docker"],
+    groups: ["featured", "ai"],
+    code: "https://github.com/Arthuro1/knowledge-graph-rag",
+  },
+  {
+    tags: ["Next.js", "TypeScript", "Claude API", "Prompt Engineering", "TailwindCSS", "Vercel"],
+    groups: ["featured", "ai", "apps"],
+    live: "https://paulmeteng.space",
+    code: "https://github.com/Arthuro1/portfolio",
+  },
+  {
+    tags: ["React", "Claude API", "Supabase", "Android", "PWA", "Tailwind CSS", "Zustand", "Vite", "Vitest", "Playwright", "Vercel"],
+    groups: ["featured", "ai", "apps"],
+    live: "https://qetoret.com",
+  },
+  {
+    tags: ["React 19", "TypeScript", "IndexedDB", "Supabase", "PWA", "Vite", "Vitest", "GitHub Actions", "Vercel"],
+    groups: ["featured", "apps"],
+    live: "https://my-goals-pwa.vercel.app",
+  },
+  {
+    tags: ["Claude Code", "Codex", "React", "TypeScript", "Supabase", "Python", "Playwright", "Vite", "PWA", "Web Audio", "i18n"],
+    groups: ["featured", "ai", "apps"],
+  },
+  {
+    tags: ["HTML", "CSS", "JavaScript", "Python", "Cloudflare Workers", "i18n"],
+    groups: ["apps", "work"],
+  },
+  {
+    tags: ["Python", "Flask", "Neo4J", "Angular", "NLP", "Machine Learning", "Knowledge Graph"],
+    groups: ["ai", "uni"],
+    paper: "https://doi.org/10.1145/3636555.3636881",
+  },
+  {
+    tags: ["Python", "React", "Elasticsearch", "NLP", "Chatbot", "NoSQL"],
+    groups: ["ai", "uni"],
+  },
+  {
+    tags: ["Python", "Flask", "Elasticsearch", "Machine Learning", "MongoDB"],
+    groups: ["uni"],
+    code: "https://github.com/Arthuro1/Courses_Recommender",
+  },
+  {
+    tags: ["Cognigy", "Botpress", "React", "Redux", "Node.js", "NLP", "Docker", "Kubernetes"],
+    groups: ["ai", "work"],
+  },
+  {
+    tags: ["React", "Redux", "TypeScript", "Node.js", "Express", "MongoDB"],
+    groups: ["apps", "uni"],
+    code: "https://github.com/Arthuro1/AWT_Project",
+  },
 ];
 
 export default function Projects() {
   const { t } = useLanguage();
+  const p = t.projects;
+  const [filter, setFilter] = useState<Filter>("featured");
+  const [openTags, setOpenTags] = useState<ReadonlySet<number>>(() => new Set());
+
+  const count = (f: Filter) => (f === "all" ? PROJECTS.length : PROJECTS.filter((d) => d.groups.includes(f)).length);
+  const shown = p.items
+    .map((item, i) => ({ item, i, data: PROJECTS[i] }))
+    .filter(({ data }) => filter === "all" || data.groups.includes(filter));
 
   return (
-    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-950">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">{t.projects.title}</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-12">{t.projects.subtitle}</p>
-        <div className="grid md:grid-cols-2 gap-6">
-          {t.projects.items.map((p, i) => (
-            <div
-              key={i}
-              className={`rounded-xl border p-6 flex flex-col gap-4 transition-shadow hover:shadow-md ${
-                highlights[i]
-                  ? "border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20"
-                  : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
-              }`}
-            >
-              <div>
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-base leading-snug">{p.title}</h3>
-                  <div className="flex gap-2">
-                  {liveLinks[i] && (
-                    <a href={liveLinks[i]} target="_blank" rel="noopener noreferrer" className="shrink-0 text-gray-400 hover:text-blue-700 dark:hover:text-blue-400 transition-colors" aria-label="Live">
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                  )}
-                  {githubLinks[i] && (
-                    <a href={githubLinks[i]} target="_blank" rel="noopener noreferrer" className="shrink-0 text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" aria-label="GitHub">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                      </svg>
-                    </a>
-                  )}
-                  </div>
-                </div>
-                <p className="text-xs text-gray-400 dark:text-gray-500">{p.type} · {p.date}</p>
-              </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{p.description}</p>
-              <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                {tags[i].map((tag) => (
-                  <span key={tag} className="px-2 py-0.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+    <Section id="projects" index={3} kicker={p.kicker} title={p.title} intro={p.subtitle} next={{ href: "#experience", label: t.nav.experience }}>
+      <Reveal>
+        <div className="flex flex-wrap gap-2" role="group" aria-label={p.title}>
+          {FILTERS.map((f) => {
+            const isOn = f === filter;
+            return (
+              <button
+                key={f}
+                type="button"
+                onClick={() => setFilter(f)}
+                aria-pressed={isOn}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-bright ${
+                  isOn ? "border-accent-bright bg-accent-bright text-[rgb(9_13_31)]" : "border-line bg-surface/60 text-ink hover:border-brand/60"
+                }`}
+              >
+                {p.filters[f]}
+                <span className={`font-mono text-xs ${isOn ? "opacity-70" : "text-muted"}`}>{count(f)}</span>
+              </button>
+            );
+          })}
         </div>
+      </Reveal>
+
+      <div key={filter} className="mt-8 grid md:grid-cols-2 gap-5">
+        {shown.map(({ item, i, data }, pos) => {
+          const wide = pos === 0 && shown.length % 2 === 1;
+          const tagsOpen = openTags.has(i);
+          const tags = tagsOpen ? data.tags : data.tags.slice(0, VISIBLE_TAGS);
+          const hidden = data.tags.length - VISIBLE_TAGS;
+          return (
+            <article
+              key={item.title}
+              className={`panel-in group flex flex-col rounded-2xl border border-line bg-surface/80 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/60 hover:shadow-[0_18px_40px_-20px_rgb(var(--brand)/0.45)] ${
+                wide ? "md:col-span-2" : ""
+              }`}
+              style={{ animationDelay: `${pos * 60}ms` }}
+            >
+              <p className="font-mono text-xs text-muted">
+                {item.type} · {item.date}
+              </p>
+              <h3 className={`font-display font-bold text-ink mt-2 leading-snug ${wide ? "text-2xl" : "text-xl"}`}>{item.title}</h3>
+              <p className="mt-3 text-ink/90 leading-relaxed">{item.summary}</p>
+
+              {item.highlights.length > 0 && (
+                <ul className={`mt-4 gap-x-8 gap-y-2 text-sm text-muted leading-relaxed ${wide ? "grid md:grid-cols-3" : "grid"}`}>
+                  {item.highlights.map((h) => (
+                    <li key={h} className="flex gap-3">
+                      <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rotate-45 bg-accent-bright" aria-hidden="true" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <div className="mt-auto pt-6 flex flex-wrap items-end justify-between gap-4">
+                <ul className="flex flex-wrap gap-1.5" aria-label="Tech">
+                  {tags.map((tag) => (
+                    <li key={tag} className="rounded-full border border-line px-2.5 py-0.5 font-mono text-[11px] text-muted">
+                      {tag}
+                    </li>
+                  ))}
+                  {hidden > 0 && !tagsOpen && (
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => setOpenTags((prev) => new Set(prev).add(i))}
+                        aria-label={p.showTags}
+                        title={p.showTags}
+                        className="rounded-full border border-dashed border-brand/50 px-2.5 py-0.5 font-mono text-[11px] text-brand hover:border-brand"
+                      >
+                        +{hidden}
+                      </button>
+                    </li>
+                  )}
+                </ul>
+
+                <div className="flex gap-2">
+                  {data.live && <LinkPill href={data.live} label={p.links.live} icon={<ExternalIcon className="w-4 h-4" />} />}
+                  {data.code && <LinkPill href={data.code} label={p.links.code} icon={<GitHubIcon className="w-4 h-4" />} />}
+                  {data.paper && <LinkPill href={data.paper} label={p.links.paper} icon={<PaperIcon className="w-4 h-4" />} />}
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </div>
-    </section>
+    </Section>
+  );
+}
+
+function LinkPill({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1.5 rounded-full border border-line bg-bg/40 px-3 py-1.5 text-sm font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent-bright"
+    >
+      {icon}
+      {label}
+    </a>
   );
 }

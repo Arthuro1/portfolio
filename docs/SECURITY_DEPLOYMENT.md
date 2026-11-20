@@ -292,6 +292,5 @@ npm audit --omit=dev
   `--omit=dev`. Dependabot tracks upstream fixes.
 - **CSP keeps `'unsafe-inline'`** for scripts/styles (static JSON-LD, Speed
   Insights bootstrap, Tailwind/styled-jsx). Nonces were intentionally avoided
-  to keep the site statically rendered. Self-hosting fonts via `next/font` would
-  further remove the two Google Fonts origins from the CSP — a recommended
-  future hardening.
+  to keep the site statically rendered. Fonts are self-hosted via `next/font`,
+  so the CSP allows no Google Fonts origin.
