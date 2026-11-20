@@ -3,9 +3,12 @@
 import { useLanguage } from "@/context/LanguageContext";
 
 const tags = [
+  ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "LLM-as-Judge", "Evaluation", "Docker"],
   ["Next.js", "TypeScript", "Claude API", "Prompt Engineering", "TailwindCSS", "Vercel"],
-  ["React", "Tailwind CSS", "Supabase", "Claude API", "Zustand", "Vite", "Vercel"],
-  ["Python", "LangChain", "Neo4J", "ChromaDB", "FastAPI", "Claude API", "Docker", "spaCy"],
+  ["React", "Tailwind CSS", "Supabase", "Claude API", "Zustand", "Vite", "PWA", "Vercel"],
+  ["React 19", "TypeScript", "Vite", "Supabase", "PWA", "Vitest", "Vercel"],
+  ["React", "TypeScript", "Vite", "PWA", "Web Audio", "i18n"],
+  ["HTML", "CSS", "JavaScript", "Python", "Cloudflare Workers", "i18n"],
   ["Python", "Flask", "Neo4J", "Angular", "NLP", "Machine Learning", "Knowledge Graph"],
   ["Python", "React", "Elasticsearch", "NLP", "Chatbot", "NoSQL"],
   ["Python", "Flask", "Elasticsearch", "Machine Learning", "MongoDB"],
@@ -13,9 +16,33 @@ const tags = [
   ["React", "Redux", "TypeScript", "Node.js", "Express", "MongoDB"],
 ];
 
-const highlights = [true, true, true, false, false, false, false, false];
-const githubLinks = ["https://github.com/Arthuro1/portfolio", "https://github.com/Arthuro1/pray-for-me", "https://github.com/Arthuro1/knowledge-graph-rag", "", "", "https://github.com/Arthuro1/Courses_Recommender", "", "https://github.com/Arthuro1/AWT_Project"];
-const liveLinks = ["https://portfolio-blush-rho-65.vercel.app/", "https://pray4me.space", "", "", "", "", "", ""];
+const highlights = [true, true, true, true, false, false, false, false, false, false, false];
+const githubLinks = [
+  "https://github.com/Arthuro1/knowledge-graph-rag",
+  "https://github.com/Arthuro1/portfolio",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "https://github.com/Arthuro1/Courses_Recommender",
+  "",
+  "https://github.com/Arthuro1/AWT_Project",
+];
+const liveLinks = [
+  "",
+  "https://paulmeteng.space",
+  "https://qetoret.com",
+  "https://my-goals-pwa.vercel.app",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+];
 
 export default function Projects() {
   const { t } = useLanguage();

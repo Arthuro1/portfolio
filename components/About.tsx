@@ -21,6 +21,7 @@ export default function About() {
             <InfoRow label={a.education} value={a.educationValue} />
             <InfoRow label={a.languages} value={a.languagesValue} />
             <InfoRow label={a.interests} value={a.interestsValue} />
+            <InfoRow label={a.engagement} value={a.engagementValue} />
           </div>
         </div>
       </div>

@@ -46,6 +46,30 @@ export default function Experience() {
           </div>
         </div>
 
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-20 mb-10">{ex.trainingTitle}</h2>
+        <div className="space-y-6">
+          {ex.training.map((tr, i) => (
+            <div
+              key={i}
+              className="rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20 p-6"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100 flex flex-wrap items-center gap-2">
+                    {tr.program}
+                    <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-blue-700 dark:bg-blue-500 text-white">
+                      {tr.status}
+                    </span>
+                  </h3>
+                  <p className="text-sm text-blue-700 dark:text-blue-400 font-medium">{tr.institution}</p>
+                </div>
+                <span className="text-sm text-gray-400 dark:text-gray-500 shrink-0">{tr.period}</span>
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{tr.description}</p>
+            </div>
+          ))}
+        </div>
+
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-20 mb-10">{ex.educationTitle}</h2>
         <div className="space-y-6">
           {ex.education.map((edu, i) => (
