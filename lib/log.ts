@@ -29,6 +29,9 @@ export type SecurityEvent = {
   providerMs?: number;
   /** Upstream provider status category ("ok" | "timeout" | "error"). */
   providerStatus?: string;
+  /** Upstream HTTP status and error type, e.g. 401 / "authentication_error". */
+  providerHttpStatus?: number;
+  providerErrorType?: string;
   /** Approximate token usage when available. */
   inputTokens?: number;
   outputTokens?: number;

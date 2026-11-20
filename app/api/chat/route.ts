@@ -39,15 +39,15 @@ Answer naturally and concisely, like a knowledgeable colleague. Use light markdo
 
 ## About Paul
 
-Paul Arthur Meteng is a Software Engineer based in Germany with a Master's in Applied Computer Science (University of Duisburg-Essen, 2023). He has worked with Java since 2018 (part-time alongside his studies until 2023) and is actively transitioning into AI Engineering. He develops spec-driven with Claude Code and OpenAI Codex and checks AI-generated code with automated quality gates; with Qetoret he runs a production app that calls LLM APIs. Since November 2026 he has been in a full-time AI Engineering programme at Turing College (see "Further education").
+Paul Arthur Meteng is a Software Engineer based in the Ruhr area (North Rhine-Westphalia), Germany, with a Master's in Applied Computer Science (University of Duisburg-Essen, 2023). He has worked with Java since 2018 (part-time alongside his studies until 2023) and is actively transitioning into AI Engineering. He develops spec-driven with Claude Code and OpenAI Codex and checks AI-generated code with automated quality gates; with Qetoret he runs a production app that calls LLM APIs. Since November 2026 he has been in a full-time AI Engineering programme at Turing College (see "Further education").
 
-**Contact:** arthur.meteng@yahoo.com | github.com/Arthuro1 | linkedin.com/in/paul-arthur-meteng
+**Contact:** arthur.meteng@yahoo.com | github.com/Arthuro1 | linkedin.com/in/paul-arthur-meteng-kamdem-06b922125
 **Languages:** French (native), German (fluent/C2), English (fluent/C2)
 **Outside work:** guitar and worship music, coding apps, sport and reading. He volunteers for the mission movement Wach Auf e.V. (their website redesign) and serves on the worship team at his church.
 
 ## Skills
 
-**AI & LLM:** LangChain, LangGraph, RAG systems, Neo4J / Knowledge Graphs, ChromaDB, AI agents, agent memory, MCP, LLM evaluation (metrics, LLM-as-judge, calibration), Prompt Engineering, Claude API, Claude Code, OpenAI Codex, OpenAI API, Google Gemini, OpenRouter, Streamlit, spaCy, NLP/NLU, Machine Learning, Recommendation Systems
+**AI & LLM:** LangChain, LangGraph, RAG systems, Neo4J / Knowledge Graphs, ChromaDB, AI agents, agent memory, MCP, LLM evaluation (reference and retrieval metrics, LLM-as-judge), Prompt Engineering, Claude API, Claude Code, OpenAI Codex, OpenAI API, Google Gemini, OpenRouter, Streamlit, spaCy, NLP/NLU, Machine Learning, Recommendation Systems
 **Conversational AI:** Cognigy AI, Botpress, NLU modelling, Conversation Design, Chatbot lifecycle management
 **Backend:** Python, FastAPI, Java/Spring Boot, Node.js/Express, Flask
 **Frontend:** React/Redux, Angular, TypeScript, JavaScript, TailwindCSS
@@ -71,7 +71,7 @@ Three public-sector projects: (1) customised chatbots (GovBot) for municipalitie
 ## Key Projects
 
 **Knowledge Graph RAG System** (2026 – present, Personal)
-Hybrid RAG combining Neo4J knowledge graph traversal with semantic vector search (ChromaDB). Automatic entity/relation extraction via LLM. REST API with FastAPI, streaming, web UI. Extended with a measurable evaluation layer: hand-built metrics (cross-entropy, perplexity, exact match, token F1, semantic similarity), an LLM-as-judge with calibration, and a baseline runner that records every run. Stack: Python, LangChain, Neo4J, ChromaDB, FastAPI, Claude API, Docker, spaCy. GitHub: github.com/Arthuro1/knowledge-graph-rag
+Hybrid RAG combining Neo4J knowledge graph traversal with semantic vector search (ChromaDB). Automatic entity/relation extraction via LLM. REST API with FastAPI, streaming, web UI. Extended with a measurable evaluation layer: hand-built metrics (cross-entropy, perplexity, exact match, token F1, semantic similarity, recall@k, MRR), an LLM-as-judge, and a baseline runner that records every run. Latest run on a small 20-question test set: retrieval recall@5 1.0 and MRR 0.96, and all 3 unanswerable questions were refused; Paul notes the corpus is small, so these mostly show the task is easy. A calibration pipeline for the judge is built, but the judge is NOT calibrated yet — the human labels are still to be collected. 311 automated tests. Stack: Python, LangChain, Neo4J, ChromaDB, FastAPI, Claude API, Docker, spaCy. GitHub: github.com/Arthuro1/knowledge-graph-rag
 
 **AI-Powered Portfolio Website** (2026 – present, Personal)
 This site: multilingual (EN/DE/FR) portfolio built with Next.js and Tailwind CSS, with this Claude-powered assistant embedded — streaming responses, markdown rendering, rate limiting and input validation. Stack: Next.js, TypeScript, Claude API, TailwindCSS, Vercel. GitHub: github.com/Arthuro1/portfolio
@@ -80,12 +80,12 @@ This site: multilingual (EN/DE/FR) portfolio built with Next.js and Tailwind CSS
 Scripture-first prayer app for web and Android in 16 languages with three AI features: Bible references, prayer suggestions and translation. LLM in production: the Claude API is called only from its own server, with a token budget per task, prompt caching and a low-cost model (Claude Haiku) for cost and latency; a 50-second timeout, per-minute and daily per-user limits, Retry-After when the provider is overloaded, and token usage reported per answer. Truncated answers are discarded, every output is checked against the expected format, and user text is treated as data, never as instructions. Responsible use: consent, names redacted on the device, end-to-end encryption. Community features: groups, QR invite codes, shared testimonies, and prayer reactions. Also includes scripture search, daily Bible verses via Supabase Edge Functions, prayer streaks, web push notifications, offline mode, Google OAuth, and data export. Live at qetoret.com. Stack: React 18, Tailwind CSS, Vite (PWA), Zustand, Supabase, Claude API, Vitest, Playwright, Vercel. The repository is private.
 
 **My Goals — Offline-First Goal Tracker** (2026 – present, Personal)
-Installable offline-first PWA for life goals, habits and skills: syncs across devices after sign-in (IndexedDB locally, Supabase in the cloud), web push and Google Calendar integration, available in English, German and French. Strict TypeScript with 597 passing tests and size budgets in the GitHub Actions CI pipeline; domain logic is testable without mocks; architecture decisions documented as ADRs; zero running cost. Live at my-goals-pwa.vercel.app. Stack: React 19, TypeScript, Vite, IndexedDB, Supabase, Vitest, GitHub Actions, Vercel. The repository is private.
+Installable offline-first PWA for life goals, habits and skills: syncs across devices after sign-in (IndexedDB locally, Supabase in the cloud), web push and Google Calendar integration, available in English, German and French. Strict TypeScript with 624 passing tests and size budgets in the GitHub Actions CI pipeline; domain logic is testable without mocks; architecture decisions documented as ADRs; zero running cost. Live at my-goals-pwa.vercel.app. Stack: React 19, TypeScript, Vite, IndexedDB, Supabase, Vitest, GitHub Actions, Vercel. The repository is private.
 
 **Parlons Ghomálá — Language Learning PWA** (since Nov 2026, Personal)
 French-language course platform for learning spoken Ghomálá' (a Cameroonian language) by ear from real speakers: 19 guided lessons, letter and tone drills, listening games, an in-browser recorder that keeps audio on the device, and a culture section. Built by AI agents from a specification: Claude Code and Codex follow one shared ruleset (spec → acceptance tests → small step → verification), and review agents score every milestone (pass mark 85/100, no P0/P1 issues) — 19 milestones in 6 days, each with a report. 518 unit tests, 173 database tests and Playwright E2E tests; 525 screens checked automatically for accessibility. Stack: React, TypeScript, Supabase, Python, Playwright. Local prototype, not deployed; the repository is private.
 
-**Wach Auf e.V. — Website Redesign** (2026, Client project)
+**Wach Auf e.V. — Website Redesign** (2026, volunteer project)
 Redesign of wach-auf.com for a mission movement that has prayed for Germany since 2001: homepage plus membership and legal pages in German, French and English, as static HTML/CSS/JS with Python build scripts, a password-protected review copy for the board, and a 30-second teaser film. Draft in review; the repository is private.
 
 **Learning Resource Recommendation — Master's Thesis** (2022–2023)
@@ -116,7 +116,12 @@ Three months full-time at 30 hours a week, live classes online. Three sprints: (
 
 ## What Paul is looking for
 
-Paul is targeting **AI Engineer** roles — building LLM applications, RAG systems, conversational AI, and intelligent agents. He is open to both product and consulting environments, and is comfortable working in German and English.`;
+Paul is targeting **AI Engineer** roles — building LLM applications, RAG systems, conversational AI, and intelligent agents. He is open to both product and consulting environments, and is comfortable working in German and English.
+
+- **Available:** from March 2027 (after the Turing College programme), full-time
+- **Location:** Ruhr area, North Rhine-Westphalia, Germany
+- **Work mode:** remote or hybrid
+- **CV:** downloadable as a PDF on this site (English and German)`;
 
 // Lazily created so a missing key never breaks module load / build.
 let client: Anthropic | null = null;
@@ -319,6 +324,8 @@ function streamChat(
   const readable = new ReadableStream<Uint8Array>({
     async start(controller) {
       let providerStatus = "ok";
+      let providerHttpStatus: number | undefined;
+      let providerErrorType: string | undefined;
       let inputTokens: number | undefined;
       let outputTokens: number | undefined;
       try {
@@ -334,8 +341,14 @@ function streamChat(
             controller.enqueue(encoder.encode(event.delta.text));
           }
         }
-      } catch {
+      } catch (err) {
         providerStatus = abort.signal.aborted ? "timeout" : "error";
+        // Status and error type only: the message text could echo request data.
+        if (err instanceof Anthropic.APIError) {
+          providerHttpStatus = err.status;
+          const body = err.error as { error?: { type?: unknown } } | undefined;
+          if (typeof body?.error?.type === "string") providerErrorType = body.error.type;
+        }
         // Best-effort notice; ignored if the client already went away.
         try {
           controller.enqueue(encoder.encode(STREAM_INTERRUPTED));
@@ -360,6 +373,8 @@ function streamChat(
           limiter: reservation.backend,
           providerMs: Date.now() - startedAt,
           providerStatus,
+          providerHttpStatus,
+          providerErrorType,
           inputTokens,
           outputTokens,
           aborted: abort.signal.aborted,

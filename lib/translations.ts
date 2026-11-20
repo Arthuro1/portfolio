@@ -15,33 +15,39 @@ export const translations = {
     },
     hero: {
       badge: "AI Engineer · Software Engineer",
-      lead: "I build",
-      rotating: ["RAG pipelines", "knowledge graphs", "chatbots for cities", "apps in 16 languages", "offline-first PWAs"],
-      shuffle: "Show another thing I build",
+      headline: "I build LLM applications — tested, measured and in production.",
       description:
-        "Software engineer since 2018, now going **all-in on AI Engineering**. I pair solid Java and TypeScript craft with LLMs, RAG and agents — and I ship to production.",
-      cta1: "Start the journey",
+        "Software engineer since 2018 — part-time during my studies, full-time on Java enterprise systems since 2023. Now focused on **AI Engineering**: my app Qetoret runs three Claude features in production.",
+      cta1: "See my projects",
       cta2: "Ask my AI assistant",
-      mapHint: "Pick a stop on the map",
-    },
-    journey: {
-      next: "Next stop",
-      map: "Journey map",
-      doneTitle: "You've seen every stop!",
-      doneBody: "Thanks for exploring. Say hello, or ask my assistant anything.",
-      sayHello: "Say hello",
-      ask: "Ask the assistant",
-      close: "Close",
+      cv: "Download CV (PDF)",
+      cvFile: "/cv/Paul-Arthur-Meteng-CV-EN.pdf",
+      glance: {
+        title: "At a glance",
+        availability: "Available",
+        availabilityValue: "From March 2027, full-time",
+        location: "Based in",
+        locationValue: "Ruhr area, NRW, Germany",
+        workMode: "Work mode",
+        workModeValue: "Remote or hybrid",
+        languages: "Languages",
+        languagesValue: "German C2 · English C2 · French (native)",
+        proof: [
+          { value: "3", label: "Claude features in production in my app Qetoret" },
+          { value: "1,600+", label: "automated tests across three of my own projects" },
+          { value: "LAK '24", label: "co-authored research paper (ACM)" },
+        ],
+      },
     },
     about: {
       title: "About me",
       kicker: "Who I am",
-      bio1: "I'm a **software engineer in Germany** with a Master's in Applied Computer Science from the University of Duisburg-Essen.",
+      bio1: "I'm a **software engineer in the Ruhr area, Germany**, with a Master's in Applied Computer Science from the University of Duisburg-Essen.",
       bio2: "Since 2018 — part-time alongside my studies until 2023 — I've built **web apps, chatbots for public authorities and recommendation systems**. Now I'm going all-in on **AI Engineering**.",
-      bio3: "I work **spec-driven with Claude Code and Codex**, and automated quality gates check every line the AI writes. What drives me: making AI genuinely useful for real people.",
+      bio3: "I work **spec-driven with Claude Code and Codex**, and tests, type checks and reviews check what the AI writes before it ships. What drives me: making AI genuinely useful for real people.",
       factsTitle: "Quick facts",
       location: "Location",
-      locationValue: "Germany",
+      locationValue: "Ruhr area, NRW, Germany",
       education: "Education",
       educationValue: "M.Sc. Applied Computer Science — Uni Duisburg-Essen",
       languages: "Languages",
@@ -50,19 +56,13 @@ export const translations = {
       interestsValue: "Guitar & worship music · Coding apps · Sport · Reading",
       engagement: "Volunteering",
       engagementValue: "Wach Auf e.V. mission movement · Worship team at my church",
-      stats: [
-        { value: 4, label: "companies since 2018" },
-        { value: 16, label: "languages in Qetoret" },
-        { value: 597, label: "tests in My Goals" },
-        { value: 3, label: "languages I speak" },
-      ],
     },
     skills: {
       title: "Skills",
       kicker: "What I work with",
-      intro: "Open a drawer of the toolbox. The core tools come first.",
+      intro: "Six areas. The tools I use most come first.",
       coreLabel: "Core",
-      moreLabel: "Also in the drawer",
+      moreLabel: "Also used",
       categories: [
         {
           category: "AI & LLM",
@@ -106,7 +106,7 @@ export const translations = {
       title: "Projects",
       kicker: "What I've built",
       subtitle: "Start with the highlights, then filter by what interests you.",
-      filters: { featured: "Highlights", ai: "AI & LLM", apps: "Apps", work: "Client & work", uni: "University", all: "All" },
+      filters: { featured: "Highlights", ai: "AI & LLM", apps: "Apps", work: "Work & volunteering", uni: "University", all: "All" },
       links: { live: "Live", code: "Code", paper: "Paper" },
       showTags: "Show all technologies",
       items: [
@@ -116,9 +116,9 @@ export const translations = {
           type: "Personal project",
           summary: "Answers questions from a Neo4J knowledge graph and vector search — and measures how good the answers are.",
           highlights: [
-            "Hybrid retrieval: graph traversal plus semantic search",
-            "Entities and relations extracted by an LLM",
-            "Hand-built metrics, a calibrated LLM judge, every run recorded",
+            "Hybrid retrieval: graph traversal plus semantic search, entities extracted by an LLM",
+            "Every run measured and logged: **recall@5 1.0, MRR 0.96** on a small 20-question test set",
+            "LLM judge and calibration pipeline built — human labels still to collect · 311 tests",
           ],
         },
         {
@@ -132,7 +132,7 @@ export const translations = {
           title: "Qetoret — Prayer Companion",
           date: "2024 – present",
           type: "Personal project",
-          summary: "A prayer app for web and Android in 16 languages, with three AI features.",
+          summary: "A prayer app for web and Android in **16 languages**, with three AI features.",
           highlights: [
             "Bible references, prayer suggestions and translation with Claude Haiku",
             "Claude only behind its own server: token budgets, prompt caching, per-user limits",
@@ -146,26 +146,26 @@ export const translations = {
           summary: "A goal and habit tracker that works offline and syncs across devices.",
           highlights: [
             "Installs on phone and desktop, with web push and Google Calendar",
-            "597 tests and size budgets in CI",
+            "**624 tests** and size budgets in CI",
             "Domain logic testable without mocks",
           ],
         },
         {
           title: "Parlons Ghomálá — Language Learning PWA",
           date: "2026",
-          type: "Personal project",
-          summary: "Learn spoken Ghomálá', a Cameroonian language, by ear — built by AI agents from a spec.",
+          type: "Personal project · prototype",
+          summary: "Learn spoken Ghomálá', a Cameroonian language, by ear — built by AI agents from a spec. A local prototype, not deployed yet.",
           highlights: [
             "19 lessons, tone drills, listening games, an on-device recorder",
             "Review agents score every milestone (pass mark 85/100)",
-            "19 milestones in 6 days · 518 unit and 173 database tests",
+            "**19 milestones in 6 days** · 518 unit and 173 database tests",
           ],
         },
         {
           title: "Wach Auf e.V. — Website Redesign",
           date: "2026",
-          type: "Client project",
-          summary: "Redesign of wach-auf.com in German, French and English.",
+          type: "Volunteer project",
+          summary: "Redesign of wach-auf.com in German, French and English — a draft awaiting the board's approval.",
           highlights: ["Pages generated by Python build scripts", "Password-protected copy for the board to review"],
         },
         {
@@ -173,7 +173,7 @@ export const translations = {
           date: "2022 – 2023",
           type: "University · Duisburg-Essen",
           summary: "Recommends Wikipedia articles and YouTube videos for the concepts a learner is stuck on.",
-          highlights: ["Knowledge graph and graph neural networks on a MOOC platform", "Fed into a co-authored paper at LAK '24 (ACM)"],
+          highlights: ["Knowledge graph and graph neural networks on a MOOC platform", "Fed into a co-authored paper at **LAK '24 (ACM)**"],
         },
         {
           title: "VACOS — Dialog-based Object Search",
@@ -276,14 +276,14 @@ export const translations = {
     },
     contact: {
       title: "Let's talk",
-      kicker: "Final stop",
-      subtitle: "Open to AI Engineer roles and projects, in German or English.",
+      kicker: "Get in touch",
+      subtitle: "Open to **AI Engineer** roles from **March 2027** — remote or hybrid, based in the Ruhr area. I work in German or English.",
       email: "Email me",
       ask: "Ask my AI assistant",
     },
     footer: {
       built: "Built with Next.js, Tailwind CSS & Claude",
-      top: "Back to the start",
+      top: "Back to top",
     },
     chat: {
       title: "Paul's Assistant",
@@ -316,33 +316,39 @@ export const translations = {
     },
     hero: {
       badge: "AI Engineer · Software Engineer",
-      lead: "Ich baue",
-      rotating: ["RAG-Pipelines", "Wissensgraphen", "Chatbots für Kommunen", "Apps in 16 Sprachen", "Offline-first-PWAs"],
-      shuffle: "Zeig mir etwas anderes, das ich baue",
+      headline: "Ich baue LLM-Anwendungen — getestet, gemessen und im Produktivbetrieb.",
       description:
-        "Softwareentwickler seit 2018, jetzt **voll auf AI Engineering** ausgerichtet. Ich verbinde solides Java- und TypeScript-Handwerk mit LLMs, RAG und Agenten — und bringe es in Produktion.",
-      cta1: "Reise starten",
+        "Softwareentwickler seit 2018 — neben dem Studium in Teilzeit, seit 2023 in Vollzeit an Java-Unternehmenssystemen. Jetzt mit Fokus auf **AI Engineering**: Meine App Qetoret nutzt drei Claude-Funktionen im Produktivbetrieb.",
+      cta1: "Projekte ansehen",
       cta2: "Meinen KI-Assistenten fragen",
-      mapHint: "Wähle eine Station auf der Karte",
-    },
-    journey: {
-      next: "Nächste Station",
-      map: "Reisekarte",
-      doneTitle: "Du hast jede Station gesehen!",
-      doneBody: "Danke fürs Entdecken. Sag Hallo oder frag meinen Assistenten, was du willst.",
-      sayHello: "Hallo sagen",
-      ask: "Assistenten fragen",
-      close: "Schließen",
+      cv: "Lebenslauf (PDF)",
+      cvFile: "/cv/Paul-Arthur-Meteng-Lebenslauf-DE.pdf",
+      glance: {
+        title: "Auf einen Blick",
+        availability: "Verfügbar",
+        availabilityValue: "Ab März 2027, Vollzeit",
+        location: "Standort",
+        locationValue: "Ruhrgebiet, NRW",
+        workMode: "Arbeitsmodell",
+        workModeValue: "Remote oder hybrid",
+        languages: "Sprachen",
+        languagesValue: "Deutsch C2 · Englisch C2 · Französisch (Muttersprache)",
+        proof: [
+          { value: "3", label: "Claude-Funktionen im Produktivbetrieb in meiner App Qetoret" },
+          { value: "1.600+", label: "automatisierte Tests in drei eigenen Projekten" },
+          { value: "LAK '24", label: "mitverfasstes Forschungspaper (ACM)" },
+        ],
+      },
     },
     about: {
       title: "Über mich",
       kicker: "Wer ich bin",
-      bio1: "Ich bin **Softwareentwickler in Deutschland** mit einem Master in Angewandter Informatik von der Universität Duisburg-Essen.",
+      bio1: "Ich bin **Softwareentwickler im Ruhrgebiet** mit einem Master in Angewandter Informatik von der Universität Duisburg-Essen.",
       bio2: "Seit 2018 — bis 2023 in Teilzeit neben dem Studium — habe ich **Webanwendungen, Chatbots für Behörden und Empfehlungssysteme** gebaut. Jetzt setze ich voll auf **AI Engineering**.",
-      bio3: "Ich entwickle **spec-getrieben mit Claude Code und Codex**, und automatisierte Qualitäts-Gates prüfen jede Zeile, die die KI schreibt. Was mich antreibt: KI, die echten Menschen wirklich nützt.",
+      bio3: "Ich entwickle **spec-getrieben mit Claude Code und Codex**, und Tests, Typprüfungen und Reviews prüfen, was die KI schreibt, bevor es live geht. Was mich antreibt: KI, die echten Menschen wirklich nützt.",
       factsTitle: "Kurz und knapp",
       location: "Standort",
-      locationValue: "Deutschland",
+      locationValue: "Ruhrgebiet, NRW",
       education: "Ausbildung",
       educationValue: "M.Sc. Angewandte Informatik — Uni Duisburg-Essen",
       languages: "Sprachen",
@@ -351,19 +357,13 @@ export const translations = {
       interestsValue: "Gitarre & Lobpreismusik · Apps programmieren · Sport · Lesen",
       engagement: "Engagement",
       engagementValue: "Missionsbewegung Wach Auf e.V. · Lobpreisdienst in meiner Gemeinde",
-      stats: [
-        { value: 4, label: "Firmen seit 2018" },
-        { value: 16, label: "Sprachen in Qetoret" },
-        { value: 597, label: "Tests in My Goals" },
-        { value: 3, label: "Sprachen, die ich spreche" },
-      ],
     },
     skills: {
       title: "Skills",
       kicker: "Womit ich arbeite",
-      intro: "Öffne eine Schublade des Werkzeugkastens. Die Kernwerkzeuge kommen zuerst.",
+      intro: "Sechs Bereiche. Die Werkzeuge, die ich am meisten nutze, zuerst.",
       coreLabel: "Kern",
-      moreLabel: "Außerdem in der Schublade",
+      moreLabel: "Außerdem",
       categories: [
         {
           category: "KI & LLM",
@@ -407,7 +407,7 @@ export const translations = {
       title: "Projekte",
       kicker: "Was ich gebaut habe",
       subtitle: "Starte mit den Highlights und filtere dann nach dem, was dich interessiert.",
-      filters: { featured: "Highlights", ai: "KI & LLM", apps: "Apps", work: "Kunden & Beruf", uni: "Universität", all: "Alle" },
+      filters: { featured: "Highlights", ai: "KI & LLM", apps: "Apps", work: "Beruf & Ehrenamt", uni: "Universität", all: "Alle" },
       links: { live: "Live", code: "Code", paper: "Paper" },
       showTags: "Alle Technologien zeigen",
       items: [
@@ -417,9 +417,9 @@ export const translations = {
           type: "Persönliches Projekt",
           summary: "Beantwortet Fragen aus einem Neo4J-Wissensgraphen und Vektorsuche — und misst, wie gut die Antworten sind.",
           highlights: [
-            "Hybrides Retrieval: Graph-Traversierung plus semantische Suche",
-            "Entitäten und Relationen vom LLM extrahiert",
-            "Selbst gebaute Metriken, kalibrierter LLM-Judge, jeder Lauf protokolliert",
+            "Hybrides Retrieval: Graph-Traversierung plus semantische Suche, Entitäten vom LLM extrahiert",
+            "Jeder Lauf gemessen und protokolliert: **recall@5 1,0, MRR 0,96** auf einem kleinen Testset mit 20 Fragen",
+            "LLM-Judge und Kalibrierungs-Pipeline gebaut — menschliche Labels stehen noch aus · 311 Tests",
           ],
         },
         {
@@ -433,7 +433,7 @@ export const translations = {
           title: "Qetoret — Gebetsbegleiter",
           date: "2024 – heute",
           type: "Persönliches Projekt",
-          summary: "Eine Gebets-App für Web und Android in 16 Sprachen, mit drei KI-Funktionen.",
+          summary: "Eine Gebets-App für Web und Android in **16 Sprachen**, mit drei KI-Funktionen.",
           highlights: [
             "Bibelhinweise, Gebetsvorschläge und Übersetzung mit Claude Haiku",
             "Claude nur über den eigenen Server: Token-Budgets, Prompt-Caching, Limits pro Nutzer",
@@ -447,26 +447,26 @@ export const translations = {
           summary: "Ein Tracker für Ziele und Gewohnheiten, der offline läuft und über Geräte synchronisiert.",
           highlights: [
             "Installierbar auf Handy und Desktop, mit Web-Push und Google-Kalender",
-            "597 Tests und Größenbudgets in der CI",
+            "**624 Tests** und Größenbudgets in der CI",
             "Fachlogik ohne Mocks testbar",
           ],
         },
         {
           title: "Parlons Ghomálá — Sprachlern-PWA",
           date: "2026",
-          type: "Persönliches Projekt",
-          summary: "Gesprochenes Ghomálá', eine kamerunische Sprache, nach Gehör lernen — von KI-Agenten nach Spezifikation gebaut.",
+          type: "Persönliches Projekt · Prototyp",
+          summary: "Gesprochenes Ghomálá', eine kamerunische Sprache, nach Gehör lernen — von KI-Agenten nach Spezifikation gebaut. Ein lokaler Prototyp, noch nicht veröffentlicht.",
           highlights: [
             "19 Lektionen, Tonübungen, Hörspiele, ein Recorder auf dem Gerät",
             "Prüf-Agenten bewerten jeden Meilenstein (Schwelle 85/100)",
-            "19 Meilensteine in 6 Tagen · 518 Unit- und 173 Datenbanktests",
+            "**19 Meilensteine in 6 Tagen** · 518 Unit- und 173 Datenbanktests",
           ],
         },
         {
           title: "Wach Auf e.V. — Website-Redesign",
           date: "2026",
-          type: "Kundenprojekt",
-          summary: "Redesign von wach-auf.com auf Deutsch, Französisch und Englisch.",
+          type: "Ehrenamtliches Projekt",
+          summary: "Redesign von wach-auf.com auf Deutsch, Französisch und Englisch — ein Entwurf, der auf die Freigabe des Vorstands wartet.",
           highlights: ["Seiten von Python-Skripten generiert", "Passwortgeschützte Fassung für den Vorstand"],
         },
         {
@@ -474,7 +474,7 @@ export const translations = {
           date: "2022 – 2023",
           type: "Universität · Duisburg-Essen",
           summary: "Empfiehlt Wikipedia-Artikel und YouTube-Videos zu den Konzepten, an denen Lernende hängen.",
-          highlights: ["Wissensgraph und Graph-Neuronale-Netze auf einer MOOC-Plattform", "Floss in ein mitverfasstes Paper auf der LAK '24 (ACM) ein"],
+          highlights: ["Wissensgraph und Graph-Neuronale-Netze auf einer MOOC-Plattform", "Floss in ein mitverfasstes Paper auf der **LAK '24 (ACM)** ein"],
         },
         {
           title: "VACOS — Dialogbasierte Objektsuche",
@@ -577,14 +577,14 @@ export const translations = {
     },
     contact: {
       title: "Lass uns reden",
-      kicker: "Letzte Station",
-      subtitle: "Offen für AI-Engineer-Stellen und Projekte, auf Deutsch oder Englisch.",
+      kicker: "Kontakt",
+      subtitle: "Offen für **AI-Engineer**-Stellen ab **März 2027** — remote oder hybrid, mit Sitz im Ruhrgebiet. Ich arbeite auf Deutsch oder Englisch.",
       email: "Schreib mir",
       ask: "Meinen KI-Assistenten fragen",
     },
     footer: {
       built: "Gebaut mit Next.js, Tailwind CSS & Claude",
-      top: "Zurück zum Start",
+      top: "Nach oben",
     },
     chat: {
       title: "Pauls Assistent",
@@ -617,33 +617,39 @@ export const translations = {
     },
     hero: {
       badge: "Ingénieur IA · Ingénieur Logiciel",
-      lead: "Je construis",
-      rotating: ["des pipelines RAG", "des graphes de connaissances", "des chatbots pour les villes", "des applis en 16 langues", "des PWA hors-ligne"],
-      shuffle: "Montre-moi autre chose que je construis",
+      headline: "Je construis des applications LLM — testées, mesurées et en production.",
       description:
-        "Ingénieur logiciel depuis 2018, désormais **à fond sur l'ingénierie IA**. J'allie un solide savoir-faire Java et TypeScript aux LLM, au RAG et aux agents — et je livre en production.",
-      cta1: "Commencer le voyage",
+        "Ingénieur logiciel depuis 2018 — à temps partiel pendant mes études, à temps plein sur des systèmes Java d'entreprise depuis 2023. Désormais centré sur l'**ingénierie IA** : mon appli Qetoret fait tourner trois fonctions Claude en production.",
+      cta1: "Voir mes projets",
       cta2: "Demander à mon assistant IA",
-      mapHint: "Choisis une étape sur la carte",
-    },
-    journey: {
-      next: "Prochaine étape",
-      map: "Carte du voyage",
-      doneTitle: "Tu as vu toutes les étapes !",
-      doneBody: "Merci pour la visite. Dis bonjour, ou pose tes questions à mon assistant.",
-      sayHello: "Dire bonjour",
-      ask: "Demander à l'assistant",
-      close: "Fermer",
+      cv: "CV (PDF, en anglais)",
+      cvFile: "/cv/Paul-Arthur-Meteng-CV-EN.pdf",
+      glance: {
+        title: "En bref",
+        availability: "Disponible",
+        availabilityValue: "À partir de mars 2027, temps plein",
+        location: "Basé dans",
+        locationValue: "la Ruhr, NRW, Allemagne",
+        workMode: "Mode de travail",
+        workModeValue: "Télétravail ou hybride",
+        languages: "Langues",
+        languagesValue: "Allemand C2 · Anglais C2 · Français (langue maternelle)",
+        proof: [
+          { value: "3", label: "fonctions Claude en production dans mon appli Qetoret" },
+          { value: "1 600+", label: "tests automatisés dans trois de mes projets" },
+          { value: "LAK '24", label: "article de recherche co-écrit (ACM)" },
+        ],
+      },
     },
     about: {
       title: "À propos de moi",
       kicker: "Qui je suis",
-      bio1: "Je suis **ingénieur logiciel en Allemagne**, titulaire d'un Master en Informatique Appliquée de l'Université de Duisburg-Essen.",
+      bio1: "Je suis **ingénieur logiciel dans la Ruhr, en Allemagne**, titulaire d'un Master en Informatique Appliquée de l'Université de Duisburg-Essen.",
       bio2: "Depuis 2018 — à temps partiel pendant mes études jusqu'en 2023 — j'ai construit des **applications web, des chatbots pour les administrations et des systèmes de recommandation**. Aujourd'hui, je mise tout sur l'**ingénierie IA**.",
-      bio3: "Je développe **en spec-driven avec Claude Code et Codex**, et des contrôles qualité automatisés vérifient chaque ligne écrite par l'IA. Ce qui me motive : une IA vraiment utile pour de vraies personnes.",
+      bio3: "Je développe **en spec-driven avec Claude Code et Codex**, et des tests, vérifications de types et revues contrôlent ce que l'IA écrit avant la mise en ligne. Ce qui me motive : une IA vraiment utile pour de vraies personnes.",
       factsTitle: "En bref",
       location: "Localisation",
-      locationValue: "Allemagne",
+      locationValue: "Ruhr, NRW, Allemagne",
       education: "Formation",
       educationValue: "M.Sc. Informatique Appliquée — Uni Duisburg-Essen",
       languages: "Langues",
@@ -652,19 +658,13 @@ export const translations = {
       interestsValue: "Guitare & musique de louange · Coder des applis · Sport · Lecture",
       engagement: "Engagement",
       engagementValue: "Mouvement missionnaire Wach Auf e.V. · Louange dans mon église",
-      stats: [
-        { value: 4, label: "entreprises depuis 2018" },
-        { value: 16, label: "langues dans Qetoret" },
-        { value: 597, label: "tests dans My Goals" },
-        { value: 3, label: "langues que je parle" },
-      ],
     },
     skills: {
       title: "Compétences",
       kicker: "Avec quoi je travaille",
-      intro: "Ouvre un tiroir de la boîte à outils. Les outils principaux d'abord.",
+      intro: "Six domaines. Les outils que j'utilise le plus d'abord.",
       coreLabel: "Essentiels",
-      moreLabel: "Aussi dans le tiroir",
+      moreLabel: "Également",
       categories: [
         {
           category: "IA & LLM",
@@ -708,7 +708,7 @@ export const translations = {
       title: "Projets",
       kicker: "Ce que j'ai construit",
       subtitle: "Commence par les temps forts, puis filtre selon ce qui t'intéresse.",
-      filters: { featured: "Temps forts", ai: "IA & LLM", apps: "Applis", work: "Clients & travail", uni: "Université", all: "Tous" },
+      filters: { featured: "Temps forts", ai: "IA & LLM", apps: "Applis", work: "Travail & bénévolat", uni: "Université", all: "Tous" },
       links: { live: "En ligne", code: "Code", paper: "Article" },
       showTags: "Voir toutes les technologies",
       items: [
@@ -718,9 +718,9 @@ export const translations = {
           type: "Projet personnel",
           summary: "Répond aux questions à partir d'un graphe Neo4J et d'une recherche vectorielle — et mesure la qualité des réponses.",
           highlights: [
-            "Recherche hybride : parcours du graphe plus recherche sémantique",
-            "Entités et relations extraites par un LLM",
-            "Métriques écrites à la main, LLM-juge calibré, chaque run consigné",
+            "Recherche hybride : parcours du graphe plus recherche sémantique, entités extraites par un LLM",
+            "Chaque run mesuré et consigné : **recall@5 1,0, MRR 0,96** sur un petit jeu de 20 questions",
+            "LLM-juge et pipeline de calibration construits — annotations humaines encore à collecter · 311 tests",
           ],
         },
         {
@@ -734,7 +734,7 @@ export const translations = {
           title: "Qetoret — Compagnon de prière",
           date: "2024 – présent",
           type: "Projet personnel",
-          summary: "Une appli de prière web et Android en 16 langues, avec trois fonctions IA.",
+          summary: "Une appli de prière web et Android en **16 langues**, avec trois fonctions IA.",
           highlights: [
             "Références bibliques, suggestions de prière et traduction avec Claude Haiku",
             "Claude uniquement via le serveur : budgets de tokens, prompt caching, limites par utilisateur",
@@ -748,26 +748,26 @@ export const translations = {
           summary: "Un suivi d'objectifs et d'habitudes qui marche hors-ligne et se synchronise entre appareils.",
           highlights: [
             "S'installe sur téléphone et ordinateur, avec notifications push et Google Agenda",
-            "597 tests et budgets de taille dans la CI",
+            "**624 tests** et budgets de taille dans la CI",
             "Logique métier testable sans mocks",
           ],
         },
         {
           title: "Parlons Ghomálá — PWA d'apprentissage",
           date: "2026",
-          type: "Projet personnel",
-          summary: "Apprendre le ghomálá' parlé, une langue du Cameroun, à l'oreille — construit par des agents IA à partir d'une spec.",
+          type: "Projet personnel · prototype",
+          summary: "Apprendre le ghomálá' parlé, une langue du Cameroun, à l'oreille — construit par des agents IA à partir d'une spec. Un prototype local, pas encore déployé.",
           highlights: [
             "19 leçons, exercices de tons, jeux d'écoute, un enregistreur sur l'appareil",
             "Des agents de revue notent chaque jalon (seuil 85/100)",
-            "19 jalons en 6 jours · 518 tests unitaires et 173 tests de base de données",
+            "**19 jalons en 6 jours** · 518 tests unitaires et 173 tests de base de données",
           ],
         },
         {
           title: "Wach Auf e.V. — Refonte du site web",
           date: "2026",
-          type: "Projet client",
-          summary: "Refonte de wach-auf.com en allemand, français et anglais.",
+          type: "Projet bénévole",
+          summary: "Refonte de wach-auf.com en allemand, français et anglais — une maquette en attente de validation par le comité.",
           highlights: ["Pages générées par des scripts Python", "Version protégée par mot de passe pour le comité"],
         },
         {
@@ -775,7 +775,7 @@ export const translations = {
           date: "2022 – 2023",
           type: "Université · Duisburg-Essen",
           summary: "Recommande des articles Wikipedia et des vidéos YouTube sur les notions qui bloquent l'apprenant.",
-          highlights: ["Graphe de connaissances et réseaux de neurones sur graphes sur une plateforme MOOC", "A donné lieu à un article co-écrit, publié à LAK '24 (ACM)"],
+          highlights: ["Graphe de connaissances et réseaux de neurones sur graphes sur une plateforme MOOC", "A donné lieu à un article co-écrit, publié à **LAK '24 (ACM)**"],
         },
         {
           title: "VACOS — Recherche d'objets par dialogue",
@@ -878,14 +878,14 @@ export const translations = {
     },
     contact: {
       title: "Parlons-en",
-      kicker: "Dernière étape",
-      subtitle: "Ouvert aux postes d'AI Engineer et aux projets, en allemand ou en anglais.",
+      kicker: "Contact",
+      subtitle: "Ouvert aux postes d'**AI Engineer** à partir de **mars 2027** — télétravail ou hybride, depuis la Ruhr. Je travaille en allemand ou en anglais.",
       email: "M'écrire",
       ask: "Demander à mon assistant IA",
     },
     footer: {
       built: "Construit avec Next.js, Tailwind CSS & Claude",
-      top: "Retour au départ",
+      top: "Retour en haut",
     },
     chat: {
       title: "Assistant de Paul",
@@ -911,13 +911,18 @@ export const translations = {
 
 export type Translations = {
   nav: { about: string; skills: string; projects: string; experience: string; contact: string };
-  hero: { badge: string; lead: string; rotating: string[]; shuffle: string; description: string; cta1: string; cta2: string; mapHint: string };
-  journey: { next: string; map: string; doneTitle: string; doneBody: string; sayHello: string; ask: string; close: string };
+  hero: {
+    badge: string; headline: string; description: string; cta1: string; cta2: string; cv: string; cvFile: string;
+    glance: {
+      title: string; availability: string; availabilityValue: string; location: string; locationValue: string;
+      workMode: string; workModeValue: string; languages: string; languagesValue: string;
+      proof: { value: string; label: string }[];
+    };
+  };
   about: {
     title: string; kicker: string; bio1: string; bio2: string; bio3: string; factsTitle: string;
     location: string; locationValue: string; education: string; educationValue: string; languages: string; languagesValue: string;
     interests: string; interestsValue: string; engagement: string; engagementValue: string;
-    stats: { value: number; label: string }[];
   };
   skills: { title: string; kicker: string; intro: string; coreLabel: string; moreLabel: string; categories: { category: string; blurb: string; core: string[]; more: string[] }[] };
   projects: {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <title>My Goals</title>
+  <desc>The My Goals app icon: an ink hourglass with a sprout on lime.</desc>
+  <!-- The sender logo for mail (BIMI), in the SVG Tiny PS profile BIMI requires. Same shapes as
+       design/app-icon.svg: after editing that file, copy them here. Plan §11.9 has the DNS records. -->
+  <rect width="1024" height="1024" fill="#c8f53c"/>
+  <path d="M328 776H696L536 527Q512 498 488 527Z" fill="#0f100d"/>
+  <g fill="none" stroke="#0f100d" stroke-width="40" stroke-linejoin="round">
+    <path d="M328 248H696L536 497Q512 526 488 497Z"/>
+    <path d="M328 776H696L536 527Q512 498 488 527Z"/>
+  </g>
+  <g fill="#0f100d">
+    <rect x="272" y="212" width="480" height="56" rx="28"/>
+    <rect x="272" y="756" width="480" height="56" rx="28"/>
+    <path d="M512 478V432" fill="none" stroke="#0f100d" stroke-width="14" stroke-linecap="round"/>
+    <path transform="translate(512 434) rotate(-20) scale(7)" d="M0 0C0-7.5 5-11.5 12.5-12C12.5-4.5 7.5 0 0 0Z"/>
+    <path transform="translate(512 452) rotate(20) scale(7)" d="M0 0C0-5-3.5-8-9-8C-9-3-5.5 0 0 0Z"/>
+  </g>
+</svg>

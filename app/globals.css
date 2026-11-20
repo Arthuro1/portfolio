@@ -4,20 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* "Indigo Ndop night map": deep indigo with ochre highlights, after the
-   indigo resist-dyed Ndop cloth of the Cameroonian grassfields. Values are
-   RGB triplets so Tailwind can apply alpha (see tailwind.config.ts). */
+/* "Indigo Ndop night map": an indigo ground after the resist-dyed Ndop cloth
+   of the Cameroonian grassfields. Colour has a job:
+   - indigo (brand): structure, links and actions — the logo's colour;
+   - ochre (accent): only what matters — the hero term and current status;
+   - terracotta "rose", plum and teal: small markers for the journey stops.
+   Values are RGB triplets so Tailwind can apply alpha (see
+   tailwind.config.ts). Light-theme text colours keep >= 4.5:1. */
 :root {
-  --bg: 246 243 236;
-  --surface: 255 253 248;
-  --raised: 238 233 222;
-  --line: 218 210 192;
-  --ink: 20 26 51;
-  --muted: 84 92 122;
-  --brand: 42 58 168;
-  --brand-fill: 42 58 168;
-  --accent: 150 85 10;
-  --accent-bright: 224 160 48;
+  --bg: 236 239 251;
+  --surface: 255 255 255;
+  --raised: 226 230 248;
+  --line: 196 203 234;
+  --ink: 17 22 52;
+  --muted: 69 77 112;
+  --brand: 45 56 160;
+  --brand-fill: 43 53 147;
+  --accent: 163 74 6;
+  --accent-bright: 245 166 35;
+  --hue-rose: 176 70 40;
+  --hue-plum: 138 61 127;
+  --hue-teal: 14 116 110;
+  --shadow-card: 0 1px 2px rgb(17 22 52 / 0.06), 0 12px 32px -16px rgb(43 53 147 / 0.25);
   color-scheme: light;
 }
 
@@ -27,14 +35,34 @@
   --raised: 24 32 66;
   --line: 40 50 92;
   --ink: 233 236 247;
-  --muted: 156 166 199;
+  --muted: 160 170 203;
   --brand: 139 151 255;
-  --brand-fill: 79 91 230;
+  --brand-fill: 84 94 210;
   --accent: 242 181 68;
   --accent-bright: 242 181 68;
+  --hue-rose: 240 147 112;
+  --hue-plum: 216 150 200;
+  --hue-teal: 94 206 190;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.03);
   color-scheme: dark;
 }
 
+/* Brand logos (components/TechChip.tsx): each svg gets a light- and a
+   dark-theme fill so very dark or very pale brand colours stay visible. */
+.logo {
+  fill: var(--logo-light);
+}
+.dark .logo {
+  fill: var(--logo-dark);
+}
+.logo-mono {
+  background: var(--logo-light);
+  color: var(--logo-on-light);
+}
+.dark .logo-mono {
+  background: var(--logo-dark);
+  color: var(--logo-on-dark);
+}
 html {
   scroll-behavior: smooth;
 }
@@ -48,16 +76,16 @@ body {
   background: rgb(var(--accent-bright) / 0.35);
 }
 
-/* Fixed backdrop: indigo and ochre glows plus a fine grain. */
+/* Fixed backdrop: soft indigo and ochre glows plus a fine grain. */
 .atmosphere {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(60rem 40rem at 10% -10%, rgb(var(--brand) / 0.16), transparent 60%),
-    radial-gradient(40rem 30rem at 100% 40%, rgb(var(--accent-bright) / 0.07), transparent 60%),
-    radial-gradient(50rem 40rem at 30% 110%, rgb(var(--brand) / 0.12), transparent 60%),
+    radial-gradient(60rem 40rem at 10% -10%, rgb(var(--brand) / 0.18), transparent 60%),
+    radial-gradient(36rem 28rem at 100% 60%, rgb(var(--accent-bright) / 0.09), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 100%, rgb(var(--brand) / 0.10), transparent 60%),
     rgb(var(--bg));
 }
 .atmosphere::after {
@@ -124,65 +152,6 @@ body {
   animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-@keyframes word-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.45em) rotate(-2deg);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.word-in {
-  display: inline-block;
-  animation: word-in 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-@keyframes draw {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-.edge-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 1.2s ease-out forwards;
-}
-
-@keyframes pop {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.4);
-  }
-  70% {
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-.node-pop {
-  animation: pop 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-.float-slow {
-  animation: float 7s ease-in-out infinite;
-}
-
 @keyframes panel-in {
   from {
     opacity: 0;
@@ -197,38 +166,7 @@ body {
   animation: panel-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
 }
 
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.toast-in {
-  animation: toast-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-@keyframes burst {
-  from {
-    opacity: 1;
-    transform: translate(0, 0) rotate(45deg) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translate(var(--dx), var(--dy)) rotate(45deg) scale(0.3);
-  }
-}
-.burst {
-  animation: burst 0.9s ease-out forwards;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .burst {
-    display: none;
-  }
   html {
     scroll-behavior: auto;
   }
@@ -237,15 +175,7 @@ body {
     transform: none;
   }
   .rise,
-  .word-in,
-  .node-pop,
-  .float-slow,
-  .panel-in,
-  .toast-in,
-  .edge-draw {
+  .panel-in {
     animation: none;
-  }
-  .edge-draw {
-    stroke-dashoffset: 0;
   }
 }

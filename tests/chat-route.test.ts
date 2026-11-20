@@ -10,6 +10,15 @@ const anthropic = vi.hoisted(() => ({
 
 vi.mock("@anthropic-ai/sdk", () => ({
   default: class {
+    // Shape of the SDK's API error: HTTP status plus the parsed error body.
+    static APIError = class extends Error {
+      constructor(
+        public status: number,
+        public error: unknown,
+      ) {
+        super(`status ${status}`);
+      }
+    };
     apiKey: string | undefined;
     messages: { stream: (params: any, opts: any) => any };
     constructor(opts?: { apiKey?: string }) {
@@ -236,6 +245,24 @@ describe("POST /api/chat", () => {
     const body = await readAll(res);
     expect(body).toContain("Partial ");
     expect(body).toContain("interrupted");
+  });
+
+  it("logs the provider's HTTP status and error type when the stream fails", async () => {
+    const { default: Anthropic } = (await import("@anthropic-ai/sdk")) as any;
+    anthropic.streamImpl = () => ({
+      async *[Symbol.asyncIterator]() {
+        throw new Anthropic.APIError(401, { type: "error", error: { type: "authentication_error", message: "invalid x-api-key" } });
+      },
+      abort() {},
+    });
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await POST(makeReq({ message: "hi" }));
+    const body = await readAll(res);
+    expect(body).toContain("interrupted");
+    const line = JSON.parse(errorLog.mock.calls.at(-1)![0] as string);
+    expect(line).toMatchObject({ providerStatus: "error", providerHttpStatus: 401, providerErrorType: "authentication_error" });
+    expect(JSON.stringify(line)).not.toContain("invalid x-api-key");
+    errorLog.mockRestore();
   });
 
   it("aborts the upstream generation when the client disconnects", async () => {

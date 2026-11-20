@@ -3,8 +3,9 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
+import Rich from "@/components/Rich";
 import { openChat } from "@/lib/chat-events";
-import { GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
+import { DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
 
 const EMAIL = "arthur.meteng@yahoo.com";
 
@@ -13,12 +14,14 @@ export default function Contact() {
   const c = t.contact;
 
   return (
-    <Section id="contact" index={5} kicker={c.kicker} title={c.title}>
+    <Section id="contact" index={5} hue="accent" kicker={c.kicker} title={c.title}>
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/80 px-6 py-12 sm:px-12 text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/90 px-6 py-12 sm:px-12 text-center shadow-card">
           <div className="ndop-lattice opacity-70" aria-hidden="true" />
           <div className="relative">
-            <p className="mx-auto max-w-xl text-xl leading-relaxed text-ink">{c.subtitle}</p>
+            <p className="mx-auto max-w-xl text-xl leading-relaxed text-ink">
+              <Rich text={c.subtitle} />
+            </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <a
                 href={`mailto:${EMAIL}`}
@@ -26,6 +29,14 @@ export default function Contact() {
               >
                 <MailIcon className="w-4 h-4" />
                 {c.email}
+              </a>
+              <a
+                href={t.hero.cvFile}
+                download
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+              >
+                <DownloadIcon className="w-4 h-4" />
+                {t.hero.cv}
               </a>
               <button
                 type="button"
@@ -42,7 +53,7 @@ export default function Contact() {
               <ContactCard
                 icon={<LinkedInIcon className="w-5 h-5" />}
                 label="LinkedIn"
-                value="paul-arthur-meteng"
+                value="paul-arthur-meteng-kamdem"
                 href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125/"
               />
               <ContactCard icon={<GitHubIcon className="w-5 h-5" />} label="GitHub" value="github.com/Arthuro1" href="https://github.com/Arthuro1" />
@@ -60,9 +71,9 @@ function ContactCard({ icon, label, value, href }: { icon: React.ReactNode; labe
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-start gap-4 rounded-xl border border-line bg-bg/40 p-5 transition-all hover:-translate-y-0.5 hover:border-accent-bright"
+      className="group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand/40"
     >
-      <span className="mt-0.5 text-brand group-hover:text-accent transition-colors">{icon}</span>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">{icon}</span>
       <span className="min-w-0">
         <span className="block font-mono text-xs text-muted">{label}</span>
         <span className="block break-all text-sm font-bold text-ink">{value}</span>

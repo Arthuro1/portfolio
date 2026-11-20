@@ -72,7 +72,7 @@ const personSchema = {
     "Software Engineer specialising in AI Engineering, RAG systems, LLMs and Conversational AI.",
   sameAs: [
     "https://github.com/Arthuro1",
-    "https://linkedin.com/in/paul-arthur-meteng",
+    "https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125",
   ],
   knowsAbout: [
     "AI Engineering",

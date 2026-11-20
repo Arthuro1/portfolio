@@ -3,7 +3,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
-import CountUp from "@/components/CountUp";
 import Rich from "@/components/Rich";
 
 const FACT_ICONS = [
@@ -26,9 +25,9 @@ export default function About() {
   ];
 
   return (
-    <Section id="about" index={1} kicker={a.kicker} title={a.title} next={{ href: "#skills", label: t.nav.skills }}>
+    <Section id="about" index={1} hue="rose" kicker={a.kicker} title={a.title}>
       <div className="grid md:grid-cols-[1.25fr_1fr] gap-10 items-start">
-        <Reveal className="space-y-5 text-lg leading-relaxed text-muted max-w-prose">
+        <Reveal className="space-y-5 text-lg leading-relaxed text-ink/80 max-w-prose">
           <p>
             <Rich text={a.bio1} />
           </p>
@@ -41,14 +40,16 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="rounded-2xl border border-line bg-surface/80 p-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{a.factsTitle}</p>
+          <div className="rounded-2xl border border-line bg-surface/90 p-6 shadow-card">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{a.factsTitle}</p>
             <dl className="mt-5 space-y-4">
               {facts.map((f, i) => (
                 <div key={f.label} className="flex gap-3">
-                  <svg className="mt-0.5 h-5 w-5 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={FACT_ICONS[i]} />
-                  </svg>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={FACT_ICONS[i]} />
+                    </svg>
+                  </span>
                   <div>
                     <dt className="text-xs font-bold uppercase tracking-wide text-muted">{f.label}</dt>
                     <dd className="mt-0.5 text-ink">{f.value}</dd>
@@ -59,19 +60,6 @@ export default function About() {
           </div>
         </Reveal>
       </div>
-
-      <ul className="mt-14 grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {a.stats.map((stat, i) => (
-          <li key={stat.label}>
-            <Reveal delay={i * 100} className="h-full">
-              <div className="group h-full rounded-2xl border border-line bg-surface/60 p-5 transition-colors hover:border-accent-bright">
-                <CountUp value={stat.value} className="block font-display text-4xl sm:text-5xl font-extrabold text-accent tabular-nums" />
-                <span className="mt-2 block text-sm text-muted">{stat.label}</span>
-              </div>
-            </Reveal>
-          </li>
-        ))}
-      </ul>
     </Section>
   );
 }

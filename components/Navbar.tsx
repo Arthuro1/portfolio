@@ -4,6 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useJourney } from "@/context/JourneyContext";
+import { HUE, STOP_HUES } from "@/lib/hues";
+
+// Active-link markers, one per stop colour (spelled out for Tailwind).
+const MARKERS = ["after:bg-hue-rose", "after:bg-hue-plum", "after:bg-hue-teal", "after:bg-brand", "after:bg-accent-bright"];
 import { Lang } from "@/lib/translations";
 
 const LANGS: { code: Lang; fi: string; label: string }[] = [
@@ -69,7 +73,9 @@ export default function Navbar() {
         <a href="#top" className="flex items-center gap-2" aria-label="Home">
           <svg width="36" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="60" height="60" rx="12" className="fill-brand-fill"/>
-            <text x="32" y="42" fontFamily="monospace" fontSize="18" fontWeight="700" fill="white" textAnchor="middle">&lt;PAM/&gt;</text>
+            <text x="32" y="42" fontFamily="monospace" fontSize="18" fontWeight="700" fill="#f7f5ef" textAnchor="middle">
+              &lt;PAM/&gt;
+            </text>
           </svg>
           <span className="font-display text-lg font-bold tracking-tight text-ink">Paul Meteng</span>
         </a>
@@ -81,8 +87,8 @@ export default function Navbar() {
                 <a
                   href={`#${l.id}`}
                   aria-current={active === l.id ? "location" : undefined}
-                  className={`relative py-1 text-sm font-bold transition-colors after:absolute after:left-1/2 after:-bottom-1 after:h-1.5 after:w-1.5 after:-translate-x-1/2 after:rotate-45 after:bg-accent-bright after:transition-opacity ${
-                    active === l.id ? "text-ink after:opacity-100" : "text-muted hover:text-ink after:opacity-0"
+                  className={`relative py-1 text-sm font-bold transition-colors after:absolute after:left-1/2 after:-bottom-1 after:h-1.5 after:w-1.5 after:-translate-x-1/2 after:rotate-45 after:transition-opacity ${MARKERS[links.indexOf(l)]} ${
+                    active === l.id ? `${HUE[STOP_HUES[links.indexOf(l)]].text} after:opacity-100` : "text-ink/75 hover:text-ink after:opacity-0"
                   }`}
                 >
                   {l.label}
@@ -168,9 +174,9 @@ export default function Navbar() {
                 <a
                   href={`#${l.id}`}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-3 py-1 text-base font-bold ${active === l.id ? "text-accent" : "text-ink hover:text-brand"}`}
+                  className={`flex items-center gap-3 py-1 text-base font-bold ${active === l.id ? HUE[STOP_HUES[links.indexOf(l)]].text : "text-ink hover:text-brand"}`}
                 >
-                  <span className="font-mono text-xs text-muted">0{links.indexOf(l) + 1}</span>
+                  <span className={`font-mono text-xs ${HUE[STOP_HUES[links.indexOf(l)]].text}`}>0{links.indexOf(l) + 1}</span>
                   {l.label}
                 </a>
               </li>
@@ -209,7 +215,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      <div ref={progressRef} className="absolute bottom-0 left-0 h-0.5 w-full origin-left bg-accent-bright" style={{ transform: "scaleX(0)" }} aria-hidden="true" />
+      <div ref={progressRef} className="absolute bottom-0 left-0 h-[3px] w-full origin-left bg-gradient-to-r from-hue-rose via-hue-plum via-50% to-accent-bright" style={{ transform: "scaleX(0)" }} aria-hidden="true" />
     </header>
   );
 }

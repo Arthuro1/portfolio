@@ -10,6 +10,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -24,6 +25,12 @@ const config: Config = {
         "brand-fill": token("brand-fill"),
         accent: token("accent"),
         "accent-bright": token("accent-bright"),
+        "hue-rose": token("hue-rose"),
+        "hue-plum": token("hue-plum"),
+        "hue-teal": token("hue-teal"),
+      },
+      boxShadow: {
+        card: "var(--shadow-card)",
       },
       fontFamily: {
         sans: ["var(--font-body)", "system-ui", "sans-serif"],

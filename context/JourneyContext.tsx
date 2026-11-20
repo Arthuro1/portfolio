@@ -5,17 +5,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 export const STOPS = ["about", "skills", "projects", "experience", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
-// A stop only counts as visited after the reader lingers on it, so jumping
-// straight to Contact doesn't mark every section passed on the way.
-const DWELL_MS = 900;
-
-type Journey = { active: Stop | null; visited: ReadonlySet<Stop> };
-
-const JourneyContext = createContext<Journey>({ active: null, visited: new Set() });
+// The section currently in view, for the navbar's active link.
+const JourneyContext = createContext<{ active: Stop | null }>({ active: null });
 
 export function JourneyProvider({ children }: { children: React.ReactNode }) {
   const [active, setActive] = useState<Stop | null>(null);
-  const [visited, setVisited] = useState<ReadonlySet<Stop>>(() => new Set());
 
   useEffect(() => {
     let frame = 0;
@@ -26,7 +20,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
         setActive(STOPS[STOPS.length - 1]);
         return;
       }
-      // The active stop is the last one whose top has passed mid-screen.
+      // The active section is the last one whose top has passed mid-screen.
       let current: Stop | null = null;
       for (const id of STOPS) {
         const el = document.getElementById(id);
@@ -47,13 +41,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (!active || visited.has(active)) return;
-    const timer = setTimeout(() => setVisited((prev) => new Set(prev).add(active)), DWELL_MS);
-    return () => clearTimeout(timer);
-  }, [active, visited]);
-
-  return <JourneyContext.Provider value={{ active, visited }}>{children}</JourneyContext.Provider>;
+  return <JourneyContext.Provider value={{ active }}>{children}</JourneyContext.Provider>;
 }
 
 export const useJourney = () => useContext(JourneyContext);
