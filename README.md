@@ -21,13 +21,13 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-000?style=flat-square&logo=vercel)
-![Claude](https://img.shields.io/badge/Claude_Haiku-AI_Assistant-orange?style=flat-square&logo=anthropic)
+![OpenRouter](https://img.shields.io/badge/DeepSeek_via_OpenRouter-AI_Assistant-6566F1?style=flat-square&logo=openrouter&logoColor=white)
 ![i18n](https://img.shields.io/badge/i18n-EN_·_DE_·_FR-4B5563?style=flat-square)
 ![Dark Mode](https://img.shields.io/badge/Dark_Mode-default-1F2937?style=flat-square&logo=halfmoon)
 
 ## Features
 
-- **AI Assistant** — floating chat widget powered by Claude Haiku. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
+- **AI Assistant** — floating chat widget powered by an open-weight model (DeepSeek V4.1 Flash) through OpenRouter. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
 - **Multilingual** — full EN / DE / FR support via a language switcher in the navbar. All sections, descriptions, and chat suggestions switch instantly.
 - **Dark / Light Mode** — dark mode by default, toggled via the sun/moon button in the navbar. Preference is persisted in `localStorage`.
 - **Hardened chat endpoint** — distributed rate limiting (Upstash), request-size limits, strict input validation, prompt-injection–resistant system prompt, per-client concurrency guard, request timeouts, a kill switch, a strict Content-Security-Policy, and safe Markdown rendering. See [SECURITY.md](SECURITY.md) and [docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).
@@ -51,11 +51,11 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 npm ci
 ```
 
-2. Create your local env file and add your Anthropic API key:
+2. Create your local env file and add your OpenRouter API key:
 
 ```bash
 cp .env.example .env.local
-# then set ANTHROPIC_API_KEY=sk-ant-... in .env.local
+# then set OPENROUTER_API_KEY=sk-or-... in .env.local
 ```
 
 `.env.example` documents every supported variable. Upstash Redis is optional
@@ -88,5 +88,5 @@ dependency audit on every PR and push to `main`.
 
 Configure the required environment variables in your Vercel project's
 **Settings → Environment Variables** (Production and Preview scopes). The full
-list, plus Upstash, Anthropic, and Vercel Firewall setup, is in
+list, plus Upstash, OpenRouter, and Vercel Firewall setup, is in
 [docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).

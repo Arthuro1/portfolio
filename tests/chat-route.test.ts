@@ -2,35 +2,38 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-// --- Controllable Anthropic SDK mock ---------------------------------------
-const anthropic = vi.hoisted(() => ({
-  streamImpl: null as null | ((params: any, opts: any) => any),
+// --- Controllable OpenAI SDK mock (the route talks to OpenRouter through it) --
+const provider = vi.hoisted(() => ({
+  createImpl: null as null | ((body: any, opts: any) => any),
+  lastBody: null as any,
   lastSignal: null as AbortSignal | null,
 }));
 
-vi.mock("@anthropic-ai/sdk", () => ({
+vi.mock("openai", () => ({
   default: class {
     // Shape of the SDK's API error: HTTP status plus the parsed error body.
     static APIError = class extends Error {
+      code: unknown;
+      type: unknown;
       constructor(
-        public status: number,
-        public error: unknown,
+        public status: number | undefined,
+        public error: any,
       ) {
         super(`status ${status}`);
+        this.code = error?.code;
+        this.type = error?.type;
       }
     };
-    apiKey: string | undefined;
-    messages: { stream: (params: any, opts: any) => any };
-    constructor(opts?: { apiKey?: string }) {
-      this.apiKey = opts?.apiKey;
-      this.messages = {
-        stream: (params: any, opts: any) => {
-          anthropic.lastSignal = opts?.signal ?? null;
-          if (!anthropic.streamImpl) throw new Error("no stream impl set");
-          return anthropic.streamImpl(params, opts);
+    chat = {
+      completions: {
+        create: async (body: any, opts: any) => {
+          provider.lastBody = body;
+          provider.lastSignal = opts?.signal ?? null;
+          if (!provider.createImpl) throw new Error("no create impl set");
+          return provider.createImpl(body, opts);
         },
-      };
-    }
+      },
+    };
   },
 }));
 
@@ -59,35 +62,34 @@ function okReservation() {
   };
 }
 
-function textStream(chunks: string[], opts: { throwAfter?: boolean } = {}) {
+function textStream(chunks: string[], opts: { throwAfter?: unknown } = {}) {
   return {
     async *[Symbol.asyncIterator]() {
-      yield { type: "message_start", message: { usage: { input_tokens: 7 } } };
       for (const text of chunks) {
-        yield { type: "content_block_delta", delta: { type: "text_delta", text } };
+        yield { choices: [{ index: 0, delta: { content: text }, finish_reason: null }] };
       }
-      if (opts.throwAfter) throw new Error("mid-stream failure");
-      yield { type: "message_delta", usage: { output_tokens: 11 } };
-      yield { type: "message_stop" };
+      if (opts.throwAfter) throw opts.throwAfter;
+      yield { choices: [{ index: 0, delta: {}, finish_reason: "stop" }] };
+      yield { choices: [], usage: { prompt_tokens: 7, completion_tokens: 11 } };
     },
-    abort() {},
   };
 }
 
+// Like the SDK, the stream ends quietly (no error) once the signal aborts.
 function slowStream(signal: AbortSignal, delayMs = 2000) {
   return {
     async *[Symbol.asyncIterator]() {
-      yield { type: "content_block_delta", delta: { type: "text_delta", text: "Hi" } };
-      await new Promise<void>((resolve, reject) => {
-        const timer = setTimeout(resolve, delayMs);
+      yield { choices: [{ index: 0, delta: { content: "Hi" }, finish_reason: null }] };
+      const aborted = await new Promise<boolean>((resolve) => {
+        const timer = setTimeout(() => resolve(false), delayMs);
         signal.addEventListener("abort", () => {
           clearTimeout(timer);
-          reject(new DOMException("Aborted", "AbortError"));
+          resolve(true);
         });
       });
-      yield { type: "content_block_delta", delta: { type: "text_delta", text: " more" } };
+      if (aborted) return;
+      yield { choices: [{ index: 0, delta: { content: " more" }, finish_reason: "stop" }] };
     },
-    abort() {},
   };
 }
 
@@ -130,13 +132,14 @@ async function withNodeEnv<T>(value: string, fn: () => Promise<T>): Promise<T> {
 }
 
 beforeEach(() => {
-  process.env.ANTHROPIC_API_KEY = "test-key";
+  process.env.OPENROUTER_API_KEY = "test-key";
   process.env.CHAT_ENABLED = "true";
   delete process.env.CHAT_MAX_MESSAGE_LENGTH;
   delete process.env.CHAT_MAX_REQUEST_BODY_BYTES;
   delete process.env.CHAT_REQUEST_TIMEOUT_MS;
-  anthropic.streamImpl = () => textStream(["Hello!"]);
-  anthropic.lastSignal = null;
+  provider.createImpl = () => textStream(["Hello!"]);
+  provider.lastBody = null;
+  provider.lastSignal = null;
   limiter.reservation = okReservation();
 });
 
@@ -152,9 +155,22 @@ describe("POST /api/chat", () => {
     expect(limiter.releaseSpy).toHaveBeenCalled();
   });
 
+  it("asks OpenRouter for the open model with reasoning off and no data collection", async () => {
+    await readAll(await POST(makeReq({ message: "Hi Paul" })));
+    expect(provider.lastBody).toMatchObject({
+      model: "deepseek/deepseek-v4.1-flash",
+      stream: true,
+      max_tokens: 400,
+      reasoning: { effort: "none" },
+      provider: { data_collection: "deny" },
+    });
+    expect(provider.lastBody.messages.map((m: any) => m.role)).toEqual(["system", "user"]);
+    expect(provider.lastBody.messages[1].content).toBe("Hi Paul");
+  });
+
   it("returns 503 without calling the model when chat is disabled", async () => {
     process.env.CHAT_ENABLED = "false";
-    anthropic.streamImpl = () => {
+    provider.createImpl = () => {
       throw new Error("model must not be contacted");
     };
     const res = await POST(makeReq({ message: "hi" }));
@@ -162,7 +178,7 @@ describe("POST /api/chat", () => {
   });
 
   it("returns 503 when the API key is missing", async () => {
-    delete process.env.ANTHROPIC_API_KEY;
+    delete process.env.OPENROUTER_API_KEY;
     const res = await POST(makeReq({ message: "hi" }));
     expect(res.status).toBe(503);
   });
@@ -230,7 +246,7 @@ describe("POST /api/chat", () => {
   });
 
   it("returns 503 when the provider fails before streaming", async () => {
-    anthropic.streamImpl = () => {
+    provider.createImpl = () => {
       throw new Error("provider down");
     };
     const res = await POST(makeReq({ message: "hi" }));
@@ -239,7 +255,7 @@ describe("POST /api/chat", () => {
   });
 
   it("handles a mid-stream provider failure without crashing", async () => {
-    anthropic.streamImpl = () => textStream(["Partial "], { throwAfter: true });
+    provider.createImpl = () => textStream(["Partial "], { throwAfter: new Error("mid-stream failure") });
     const res = await POST(makeReq({ message: "hi" }));
     expect(res.status).toBe(200);
     const body = await readAll(res);
@@ -247,33 +263,43 @@ describe("POST /api/chat", () => {
     expect(body).toContain("interrupted");
   });
 
-  it("logs the provider's HTTP status and error type when the stream fails", async () => {
-    const { default: Anthropic } = (await import("@anthropic-ai/sdk")) as any;
-    anthropic.streamImpl = () => ({
-      async *[Symbol.asyncIterator]() {
-        throw new Anthropic.APIError(401, { type: "error", error: { type: "authentication_error", message: "invalid x-api-key" } });
-      },
-      abort() {},
-    });
+  it("logs the provider's HTTP status and error code when the request is refused", async () => {
+    const { default: OpenAI } = (await import("openai")) as any;
+    provider.createImpl = () => {
+      throw new OpenAI.APIError(401, { code: 401, message: "No auth credentials found" });
+    };
     const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
     const res = await POST(makeReq({ message: "hi" }));
-    const body = await readAll(res);
+    expect(res.status).toBe(503);
+    expect(limiter.releaseSpy).toHaveBeenCalled();
+    const line = JSON.parse(errorLog.mock.calls.at(-1)![0] as string);
+    expect(line).toMatchObject({ reason: "provider_error", providerHttpStatus: 401, providerErrorType: "401" });
+    expect(JSON.stringify(line)).not.toContain("No auth credentials");
+    errorLog.mockRestore();
+  });
+
+  it("logs the error code when the provider fails mid-stream", async () => {
+    const { default: OpenAI } = (await import("openai")) as any;
+    provider.createImpl = () =>
+      textStream(["Partial "], { throwAfter: new OpenAI.APIError(undefined, { code: 502, message: "Provider returned error" }) });
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => {});
+    const body = await readAll(await POST(makeReq({ message: "hi" })));
     expect(body).toContain("interrupted");
     const line = JSON.parse(errorLog.mock.calls.at(-1)![0] as string);
-    expect(line).toMatchObject({ providerStatus: "error", providerHttpStatus: 401, providerErrorType: "authentication_error" });
-    expect(JSON.stringify(line)).not.toContain("invalid x-api-key");
+    expect(line).toMatchObject({ providerStatus: "error", providerErrorType: "502" });
+    expect(JSON.stringify(line)).not.toContain("Provider returned error");
     errorLog.mockRestore();
   });
 
   it("aborts the upstream generation when the client disconnects", async () => {
     const ac = new AbortController();
-    anthropic.streamImpl = (_p, opts) => slowStream(opts.signal);
+    provider.createImpl = (_b, opts) => slowStream(opts.signal);
     const res = await POST(makeReq({ message: "hi" }, {}, { signal: ac.signal }));
     const reader = res.body!.getReader();
     await reader.read(); // first chunk
     ac.abort(); // client goes away
     await new Promise((r) => setTimeout(r, 20));
-    expect(anthropic.lastSignal?.aborted).toBe(true);
+    expect(provider.lastSignal?.aborted).toBe(true);
     try {
       await reader.cancel();
     } catch {
@@ -283,7 +309,7 @@ describe("POST /api/chat", () => {
 
   it("times out a slow provider and returns the partial stream", async () => {
     process.env.CHAT_REQUEST_TIMEOUT_MS = "1000";
-    anthropic.streamImpl = (_p, opts) => slowStream(opts.signal, 3000);
+    provider.createImpl = (_b, opts) => slowStream(opts.signal, 3000);
     const res = await POST(makeReq({ message: "hi" }));
     const body = await readAll(res);
     expect(body).toContain("Hi");

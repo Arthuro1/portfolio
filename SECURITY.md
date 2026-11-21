@@ -23,7 +23,7 @@ Please **do not** open a public GitHub issue for security problems.
 ## Scope
 
 The main sensitive surface is the AI chat endpoint (`POST /api/chat`), which
-proxies requests to the Anthropic API. Relevant hardening (rate limiting,
+proxies requests to the OpenRouter API. Relevant hardening (rate limiting,
 request-size limits, strict input validation, prompt-injection resistance,
 kill switch, CSP, and security headers) is documented in
 [`docs/SECURITY_DEPLOYMENT.md`](docs/SECURITY_DEPLOYMENT.md).

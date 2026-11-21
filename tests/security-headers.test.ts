@@ -25,8 +25,8 @@ describe("Content-Security-Policy", () => {
     }
   });
 
-  it("allows media only from this site and the university's video host", () => {
-    expect(buildCsp(false)).toContain("media-src 'self' https://www.uni-due.de;");
+  it("allows media only from this site", () => {
+    expect(buildCsp(false)).toContain("media-src 'self';");
   });
 
   it("does not use a broad bare 'https:' source", () => {

@@ -3,7 +3,7 @@
 Operational security guide for this portfolio and its AI chat endpoint
 (`POST /api/chat`). It separates **controls enforced in code** (already done)
 from **platform configuration the repository owner must perform** in the
-Anthropic, Upstash, and Vercel dashboards.
+OpenRouter, Upstash, and Vercel dashboards.
 
 ---
 
@@ -47,7 +47,7 @@ defaults.
 
 | Variable                     | Required?             | Purpose                                   |
 | ---------------------------- | --------------------- | ----------------------------------------- |
-| `ANTHROPIC_API_KEY`          | Yes                   | Anthropic API access (dedicated key)      |
+| `OPENROUTER_API_KEY`         | Yes                   | OpenRouter API access (dedicated key)     |
 | `UPSTASH_REDIS_REST_URL`     | Yes (prod)            | Distributed rate limiting                 |
 | `UPSTASH_REDIS_REST_TOKEN`   | Yes (prod)            | Distributed rate limiting                 |
 | `CHAT_ENABLED`               | No (default `true`)   | Emergency kill switch                     |
@@ -82,18 +82,24 @@ alert. A sudden spike indicates abuse traffic hitting the limiter.
 
 ---
 
-## 4. Anthropic setup, dedicated key & spend limits (manual)
+## 4. OpenRouter setup, dedicated key & spend limits (manual)
 
-1. In the [Anthropic Console](https://console.anthropic.com), create a
-   **dedicated API key** for this portfolio (do not reuse a key from another
-   app). Name it clearly, e.g. `portfolio-prod`.
-2. Set a **monthly spend limit** on the workspace/organization (Billing →
-   Limits) so a bypass of application controls still cannot run up an unbounded
-   bill.
-3. Configure **usage/billing alerts** (e.g. email at 50% / 80% / 100% of the
-   monthly budget).
+The assistant runs an open-weight model (`deepseek/deepseek-v4.1-flash`, set in
+`app/api/chat/route.ts`) through [OpenRouter](https://openrouter.ai). Each
+request asks OpenRouter to use only providers that do not store or train on
+prompts (`provider.data_collection: "deny"`).
+
+1. Buy a small amount of credits (OpenRouter is prepaid; it charges a fee on
+   credit purchases, not per request). A prepaid balance is itself a hard
+   spend ceiling.
+2. In **Settings → API Keys**, create a **dedicated key** for this portfolio
+   (do not reuse a key from another app). Name it clearly, e.g.
+   `portfolio-prod`, and give it a **credit limit** so a bypass of application
+   controls still cannot spend the whole balance.
+3. Turn on **auto top-up** only if you want it; leaving it off keeps the
+   balance as the ceiling.
 4. Consider a **separate key for Preview** deployments so preview usage is
-   billed/observable independently and can be revoked without touching prod.
+   observable independently and can be revoked without touching prod.
 
 The application additionally caps cost in code via `CHAT_MAX_OUTPUT_TOKENS`,
 per-client rate limits, and `CHAT_GLOBAL_DAILY_LIMIT`.
@@ -145,7 +151,7 @@ Two independent kill paths, fastest first:
 1. **Application kill switch (fastest, no redeploy of code):**
    In Vercel env vars, set `CHAT_ENABLED=false` and redeploy (or use *Redeploy*
    on the latest build). The endpoint then returns `503` **without** contacting
-   Anthropic. Re-enable by setting it back to `true`.
+   OpenRouter. Re-enable by setting it back to `true`.
 2. **Edge block:** enable the saved deny-all Firewall rule for `/api/chat`
    (section 6). This stops traffic before it reaches the function.
 
@@ -158,11 +164,11 @@ Either alone stops model spend; use both if under active abuse.
 Rotate immediately if a key may have been exposed (committed, logged, or shown
 in a bundle), and routinely (e.g. quarterly).
 
-**Anthropic key:**
-1. Create a new key in the Anthropic Console.
-2. Update `ANTHROPIC_API_KEY` in Vercel (Production, then Preview).
+**OpenRouter key:**
+1. Create a new key in OpenRouter (Settings → API Keys).
+2. Update `OPENROUTER_API_KEY` in Vercel (Production, then Preview).
 3. Redeploy and verify the assistant works (section 9).
-4. Revoke the old key in the console.
+4. Delete the old key in OpenRouter.
 
 **Upstash token:**
 1. In Upstash, roll/regenerate the REST token (or create a new database).
@@ -227,14 +233,14 @@ Also confirm no secret appears in the client bundle:
 
 ```bash
 # From a clean build, no secret material should be present in static chunks.
-grep -R "sk-ant" .next/static 2>/dev/null && echo "LEAK!" || echo "clean"
+grep -R "sk-or-" .next/static 2>/dev/null && echo "LEAK!" || echo "clean"
 ```
 
 ---
 
 ## 10. Incident response runbook
 
-1. **Detect:** unusual spikes in `429`/`413`/`503`, Anthropic spend, Vercel
+1. **Detect:** unusual spikes in `429`/`413`/`503`, OpenRouter spend, Vercel
    function invocations, or Upstash command count.
 2. **Contain:** flip `CHAT_ENABLED=false` (section 7) and/or enable the edge
    deny rule.
@@ -262,7 +268,7 @@ grep -R "sk-ant" .next/static 2>/dev/null && echo "LEAK!" || echo "clean"
 
 ```bash
 npm ci
-cp .env.example .env.local   # then fill in ANTHROPIC_API_KEY
+cp .env.example .env.local   # then fill in OPENROUTER_API_KEY
 npm run dev                  # http://localhost:3000
 ```
 

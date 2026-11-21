@@ -17,7 +17,7 @@ export const translations = {
       badge: "AI Engineer · Software Engineer",
       headline: "I build LLM applications — tested, measured and in production.",
       description:
-        "Software engineer since 2018 — part-time during my studies, full-time on Java enterprise systems since 2023. Now focused on **AI Engineering**: my app Qetoret runs three Claude features in production.",
+        "Software engineer since 2018 — part-time during my studies, full-time on Java enterprise systems since 2023. Now focused on **AI Engineering**: my app Qetoret runs three Claude features in production, and this site's assistant uses open-weight DeepSeek.",
       cta1: "See my projects",
       cta2: "Ask my AI assistant",
       cv: "Download CV (PDF)",
@@ -33,7 +33,7 @@ export const translations = {
         languages: "Languages",
         languagesValue: "German C2 · English C2 · French (native)",
         proof: [
-          { value: "Live", label: "LLM features in production: the Claude API in my app Qetoret" },
+          { value: "Live", label: "LLM features in production: Claude in my app Qetoret, DeepSeek on this site" },
           { value: "1,600+", label: "automated tests across three of my own projects" },
           { value: "LAK '24", label: "co-authored research paper (ACM)" },
         ],
@@ -68,7 +68,7 @@ export const translations = {
           category: "AI & LLM",
           blurb: "LLM apps that retrieve, reason — and get measured.",
           core: ["RAG Systems", "LangChain / LangGraph", "Claude API", "AI Agents & MCP", "Neo4J / Knowledge Graphs", "LLM Evaluation"],
-          more: ["ChromaDB", "Agent Memory", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
+          more: ["ChromaDB", "Agent Memory", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "DeepSeek", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
         },
         {
           category: "Conversational AI",
@@ -107,13 +107,7 @@ export const translations = {
       kicker: "What I've built",
       subtitle: "Start with the highlights, then filter by what interests you.",
       filters: { featured: "Highlights", ai: "AI & LLM", apps: "Apps", work: "Work & volunteering", uni: "University", all: "All" },
-      links: { live: "Live", code: "Code", paper: "Paper", page: "Project page" },
-      demo: {
-        button: "Demo · from 4:00",
-        title: "CourseMapper demo — my recommendation part starts at 4:00",
-        credit: "Video: Social Computing group, University of Duisburg-Essen",
-        close: "Close video",
-      },
+      links: { live: "Live", code: "Code", paper: "Paper" },
       showTags: "Show all technologies",
       shotViewer: { open: "Enlarge screenshot", close: "Close", prev: "Previous screenshot", next: "Next screenshot" },
       items: [
@@ -133,9 +127,9 @@ export const translations = {
           title: "AI-Powered Portfolio",
           date: "2026 – present",
           type: "Personal project",
-          summary: "This site — in three languages, with a Claude assistant in the corner.",
+          summary: "This site — in three languages, with an AI assistant in the corner.",
           shots: ["Hero and key facts", "Assistant chat panel", "Skills by area", "Experience timeline"],
-          highlights: ["Streaming answers from Claude", "Rate limiting and input validation on the server"],
+          highlights: ["Streaming answers from open-weight DeepSeek via OpenRouter", "Rate limiting and input validation on the server"],
         },
         {
           title: "Qetoret — Prayer Companion",
@@ -282,6 +276,12 @@ export const translations = {
           steps: ["LLM foundations & prompting", "LangChain & RAG", "Agents, memory & MCP", "Capstone: an AI test agent"],
         },
       ],
+      certificatesTitle: "Certificates",
+      certificateLink: "View certificate",
+      certificates: [
+        { name: "Retrieval Augmented Generation (RAG)", issuer: "DeepLearning.AI", date: "Sep 2026" },
+        { name: "Knowledge Graphs for RAG", issuer: "DeepLearning.AI · Neo4j", date: "Sep 2026" },
+      ],
       education: [
         { degree: "M.Sc. Applied Computer Science", institution: "University of Duisburg-Essen", period: "2019 – 2023", thesis: "Master's thesis: recommending learning resources with knowledge graphs and NLP" },
         { degree: "B.Sc. Computer Science", institution: "University of Duisburg-Essen", period: "2014 – 2018", thesis: "Bachelor's thesis: a didactic game for the Chinese postman problem" },
@@ -296,7 +296,7 @@ export const translations = {
       ask: "Ask my AI assistant",
     },
     footer: {
-      built: "Built with Next.js, Tailwind CSS & Claude",
+      built: "Built with Next.js, Tailwind CSS & Claude Code · Assistant: DeepSeek via OpenRouter",
       top: "Back to top",
     },
     chat: {
@@ -332,7 +332,7 @@ export const translations = {
       badge: "AI Engineer · Software Engineer",
       headline: "Ich baue LLM-Anwendungen — getestet, gemessen und im Produktivbetrieb.",
       description:
-        "Softwareentwickler seit 2018 — neben dem Studium in Teilzeit, seit 2023 in Vollzeit an Java-Unternehmenssystemen. Jetzt mit Fokus auf **AI Engineering**: Meine App Qetoret nutzt drei Claude-Funktionen im Produktivbetrieb.",
+        "Softwareentwickler seit 2018 — neben dem Studium in Teilzeit, seit 2023 in Vollzeit an Java-Unternehmenssystemen. Jetzt mit Fokus auf **AI Engineering**: Meine App Qetoret nutzt drei Claude-Funktionen im Produktivbetrieb, und der Assistent dieser Seite läuft auf dem Open-Weight-Modell DeepSeek.",
       cta1: "Projekte ansehen",
       cta2: "Meinen KI-Assistenten fragen",
       cv: "Lebenslauf (PDF)",
@@ -348,7 +348,7 @@ export const translations = {
         languages: "Sprachen",
         languagesValue: "Deutsch C2 · Englisch C2 · Französisch (Muttersprache)",
         proof: [
-          { value: "Live", label: "LLM-Funktionen im Produktivbetrieb: die Claude API in meiner App Qetoret" },
+          { value: "Live", label: "LLM-Funktionen im Produktivbetrieb: Claude in meiner App Qetoret, DeepSeek auf dieser Seite" },
           { value: "1.600+", label: "automatisierte Tests in drei eigenen Projekten" },
           { value: "LAK '24", label: "mitverfasstes Forschungspaper (ACM)" },
         ],
@@ -383,7 +383,7 @@ export const translations = {
           category: "KI & LLM",
           blurb: "LLM-Anwendungen, die suchen, schlussfolgern — und gemessen werden.",
           core: ["RAG-Systeme", "LangChain / LangGraph", "Claude API", "KI-Agenten & MCP", "Neo4J / Wissensgraphen", "LLM-Evaluation"],
-          more: ["ChromaDB", "Agenten-Memory", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
+          more: ["ChromaDB", "Agenten-Memory", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "DeepSeek", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
         },
         {
           category: "Conversational AI",
@@ -422,13 +422,7 @@ export const translations = {
       kicker: "Was ich gebaut habe",
       subtitle: "Starte mit den Highlights und filtere dann nach dem, was dich interessiert.",
       filters: { featured: "Highlights", ai: "KI & LLM", apps: "Apps", work: "Beruf & Ehrenamt", uni: "Universität", all: "Alle" },
-      links: { live: "Live", code: "Code", paper: "Paper", page: "Projektseite" },
-      demo: {
-        button: "Demo · ab 4:00",
-        title: "CourseMapper-Demo — mein Empfehlungsteil beginnt bei 4:00",
-        credit: "Video: Social Computing Group, Universität Duisburg-Essen",
-        close: "Video schließen",
-      },
+      links: { live: "Live", code: "Code", paper: "Paper" },
       showTags: "Alle Technologien zeigen",
       shotViewer: { open: "Screenshot vergrößern", close: "Schließen", prev: "Vorheriger Screenshot", next: "Nächster Screenshot" },
       items: [
@@ -448,9 +442,9 @@ export const translations = {
           title: "KI-gestützte Portfolio-Website",
           date: "2026 – heute",
           type: "Persönliches Projekt",
-          summary: "Diese Seite — in drei Sprachen, mit einem Claude-Assistenten in der Ecke.",
+          summary: "Diese Seite — in drei Sprachen, mit einem KI-Assistenten in der Ecke.",
           shots: ["Einstieg und Eckdaten", "Assistenten-Chat", "Skills nach Bereich", "Werdegang als Zeitleiste"],
-          highlights: ["Streaming-Antworten von Claude", "Rate Limiting und Eingabevalidierung auf dem Server"],
+          highlights: ["Streaming-Antworten vom Open-Weight-Modell DeepSeek über OpenRouter", "Rate Limiting und Eingabevalidierung auf dem Server"],
         },
         {
           title: "Qetoret — Gebetsbegleiter",
@@ -597,6 +591,12 @@ export const translations = {
           steps: ["LLM-Grundlagen & Prompting", "LangChain & RAG", "Agenten, Memory & MCP", "Capstone: ein KI-Testagent"],
         },
       ],
+      certificatesTitle: "Zertifikate",
+      certificateLink: "Zertifikat ansehen",
+      certificates: [
+        { name: "Retrieval Augmented Generation (RAG)", issuer: "DeepLearning.AI", date: "Sep 2026" },
+        { name: "Knowledge Graphs for RAG", issuer: "DeepLearning.AI · Neo4j", date: "Sep 2026" },
+      ],
       education: [
         { degree: "M.Sc. Angewandte Informatik", institution: "Universität Duisburg-Essen", period: "2019 – 2023", thesis: "Masterarbeit: Empfehlung von Lernressourcen mit Knowledge Graphs und NLP" },
         { degree: "B.Sc. Informatik", institution: "Universität Duisburg-Essen", period: "2014 – 2018", thesis: "Bachelorarbeit: Ein didaktisches Spiel für das Briefträgerproblem" },
@@ -611,7 +611,7 @@ export const translations = {
       ask: "Meinen KI-Assistenten fragen",
     },
     footer: {
-      built: "Gebaut mit Next.js, Tailwind CSS & Claude",
+      built: "Gebaut mit Next.js, Tailwind CSS & Claude Code · Assistent: DeepSeek über OpenRouter",
       top: "Nach oben",
     },
     chat: {
@@ -647,7 +647,7 @@ export const translations = {
       badge: "Ingénieur IA · Ingénieur Logiciel",
       headline: "Je construis des applications LLM — testées, mesurées et en production.",
       description:
-        "Ingénieur logiciel depuis 2018 — à temps partiel pendant mes études, à temps plein sur des systèmes Java d'entreprise depuis 2023. Désormais centré sur l'**ingénierie IA** : mon appli Qetoret fait tourner trois fonctions Claude en production.",
+        "Ingénieur logiciel depuis 2018 — à temps partiel pendant mes études, à temps plein sur des systèmes Java d'entreprise depuis 2023. Désormais centré sur l'**ingénierie IA** : mon appli Qetoret fait tourner trois fonctions Claude en production, et l'assistant de ce site repose sur DeepSeek, un modèle open-weight.",
       cta1: "Voir mes projets",
       cta2: "Demander à mon assistant IA",
       cv: "CV (PDF, en anglais)",
@@ -663,7 +663,7 @@ export const translations = {
         languages: "Langues",
         languagesValue: "Allemand C2 · Anglais C2 · Français (langue maternelle)",
         proof: [
-          { value: "Live", label: "fonctions LLM en production : l'API Claude dans mon appli Qetoret" },
+          { value: "Live", label: "fonctions LLM en production : Claude dans mon appli Qetoret, DeepSeek sur ce site" },
           { value: "1 600+", label: "tests automatisés dans trois de mes projets" },
           { value: "LAK '24", label: "article de recherche co-écrit (ACM)" },
         ],
@@ -698,7 +698,7 @@ export const translations = {
           category: "IA & LLM",
           blurb: "Des applis LLM qui cherchent, raisonnent — et sont mesurées.",
           core: ["Systèmes RAG", "LangChain / LangGraph", "Claude API", "Agents IA & MCP", "Neo4J / Graphes de connaissances", "Évaluation de LLM"],
-          more: ["ChromaDB", "Mémoire d'agents", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
+          more: ["ChromaDB", "Mémoire d'agents", "Prompt Engineering", "Claude Code", "OpenAI Codex", "OpenAI API", "Google Gemini", "DeepSeek", "OpenRouter", "Streamlit", "spaCy", "NLP / NLU"],
         },
         {
           category: "IA Conversationnelle",
@@ -737,13 +737,7 @@ export const translations = {
       kicker: "Ce que j'ai construit",
       subtitle: "Commence par les temps forts, puis filtre selon ce qui t'intéresse.",
       filters: { featured: "Temps forts", ai: "IA & LLM", apps: "Applis", work: "Travail & bénévolat", uni: "Université", all: "Tous" },
-      links: { live: "En ligne", code: "Code", paper: "Article", page: "Page du projet" },
-      demo: {
-        button: "Démo · dès 4:00",
-        title: "Démo de CourseMapper — ma partie (recommandation) commence à 4:00",
-        credit: "Vidéo : groupe Social Computing, Université de Duisburg-Essen",
-        close: "Fermer la vidéo",
-      },
+      links: { live: "En ligne", code: "Code", paper: "Article" },
       showTags: "Voir toutes les technologies",
       shotViewer: { open: "Agrandir la capture", close: "Fermer", prev: "Capture précédente", next: "Capture suivante" },
       items: [
@@ -763,9 +757,9 @@ export const translations = {
           title: "Site portfolio avec assistant IA",
           date: "2026 – présent",
           type: "Projet personnel",
-          summary: "Ce site — en trois langues, avec un assistant Claude dans le coin.",
+          summary: "Ce site — en trois langues, avec un assistant IA dans le coin.",
           shots: ["Accueil et chiffres clés", "Panneau de l'assistant", "Compétences par domaine", "Frise du parcours"],
-          highlights: ["Réponses de Claude en streaming", "Limitation de débit et validation des entrées côté serveur"],
+          highlights: ["Réponses en streaming du modèle open-weight DeepSeek via OpenRouter", "Limitation de débit et validation des entrées côté serveur"],
         },
         {
           title: "Qetoret — Compagnon de prière",
@@ -912,6 +906,12 @@ export const translations = {
           steps: ["Fondamentaux LLM & prompting", "LangChain & RAG", "Agents, mémoire & MCP", "Capstone : un agent de test IA"],
         },
       ],
+      certificatesTitle: "Certificats",
+      certificateLink: "Voir le certificat",
+      certificates: [
+        { name: "Retrieval Augmented Generation (RAG)", issuer: "DeepLearning.AI", date: "Sept 2026" },
+        { name: "Knowledge Graphs for RAG", issuer: "DeepLearning.AI · Neo4j", date: "Sept 2026" },
+      ],
       education: [
         { degree: "M.Sc. Informatique Appliquée", institution: "Université de Duisburg-Essen", period: "2019 – 2023", thesis: "Mémoire de master : recommandation de ressources d'apprentissage avec graphes de connaissances et NLP" },
         { degree: "B.Sc. Informatique", institution: "Université de Duisburg-Essen", period: "2014 – 2018", thesis: "Mémoire de bachelor : un jeu didactique pour le problème du postier chinois" },
@@ -926,7 +926,7 @@ export const translations = {
       ask: "Demander à mon assistant IA",
     },
     footer: {
-      built: "Construit avec Next.js, Tailwind CSS & Claude",
+      built: "Construit avec Next.js, Tailwind CSS & Claude Code · Assistant : DeepSeek via OpenRouter",
       top: "Retour en haut",
     },
     chat: {
@@ -970,8 +970,7 @@ export type Translations = {
   projects: {
     title: string; kicker: string; subtitle: string;
     filters: { featured: string; ai: string; apps: string; work: string; uni: string; all: string };
-    links: { live: string; code: string; paper: string; page: string };
-    demo: { button: string; title: string; credit: string; close: string };
+    links: { live: string; code: string; paper: string };
     showTags: string;
     shotViewer: { open: string; close: string; prev: string; next: string };
     // `shots`: one caption per screenshot in components/Projects.tsx, same order.
@@ -981,6 +980,9 @@ export type Translations = {
     title: string; kicker: string; intro: string; educationTitle: string; trainingTitle: string; paperLabel: string; stackLabel: string;
     items: { role: string; company: string; period: string; kind: string; summary: string; highlights: string[] }[];
     training: { program: string; institution: string; period: string; status: string; description: string; steps: string[] }[];
+    // In the order of the certificate links in components/Experience.tsx.
+    certificatesTitle: string; certificateLink: string;
+    certificates: { name: string; issuer: string; date: string }[];
     education: { degree: string; institution: string; period: string; thesis: string }[];
   };
   contact: { title: string; kicker: string; subtitle: string; email: string; copied: string; ask: string };

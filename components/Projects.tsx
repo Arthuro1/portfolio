@@ -8,7 +8,6 @@ import TechChip from "@/components/TechChip";
 import Rich from "@/components/Rich";
 import LogoTile, { TILE_MOTION } from "@/components/LogoTile";
 import ShotReel from "@/components/ShotReel";
-import DemoVideo from "@/components/DemoVideo";
 import { ExternalIcon, GitHubIcon, PaperIcon } from "@/components/icons";
 
 type Filter = "featured" | "ai" | "apps" | "work" | "uni" | "all";
@@ -25,9 +24,6 @@ const GLYPH = {
   book: "M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25",
 };
 
-// The CourseMapper demo video; the thesis part (recommendations) starts at 4:00.
-const COURSEMAPPER_VIDEO = { src: "https://www.uni-due.de/imperia/md/images/soco/01_-_coursemapper_video.mp4", start: 240 };
-
 // Per-project data, in the order of t.projects.items.
 // `shots` are 960x600 screenshots from public/projects/shots, cover first;
 // their captions are the item's `shots` in lib/translations.ts.
@@ -40,8 +36,6 @@ type Project = {
   live?: { href: string; bg: string; fg: string };
   code?: string;
   paper?: string;
-  page?: string;
-  demo?: { src: string; start: number };
 };
 const PROJECTS: Project[] = [
   {
@@ -57,7 +51,7 @@ const PROJECTS: Project[] = [
   },
   {
     emblem: { src: "/favicon.svg" },
-    tags: ["Next.js", "TypeScript", "Claude API", "TailwindCSS", "Vercel", "Prompt Engineering"],
+    tags: ["Next.js", "TypeScript", "DeepSeek", "OpenRouter", "TailwindCSS", "Vercel", "Prompt Engineering"],
     groups: ["featured", "ai", "apps"],
     shots: [
       "/projects/shots/portfolio/01-hero.webp",
@@ -121,8 +115,7 @@ const PROJECTS: Project[] = [
       "/projects/shots/coursemapper/02-recommended-videos.webp",
       "/projects/shots/coursemapper/03-feedback.webp",
     ],
-    page: "https://www.uni-due.de/soco/research/projects/coursemapper.php",
-    demo: COURSEMAPPER_VIDEO,
+    live: { href: "https://www.uni-due.de/soco/research/projects/coursemapper.php", bg: "#0277bd", fg: "#ffffff" },
   },
   {
     emblem: { path: GLYPH.search },
@@ -259,11 +252,9 @@ export default function Projects() {
 
                   {hasLinks(data) && (
                     <div className="mt-5 flex flex-wrap gap-2 border-t border-line pt-4">
-                      {data.demo && <DemoVideo src={data.demo.src} start={data.demo.start} labels={p.demo} />}
                       {data.live && <LinkPill href={data.live.href} label={p.links.live} icon={<ExternalIcon className="w-4 h-4" />} colors={data.live} />}
                       {data.code && <LinkPill href={data.code} label={p.links.code} icon={<GitHubIcon className="w-4 h-4" />} />}
                       {data.paper && <LinkPill href={data.paper} label={p.links.paper} icon={<PaperIcon className="w-4 h-4" />} />}
-                      {data.page && <LinkPill href={data.page} label={p.links.page} icon={<ExternalIcon className="w-4 h-4" />} />}
                     </div>
                   )}
                 </div>
@@ -287,7 +278,7 @@ function ProjectEmblem({ emblem }: { emblem: Emblem }) {
   );
 }
 
-const hasLinks = (d: Project) => Boolean(d.demo || d.live || d.code || d.paper || d.page);
+const hasLinks = (d: Project) => Boolean(d.live || d.code || d.paper);
 
 // With `colors` (a project's Live link) the button is filled in the logo's
 // colours; otherwise it is outlined in the brand colour, unlike the flat tags.

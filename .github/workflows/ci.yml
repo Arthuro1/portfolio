@@ -44,7 +44,7 @@ jobs:
 
       - name: Build
         # The build must succeed without any real secrets. The chat route
-        # creates its Anthropic client lazily, so no key is needed here.
+        # creates its OpenRouter client lazily, so no key is needed here.
         run: npm run build
 
       - name: Audit production dependencies
