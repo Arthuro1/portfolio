@@ -38,11 +38,15 @@ export function TechLogo({ name, size = "tag" }: { name: string; size?: ChipSize
   );
 }
 
-/** A technology pill: logo plus name. `className` adds border/background. */
-export default function TechChip({ name, size = "tag", className = "" }: { name: string; size?: ChipSize; className?: string }) {
+/**
+ * A technology pill: logo plus name. `className` adds border/background.
+ * `flat` draws a borderless, square-cornered label instead, for places where
+ * pills would be mistaken for the buttons next to them.
+ */
+export default function TechChip({ name, size = "tag", flat = false, className = "" }: { name: string; size?: ChipSize; flat?: boolean; className?: string }) {
   const hasLogo = logoFor(name) !== null;
   return (
-    <span className={`inline-flex items-center rounded-full border ${SIZES[size].chip} ${className}`}>
+    <span className={`inline-flex items-center ${flat ? "rounded-md" : "rounded-full border"} ${SIZES[size].chip} ${className}`}>
       {hasLogo ? <TechLogo name={name} size={size} /> : <span className="h-1.5 w-1.5 shrink-0 rotate-45 bg-current opacity-50" aria-hidden="true" />}
       {name}
     </span>

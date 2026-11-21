@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Knowledge Graph RAG">
+  <!-- The app's header mark (src/api/static/index.html .logo): a brain emoji on a light rounded tile. -->
+  <rect x="0.5" y="0.5" width="47" height="47" rx="11" fill="#f4f4f2" stroke="#deded9"/>
+  <text x="24" y="25" font-size="26" text-anchor="middle" dominant-baseline="central" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">🧠</text>
+</svg>

@@ -3,7 +3,8 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { openChat } from "@/lib/chat-events";
 import Rich from "@/components/Rich";
-import { DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
+import EmailLink from "@/components/EmailLink";
+import { CheckIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -68,9 +69,9 @@ export default function Hero() {
             <a href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125" target="_blank" rel="noopener noreferrer" className="hover:text-brand transition-colors" aria-label="LinkedIn">
               <LinkedInIcon className="w-6 h-6" />
             </a>
-            <a href="mailto:arthur.meteng@yahoo.com" className="hover:text-accent transition-colors" aria-label="Email">
-              <MailIcon className="w-6 h-6" />
-            </a>
+            <EmailLink className="hover:text-accent transition-colors" label="Email">
+              {(copied) => (copied ? <CheckIcon className="w-6 h-6 text-accent" /> : <MailIcon className="w-6 h-6" />)}
+            </EmailLink>
           </div>
         </div>
 

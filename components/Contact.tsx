@@ -5,9 +5,8 @@ import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
 import Rich from "@/components/Rich";
 import { openChat } from "@/lib/chat-events";
-import { DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
-
-const EMAIL = "arthur.meteng@yahoo.com";
+import EmailLink, { EMAIL } from "@/components/EmailLink";
+import { CheckIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -23,13 +22,14 @@ export default function Contact() {
               <Rich text={c.subtitle} />
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a
-                href={`mailto:${EMAIL}`}
-                className="inline-flex items-center gap-2 rounded-full bg-brand-fill px-6 py-3 font-bold text-white shadow-[0_10px_30px_-10px_rgb(var(--brand-fill)/0.8)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
-              >
-                <MailIcon className="w-4 h-4" />
-                {c.email}
-              </a>
+              <EmailLink className="inline-flex items-center gap-2 rounded-full bg-brand-fill px-6 py-3 font-bold text-white shadow-[0_10px_30px_-10px_rgb(var(--brand-fill)/0.8)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright">
+                {(copied) => (
+                  <>
+                    {copied ? <CheckIcon className="w-4 h-4" /> : <MailIcon className="w-4 h-4" />}
+                    <span aria-live="polite">{copied ? c.copied : c.email}</span>
+                  </>
+                )}
+              </EmailLink>
               <a
                 href={t.hero.cvFile}
                 download
@@ -49,7 +49,11 @@ export default function Contact() {
             </div>
 
             <div className="mt-12 grid gap-4 text-left sm:grid-cols-3">
-              <ContactCard icon={<MailIcon className="w-5 h-5" />} label="Email" value={EMAIL} href={`mailto:${EMAIL}`} />
+              <EmailLink className={CARD}>
+                {(copied) => (
+                  <CardBody icon={copied ? <CheckIcon className="w-5 h-5" /> : <MailIcon className="w-5 h-5" />} label={copied ? c.copied : "Email"} value={EMAIL} />
+                )}
+              </EmailLink>
               <ContactCard
                 icon={<LinkedInIcon className="w-5 h-5" />}
                 label="LinkedIn"
@@ -65,19 +69,26 @@ export default function Contact() {
   );
 }
 
+const CARD = "group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand/40";
+
 function ContactCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: string; href: string }) {
-  const external = !href.startsWith("mailto");
   return (
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand/40"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className={CARD}>
+      <CardBody icon={icon} label={label} value={value} />
+    </a>
+  );
+}
+
+function CardBody({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <>
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">{icon}</span>
       <span className="min-w-0">
-        <span className="block font-mono text-xs text-muted">{label}</span>
+        <span className="block font-mono text-xs text-muted" aria-live="polite">
+          {label}
+        </span>
         <span className="block break-all text-sm font-bold text-ink">{value}</span>
       </span>
-    </a>
+    </>
   );
 }
