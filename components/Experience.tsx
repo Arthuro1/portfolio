@@ -4,8 +4,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
 import TechChip from "@/components/TechChip";
-import LogoTile from "@/components/LogoTile";
-import { PaperIcon } from "@/components/icons";
+import LogoTile, { TILE_MOTION } from "@/components/LogoTile";
+import { ExternalIcon, PaperIcon } from "@/components/icons";
 
 // Logo and tech stack per job, in the order of t.experience.items.
 const JOBS: { logo: string; tile?: string; stack: string[] }[] = [
@@ -32,6 +32,19 @@ const TRAINING_LOGO = "/logos/turing-college.png";
 // The UDE mark is white, so it sits on the university's blue.
 const UDE = { logo: "/logos/ude.png", tile: "bg-[#004c93] p-1.5" };
 const EDUCATION_PAPERS = ["https://doi.org/10.1145/3636555.3636881", ""];
+// In the order of t.experience.certificates. Images are 1200x900 captures of the linked pages.
+const CERTIFICATES = [
+  {
+    link: "https://www.deeplearning.ai/certificates/98a9e277-7ceb-4086-aab4-7bc971e7de3f",
+    image: "/certificates/rag.webp",
+  },
+  {
+    link: "https://www.deeplearning.ai/accomplishments/9812139b-c2ff-493e-a8a9-af43d684f750",
+    image: "/certificates/knowledge-graphs-rag.webp",
+  },
+];
+const BADGE_GLYPH =
+  "M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z";
 
 const CARD = "group rounded-2xl border border-line bg-surface/90 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/40";
 
@@ -133,6 +146,52 @@ export default function Experience() {
           </article>
         </Reveal>
       ))}
+
+      <h4 className="mt-10 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{ex.certificatesTitle}</h4>
+      <div className="mt-4 grid gap-5 md:grid-cols-2">
+        {ex.certificates.map((cert, i) => (
+          <Reveal key={cert.name} delay={i * 100} className="h-full">
+            <article className={`${CARD} flex h-full flex-col p-6`}>
+              {/* The button below carries the link for keyboard and screen-reader users. */}
+              <a href={CERTIFICATES[i].link} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true" className="mb-5 block overflow-hidden rounded-xl border border-line bg-white">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static webp, already sized */}
+                <img
+                  src={CERTIFICATES[i].image}
+                  alt=""
+                  width={1200}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </a>
+              <div className="flex items-start gap-4">
+                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-line bg-raised text-brand ${TILE_MOTION}`} aria-hidden="true">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d={BADGE_GLYPH} />
+                  </svg>
+                </span>
+                <div>
+                  <span className="font-mono text-xs text-muted">{cert.date}</span>
+                  <h5 className="mt-1 font-display text-lg font-bold leading-snug text-ink">{cert.name}</h5>
+                  <p className="font-bold text-brand">{cert.issuer}</p>
+                </div>
+              </div>
+              <div className="mt-auto pt-5">
+                <a
+                  href={CERTIFICATES[i].link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-brand/50 bg-brand/[0.07] px-3 py-1.5 text-sm font-bold text-brand transition-all hover:-translate-y-0.5 hover:border-brand hover:bg-brand/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+                >
+                  <ExternalIcon className="w-4 h-4" />
+                  {ex.certificateLink}
+                </a>
+              </div>
+            </article>
+          </Reveal>
+        ))}
+      </div>
 
       <h3 className="mt-20 font-display text-2xl sm:text-3xl font-bold text-ink">{ex.educationTitle}</h3>
       <div className="mt-6 grid gap-5 md:grid-cols-2">

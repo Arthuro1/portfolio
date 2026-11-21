@@ -107,10 +107,12 @@ Chatbots for municipalities across Germany. Conversation design, NLU modelling, 
 **Bookiz — Book Search App** (2019, University)
 MERN stack app helping students find books for their courses with ratings and discussion.
 
-## Further education (current)
+## Further education
 
 **AI Engineering, full-time — Turing College** (Nov 2026 – Feb 2027, in progress)
 Three months full-time at 30 hours a week, live classes online. Three sprints: (1) LLM application foundations — models from OpenAI, Anthropic and Google through OpenRouter, prompt engineering; (2) LangChain and RAG with ChromaDB, Streamlit/Next.js front ends; (3) AI agents with LangGraph, short- and long-term memory, MCP. It closes with a capstone project — Paul's plan is an AI test agent that reviews requirements, derives test cases, and measures its own output.
+
+**Certificates (DeepLearning.AI, September 2026):** Retrieval Augmented Generation (RAG); Knowledge Graphs for RAG, built with Neo4j. Both certificates are linked in the "Further education" section of this site.
 
 ## Education
 
