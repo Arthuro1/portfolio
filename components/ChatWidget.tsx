@@ -23,6 +23,11 @@ export default function ChatWidget() {
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  // Time of the last open, so a double-click on the toggle doesn't open and
+  // immediately close the panel again.
+  const openedAt = useRef(0);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,12 +43,35 @@ export default function ChatWidget() {
     if (!open) abortRef.current?.abort();
   }, [open]);
 
+  const show = useCallback(() => {
+    openedAt.current = Date.now();
+    setOpen(true);
+  }, []);
+
+  const toggle = () => {
+    if (!open) return show();
+    if (Date.now() - openedAt.current > 400) setOpen(false);
+  };
+
   // Other buttons on the page ("Ask my AI assistant") open the panel.
   useEffect(() => {
-    const onOpen = () => setOpen(true);
-    window.addEventListener(OPEN_CHAT_EVENT, onOpen);
-    return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen);
-  }, []);
+    window.addEventListener(OPEN_CHAT_EVENT, show);
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, show);
+  }, [show]);
+
+  // Focus the input when the panel opens (not on touch screens, where it would
+  // pop up the keyboard over the suggestions); Escape closes it.
+  useEffect(() => {
+    if (!open) return;
+    if (window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus({ preventScroll: true });
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const send = useCallback(
     async (text: string) => {
@@ -132,11 +160,16 @@ export default function ChatWidget() {
 
   return (
     <>
+      {/* No hover translate: moving the button away from the cursor made
+          clicks near its bottom edge miss. */}
       <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-brand-fill text-white shadow-[0_10px_30px_-8px_rgb(var(--brand-fill)/0.9)] ring-2 ring-accent-bright/0 hover:ring-accent-bright transition-all hover:-translate-y-0.5 flex items-center justify-center"
+        ref={toggleRef}
+        type="button"
+        onClick={toggle}
+        className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-brand-fill text-white shadow-[0_10px_30px_-8px_rgb(var(--brand-fill)/0.9)] ring-2 ring-accent-bright/0 hover:ring-accent-bright hover:brightness-110 transition-all flex items-center justify-center"
         aria-label={open ? "Close assistant" : "Open assistant"}
         aria-expanded={open}
+        aria-controls="chat-panel"
       >
         {open ? (
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -150,7 +183,9 @@ export default function ChatWidget() {
       </button>
 
       {open && (
-        <div className="panel-in fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden" style={{ maxHeight: "520px" }} role="dialog" aria-label={chat.title}>
+        // Height follows the viewport so the header never slides under the
+        // navbar or off-screen on short windows (zoomed or small laptops).
+        <div id="chat-panel" className="panel-in fixed bottom-24 right-4 sm:right-6 z-[60] w-[calc(100vw-2rem)] max-w-sm sm:w-96 max-h-[min(520px,calc(100dvh-10.5rem))] bg-surface rounded-2xl shadow-2xl border border-line flex flex-col overflow-hidden" role="dialog" aria-label={chat.title}>
           <div className="bg-brand-fill px-4 py-3 flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold font-display">P</div>
             <div>
@@ -159,7 +194,7 @@ export default function ChatWidget() {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0" style={{ maxHeight: "340px" }}>
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-sm text-muted text-center py-2">{chat.greeting}</p>
@@ -247,6 +282,7 @@ export default function ChatWidget() {
 
           <div className="border-t border-line p-3 flex gap-2">
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}

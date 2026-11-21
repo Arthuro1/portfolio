@@ -91,6 +91,7 @@ Redesign of wach-auf.com for a mission movement that has prayed for Germany sinc
 **Learning Resource Recommendation — Master's Thesis** (2022–2023)
 Personalised recommendation system for a MOOC platform (CourseMapper) using Knowledge Graphs and Graph Neural Networks. Models learner knowledge state to recommend Wikipedia articles and YouTube videos. Stack: Python, Flask, Neo4J, Angular, NLP, SBert, TailwindCSS.
 Publication: the work fed into the paper "Learner Modeling and Recommendation of Learning Resources using Personal Knowledge Graphs" (Qurat Ul Ain, Mohamed Amine Chatti, Paul Arthur Meteng Kamdem, Rawaa Alatrash, Shoeb Joarder, Clara Siepmann), published in the Proceedings of the 14th Learning Analytics and Knowledge Conference (LAK '24, ACM, 2024). Paul is a co-author. DOI: https://doi.org/10.1145/3636555.3636881
+Demo: the University of Duisburg-Essen's CourseMapper video shows Paul's part (recommending YouTube videos and Wikipedia articles for concepts a learner marked as not understood) from minute 4:00 — the "Demo" button on the thesis card in the Projects section plays it. Project page: https://www.uni-due.de/soco/research/projects/coursemapper.php
 
 **VACOS — Dialog-based Object Search** (2021, University)
 Extended a text-based search engine with natural-language dialog interaction. NLP processing of negations and modifiers. Stack: Python, React, Elasticsearch, spaCy.

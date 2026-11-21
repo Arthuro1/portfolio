@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Paul Arthur Meteng – Lebenslauf</title>
+  <link rel="stylesheet" href="cv.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1>Paul Arthur Meteng</h1>
+    <p class="title">AI Engineer · Softwareentwickler</p>
+    <p class="contact">
+      Ruhrgebiet, NRW <span class="sep">·</span>
+      <a href="mailto:arthur.meteng@yahoo.com">arthur.meteng@yahoo.com</a> <span class="sep">·</span>
+      <a href="https://paulmeteng.space/">paulmeteng.space</a><br>
+      <a href="https://www.linkedin.com/in/paul-arthur-meteng-kamdem-06b922125">linkedin.com/in/paul-arthur-meteng-kamdem-06b922125</a> <span class="sep">·</span>
+      <a href="https://github.com/Arthuro1">github.com/Arthuro1</a>
+    </p>
+    <p class="availability">
+      <span class="status">Verfügbar ab März 2027, Vollzeit · remote oder hybrid</span>
+      <span class="languages">Deutsch C2 · Englisch C2 · Französisch (Muttersprache)</span>
+    </p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Profil</h2>
+      <p class="prose">Softwareentwickler seit 2018 – neben dem Studium in Teilzeit, seit 2023 in Vollzeit an Java-Unternehmenssystemen. Jetzt mit Fokus auf AI Engineering: Ich baue LLM-Anwendungen mit Retrieval und Evaluation, und meine App Qetoret nutzt drei Claude-Funktionen im Produktivbetrieb.</p>
+    </section>
+
+    <section>
+      <h2>Berufserfahrung</h2>
+
+      <article class="entry">
+        <p class="meta"><span>01/2024 – 06/2026</span><span class="kind">Vollzeit</span></p>
+        <div class="body">
+          <h3>IT-Berater</h3>
+          <p class="org">Vision Consulting GmbH</p>
+          <ul>
+            <li>Migration einer Fachanwendung von ISA-Dialog nach Java (KDialog) im agilen Team</li>
+            <li>Oberflächen entwickelt, Frontend-Logik nachgebaut und mit JUnit- und <span class="nobr">UIBot-Tests</span> abgesichert</li>
+            <li>Schulung zu Java Web Services: SOAP und REST mit Apache CXF, WS-Security</li>
+          </ul>
+          <p class="stack">Java · Maven · Jenkins · GitLab · SoapUI · Postman · Jira</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="meta"><span>05/2023 – 11/2023</span><span class="kind">Vollzeit</span></p>
+        <div class="body">
+          <h3>Java-Entwickler</h3>
+          <p class="org">Cosinex GmbH</p>
+          <ul>
+            <li>Vergabemarktplatz VMP an die neuesten EU-Vergaberechtsreformen angepasst</li>
+            <li>Spring und JPA im Backend, Wicket im Frontend; Oracle und MySQL mit Liquibase; Deployment über GitLab auf JBoss</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="meta"><span>04/2021 – 03/2023</span><span class="kind">Teilzeit</span></p>
+        <div class="body">
+          <h3>Web-Entwickler</h3>
+          <p class="org">adesso SE</p>
+          <ul>
+            <li>Fedorov gebaut, eine Plattform zur Selbstdiagnose von Augenerkrankungen und zum Sehtraining</li>
+            <li>REST-Backend mit Spring Boot, Hibernate, PostgreSQL und Flyway; <span class="nobr">Angular-Frontend</span>; JUnit, Mockito, Jasmine; Azure</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="meta"><span>12/2018 – 02/2021</span><span class="kind">Teilzeit</span></p>
+        <div class="body">
+          <h3>Web-Entwickler – Conversational AI</h3>
+          <p class="org">Publicplan GmbH</p>
+          <ul>
+            <li>GovBot: Chatbots für Kommunen in ganz Deutschland mit Cognigy, später Botpress; React/Redux-Frontend</li>
+            <li>VSM: neue API der Verwaltungssuchmaschine konzipiert und gebaut (Express, Elasticsearch, Swagger)</li>
+            <li>RDFa-Validator: eine Java-Desktop-Anwendung mit JavaFX und Swing</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Ausgewählte Projekte</h2>
+
+      <article class="entry">
+        <div class="body">
+          <h3>Qetoret <span class="desc">– Gebets-App für Web und Android, 16 Sprachen</span></h3>
+          <p class="link"><a href="https://qetoret.com">qetoret.com</a></p>
+          <ul>
+            <li>Drei Claude-Haiku-Funktionen (Bibelhinweise, Gebetsvorschläge, Übersetzung) über den eigenen Server</li>
+            <li>Token-Budgets, Prompt-Caching, Nutzerlimits, Formatprüfung, Namen auf dem Gerät geschwärzt, Ende-zu-Ende-Verschlüsselung</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="body">
+          <h3>Knowledge Graph RAG</h3>
+          <p class="link"><a href="https://github.com/Arthuro1/knowledge-graph-rag">github.com/Arthuro1/knowledge-graph-rag</a></p>
+          <ul>
+            <li>Hybrides Retrieval über einen Neo4J-Graphen und Chroma-Vektoren, Entitäten vom LLM extrahiert, FastAPI mit Streaming</li>
+            <li>Evaluationsschicht: Referenz- und Retrieval-Metriken, LLM-Judge (Kalibrierung noch offen), jeder Lauf protokolliert – recall@5 1,0 und MRR 0,96 auf einem kleinen Testset mit 20 Fragen; 311 Tests</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="body">
+          <h3>My Goals <span class="desc">– Offline-First-Ziel-Tracker (PWA)</span></h3>
+          <ul>
+            <li>IndexedDB mit Supabase-Sync, Web-Push und Google-Kalender; 624 Tests und Größenbudgets in der CI</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <div class="body">
+          <h3>Parlons Ghomálá <span class="desc">– Sprachlern-PWA (Prototyp)</span></h3>
+          <ul>
+            <li>Von KI-Agenten (Claude Code, Codex) nach Spezifikation gebaut: 19 Meilensteine in 6 Tagen, jeder von Prüf-Agenten bewertet (Schwelle 85/100); 518 Unit- und 173 Datenbanktests</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Ausbildung</h2>
+
+      <article class="entry">
+        <p class="meta"><span>11/2026 – 02/2027</span></p>
+        <div class="body">
+          <h3>AI Engineering (Vollzeit, laufend)</h3>
+          <p class="org">Turing College</p>
+          <p>LLM-Grundlagen, LangChain &amp; RAG, Agenten und MCP, Abschlussprojekt</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="meta"><span>2019 – 2023</span></p>
+        <div class="body">
+          <h3>M.Sc. Angewandte Informatik</h3>
+          <p class="org">Universität Duisburg-Essen</p>
+          <p>Masterarbeit: Lernressourcen-Empfehlung mit Wissensgraphen und NLP; mitverfasstes Paper auf der LAK ’24 (ACM)</p>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="meta"><span>2014 – 2018</span></p>
+        <div class="body">
+          <h3>B.Sc. Informatik</h3>
+          <p class="org">Universität Duisburg-Essen</p>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <h2>Kenntnisse</h2>
+      <dl class="skills">
+        <div><dt>KI &amp; LLM</dt><dd>RAG, LangChain, Claude API, Neo4J / Wissensgraphen, ChromaDB, <span class="nobr">LLM-Evaluation</span>, Prompt Engineering, Claude Code, Codex, OpenAI API, spaCy, NLP</dd></div>
+        <div><dt>Conversational AI</dt><dd>Cognigy, Botpress, <span class="nobr">NLU-Modelle</span>, Dialogdesign</dd></div>
+        <div><dt>Backend</dt><dd>Java / Spring Boot, Python, FastAPI, REST, Node.js, PostgreSQL, Oracle, MySQL, MongoDB</dd></div>
+        <div><dt>Frontend</dt><dd>React, TypeScript, Angular, Tailwind CSS</dd></div>
+        <div><dt>Cloud &amp; Qualität</dt><dd>Docker, Azure, Vercel, Supabase, GitHub Actions, Jenkins, GitLab · JUnit, Mockito, Vitest, Playwright</dd></div>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>

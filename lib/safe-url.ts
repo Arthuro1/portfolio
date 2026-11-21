@@ -21,6 +21,8 @@ const ALLOWED_HTTPS_HOSTS = new Set<string>([
   "www.linkedin.com",
   "pray4me.space",
   "www.pray4me.space",
+  // CourseMapper project page (Master's thesis).
+  "www.uni-due.de",
 ]);
 
 const ALLOWED_MAILTO = new Set<string>([

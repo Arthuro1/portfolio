@@ -10,6 +10,11 @@ describe("resolveSafeHref (Markdown link allowlist)", () => {
     });
   });
 
+  it("allows the CourseMapper project page but no other uni-due.de host", () => {
+    expect(resolveSafeHref("https://www.uni-due.de/soco/research/projects/coursemapper.php").safe).toBe(true);
+    expect(resolveSafeHref("https://evil.uni-due.de/x").safe).toBe(false);
+  });
+
   it("rejects non-allowlisted https hosts", () => {
     expect(resolveSafeHref("https://evil.example.com")).toEqual({ safe: false });
   });

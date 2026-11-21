@@ -1,0 +1,297 @@
+/* Shared print stylesheet for cv.en.html and cv.de.html (rendered by render.mjs).
+   Avoid position, opacity and z-index on content: Edge paints such elements after the rest
+   of the page, so their text lands out of reading order in the PDF text layer (ATS). */
+
+/* Static Inter files: Google Fonts only serves the variable font, which Edge embeds
+   as Type 3 glyphs; static fonts embed as regular text fonts that ATS parsers read reliably. */
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.2.8/files/inter-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 500;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.2.8/files/inter-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 600;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.2.8/files/inter-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 700;
+  src: url("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.2.8/files/inter-latin-700-normal.woff2") format("woff2");
+}
+
+/* No running header or footer: Edge writes margin-box text first in each page's text layer,
+   ahead of the name and headings that ATS parsers expect to come first. */
+@page {
+  size: A4;
+  margin: 16mm 18mm 17mm;
+}
+
+:root {
+  --accent: #2b3593;
+  --ink: #141826;
+  --text: #2b303c;
+  --muted: #5d6270;
+  --faint: #6b7180; /* about 4.9:1 on white, still readable when printed */
+  --rule: #dcdfe6;
+  --meta: 35mm;
+  --gutter: 6mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--text);
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: 9.6pt;
+  line-height: 1.5;
+  font-kerning: normal;
+  text-wrap: pretty;
+  orphans: 3;
+  widows: 3;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Header */
+
+.masthead h1 {
+  color: var(--ink);
+  font-size: 25pt;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.masthead .title {
+  margin-top: 3pt;
+  color: var(--accent);
+  font-size: 12pt;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.contact {
+  margin-top: 9pt;
+  color: var(--muted);
+  font-size: 9pt;
+}
+
+.contact a {
+  color: var(--accent);
+}
+
+.sep {
+  margin: 0 0.45em;
+  color: #b4b8c2;
+}
+
+/* Languages wrap below the status when both do not fit on one line. */
+.availability {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: 20pt;
+  row-gap: 1pt;
+  margin-top: 12pt;
+  padding: 8pt 0 0 11pt;
+  border-top: 0.75pt solid var(--rule);
+  font-size: 9pt;
+}
+
+.availability .status {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Dot hangs in the left padding: -10.5 + 5 + 5.5 = 0 net advance. */
+.availability .status::before {
+  content: "";
+  display: inline-block;
+  width: 5pt;
+  height: 5pt;
+  margin: 0 5.5pt 0 -10.5pt;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: 0.1em;
+}
+
+.availability .languages {
+  color: var(--muted);
+}
+
+/* Sections */
+
+section {
+  margin-top: 15.5pt;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 9pt;
+  margin-bottom: 7.5pt;
+  color: var(--accent);
+  font-size: 9pt;
+  font-weight: 600;
+  line-height: 1.5; /* keeps the umlaut of a page-top heading inside its own page */
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  break-after: avoid;
+}
+
+h2::after {
+  content: "";
+  flex: 1;
+  height: 0.75pt;
+  background: var(--rule);
+}
+
+/* Two-axis layout: dates, links and labels on the left, content on the right. */
+.entry,
+.skills > div {
+  display: grid;
+  grid-template-columns: var(--meta) 1fr;
+  column-gap: var(--gutter);
+}
+
+.entry {
+  break-inside: avoid;
+}
+
+.entry + .entry {
+  margin-top: 11pt;
+}
+
+.prose {
+  margin-left: calc(var(--meta) + var(--gutter));
+}
+
+.meta {
+  grid-column: 1;
+  color: var(--muted);
+  font-size: 9pt;
+  line-height: 1.55;
+}
+
+.meta span {
+  display: block;
+}
+
+.meta .kind {
+  color: var(--faint);
+}
+
+.body {
+  grid-column: 2;
+  min-width: 0;
+}
+
+h3 {
+  color: var(--ink);
+  font-size: 10.25pt;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+h3 .desc {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.org {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.link {
+  color: var(--accent);
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+.body ul {
+  margin-top: 4pt;
+  list-style: none;
+}
+
+.body li {
+  padding-left: 11pt;
+}
+
+.body li + li {
+  margin-top: 2.5pt;
+}
+
+/* Bullet hangs in the left padding: -10 + 3.2 + 6.8 = 0 net advance. */
+.body li::before {
+  content: "";
+  display: inline-block;
+  width: 3.2pt;
+  height: 3.2pt;
+  margin: 0 6.8pt 0 -10pt;
+  border-radius: 50%;
+  background: #8086be;
+  vertical-align: 0.2em;
+}
+
+.body > p:not(.org, .link) {
+  margin-top: 3pt;
+}
+
+.stack {
+  color: var(--faint);
+  font-size: 9pt;
+}
+
+/* Skills */
+
+.skills > div + div {
+  margin-top: 5pt;
+}
+
+.skills dt {
+  color: var(--ink);
+  font-size: 9pt;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.skills,
+.skills dd {
+  margin: 0;
+}
+
+/* Keeps hyphenated skill keywords on one line so they stay whole in the text layer. */
+.nobr {
+  white-space: nowrap;
+}
