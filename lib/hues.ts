@@ -1,7 +1,7 @@
-// Journey palette: indigo (brand), ochre (accent) and three earthy hues that
+// Journey palette: indigo (brand), ochre (accent) and two earthy hues that
 // mark each stop. Used for small touches only. Class strings are spelled out
 // in full so Tailwind can find them.
-export type Hue = "rose" | "plum" | "teal" | "brand" | "accent";
+export type Hue = "plum" | "teal" | "brand" | "accent";
 
 type HueClasses = {
   text: string;
@@ -15,16 +15,6 @@ type HueClasses = {
 };
 
 export const HUE: Record<Hue, HueClasses> = {
-  rose: {
-    text: "text-hue-rose",
-    bg: "bg-hue-rose",
-    soft: "bg-hue-rose/10",
-    border: "border-hue-rose",
-    borderSoft: "border-hue-rose/40",
-    fill: "fill-hue-rose",
-    stroke: "stroke-hue-rose",
-    ring: "ring-hue-rose/30",
-  },
   plum: {
     text: "text-hue-plum",
     bg: "bg-hue-plum",
@@ -67,5 +57,5 @@ export const HUE: Record<Hue, HueClasses> = {
   },
 };
 
-// One hue per journey stop, in the order of STOPS (about … contact).
-export const STOP_HUES: Hue[] = ["rose", "plum", "teal", "brand", "accent"];
+// One hue per navbar link, in link order (projects … contact).
+export const STOP_HUES: Hue[] = ["teal", "brand", "plum", "accent"];

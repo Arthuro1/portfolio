@@ -178,6 +178,7 @@ h2::after {
 
 /* Two-axis layout: dates, links and labels on the left, content on the right. */
 .entry,
+.highlights > div,
 .skills > div {
   display: grid;
   grid-template-columns: var(--meta) 1fr;
@@ -273,12 +274,14 @@ h3 .desc {
   font-size: 9pt;
 }
 
-/* Skills */
+/* Achievements and skills: label on the left, text on the right */
 
+.highlights > div + div,
 .skills > div + div {
   margin-top: 5pt;
 }
 
+.highlights dt,
 .skills dt {
   color: var(--ink);
   font-size: 9pt;
@@ -286,6 +289,8 @@ h3 .desc {
   line-height: 1.6;
 }
 
+.highlights,
+.highlights dd,
 .skills,
 .skills dd {
   margin: 0;

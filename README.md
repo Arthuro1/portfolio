@@ -28,7 +28,7 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 ## Features
 
 - **AI Assistant** — floating chat widget powered by an open-weight model (DeepSeek V4.1 Flash) through OpenRouter. Answers recruiter questions about Paul's experience, projects, and skills in real time with streaming responses.
-- **Multilingual** — full EN / DE / FR support via a language switcher in the navbar. All sections, descriptions, and chat suggestions switch instantly.
+- **Multilingual** — full EN / DE / FR support, each with its own server-rendered URL (`/`, `/de`, `/fr`) and hreflang links. The navbar switcher changes language instantly and remembers the choice in a `lang` cookie; on a first visit to `/`, German and French browsers are redirected to their language.
 - **Dark / Light Mode** — dark mode by default, toggled via the sun/moon button in the navbar. Preference is persisted in `localStorage`.
 - **Hardened chat endpoint** — distributed rate limiting (Upstash), request-size limits, strict input validation, prompt-injection–resistant system prompt, per-client concurrency guard, request timeouts, a kill switch, a strict Content-Security-Policy, and safe Markdown rendering. See [SECURITY.md](SECURITY.md) and [docs/SECURITY_DEPLOYMENT.md](docs/SECURITY_DEPLOYMENT.md).
 
@@ -36,12 +36,12 @@ Personal portfolio built to showcase my journey from Software Engineer to **AI E
 
 | Section | Content |
 |---|---|
-| **Hero** | Intro, CTA, social links |
-| **About** | Bio, languages, background |
-| **Skills** | AI/LLM, backend, frontend, DevOps |
-| **Projects** | RAG system, thesis, conversational AI, web |
-| **Experience** | Work history & education timeline |
-| **Contact** | Email, LinkedIn, GitHub |
+| **Hero** | Headline, focus areas, availability and key facts at a glance, CTAs, social links |
+| **01 Projects** | Case studies (Knowledge Graph RAG, Qetoret, CourseMapper) |
+| **02 Experience** | AI Engineering focus, work history, further education, certificates |
+| **03 Skills** | How I work; core tools per area, the rest collapsed but searchable |
+| **More projects** | Eight more projects (four shown, two on phones; the rest behind a toggle), education |
+| **04 Contact** | Email, LinkedIn, GitHub, outside work |
 
 ## Run locally
 

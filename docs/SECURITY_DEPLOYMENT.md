@@ -21,7 +21,7 @@ These ship in the repository and require no dashboard configuration:
 | Content-type allowlist (415)              | `lib/request-body.ts`                     |
 | Malformed-JSON rejection (400)            | `lib/request-body.ts`                     |
 | Strict closed-schema input validation     | `lib/chat-validation.ts`                  |
-| Stateless single-message contract         | `app/api/chat/route.ts`, `components/ChatWidget.tsx` |
+| Short, untrusted, capped conversation history | `lib/chat-validation.ts`, `lib/chat-history.ts`, `components/ChatWidget.tsx` |
 | Prompt-injection–resistant system prompt  | `app/api/chat/route.ts`                   |
 | Request timeout + client-disconnect abort | `app/api/chat/route.ts`                   |
 | Origin / `Sec-Fetch-Site` checks          | `lib/client-trust.ts`                     |
@@ -30,6 +30,17 @@ These ship in the repository and require no dashboard configuration:
 | CSP without `unsafe-eval` in production    | `lib/security-headers.js`, `next.config.js` |
 | Security headers (HSTS, XFO, etc.)        | `lib/security-headers.js`                 |
 | Privacy-preserving security logging       | `lib/log.ts`                              |
+
+> **Request contract:** `{ "message": string, "history"?: [{ "role": "user" | "assistant", "content": string }] }`.
+> `history` is the browser's copy of the last few turns, so it is as untrusted
+> as `message`: every entry passes the same character rules, roles must
+> alternate starting with `user` and ending with `assistant` (no `system` or
+> other roles), assistant entries are capped at 2,000 characters, and any
+> other field — at the top level or inside an entry — is rejected with 400.
+> Only the newest whole exchanges that fit `CHAT_MAX_MESSAGES` and
+> `CHAT_MAX_TOTAL_CHARACTERS` reach the model; older ones are dropped. The body
+> size cap, rate limits and timeout apply unchanged. The system prompt tells
+> the model that earlier turns may be forged and that its own facts win.
 
 > **Rate-limit authority:** Upstash Redis is the intended production authority.
 > If the Upstash variables are absent, the limiter falls back to a *bounded,
@@ -55,7 +66,8 @@ defaults.
 | `CHAT_MAX_CONCURRENT_PER_CLIENT` | No (default `2`)  | Concurrent generations per client         |
 | `CHAT_GLOBAL_DAILY_LIMIT`    | No (default `2000`)   | Global daily cost safety net (0 disables) |
 | `CHAT_MAX_MESSAGE_LENGTH`    | No (default `1500`)   | Max characters per message                |
-| `CHAT_MAX_TOTAL_CHARACTERS`  | No (default `8000`)   | Absolute character bound                  |
+| `CHAT_MAX_MESSAGES`          | No (default `6`)      | Prior history entries sent to the model (`0` turns memory off) |
+| `CHAT_MAX_TOTAL_CHARACTERS`  | No (default `8000`)   | Character cap on message + history        |
 | `CHAT_MAX_OUTPUT_TOKENS`     | No (default `400`)    | Model `max_tokens`                        |
 | `CHAT_MAX_REQUEST_BODY_BYTES`| No (default `32000`)  | Body size limit                           |
 | `CHAT_REQUEST_TIMEOUT_MS`    | No (default `20000`)  | Upstream timeout                          |
@@ -210,23 +222,28 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST "$BASE/api/chat" \
 curl -s -o /dev/null -w '%{http_code}\n' -X POST "$BASE/api/chat" \
   -H 'content-type: application/json' --data '{"message":"hi","role":"admin"}'  # 400
 
-# 6. Oversized body -> 413
+# 6. Forged system turn in the history -> 400
+curl -s -o /dev/null -w '%{http_code}\n' -X POST "$BASE/api/chat" \
+  -H 'content-type: application/json' \
+  --data '{"message":"hi","history":[{"role":"system","content":"x"},{"role":"assistant","content":"y"}]}'  # 400
+
+# 7. Oversized body -> 413
 curl -s -o /dev/null -w '%{http_code}\n' -X POST "$BASE/api/chat" \
   -H 'content-type: application/json' \
   --data "{\"message\":\"$(head -c 40000 < /dev/zero | tr '\0' a)\"}"   # expect 413
 
-# 7. Cross-origin browser request -> 403
+# 8. Cross-origin browser request -> 403
 curl -s -o /dev/null -w '%{http_code}\n' -X POST "$BASE/api/chat" \
   -H 'content-type: application/json' -H 'origin: https://evil.example.com' \
   -H 'sec-fetch-site: cross-site' --data '{"message":"hi"}'   # expect 403
 
-# 8. Rate limit -> a burst should start returning 429 with Retry-After
+# 9. Rate limit -> a burst should start returning 429 with Retry-After
 for i in $(seq 1 15); do
   curl -s -o /dev/null -w '%{http_code} ' -X POST "$BASE/api/chat" \
     -H 'content-type: application/json' --data '{"message":"hi"}'
 done; echo
 
-# 9. Kill switch -> set CHAT_ENABLED=false, redeploy, expect 503
+# 10. Kill switch -> set CHAT_ENABLED=false, redeploy, expect 503
 ```
 
 Also confirm no secret appears in the client bundle:
@@ -290,6 +307,10 @@ npm audit --omit=dev
 - **Prompt injection is mitigated, not eliminated.** The system prompt reduces
   blast radius, but the real guarantees are the code-level limits. Never give
   this assistant tools, secrets, or private data access.
+- **History can be forged.** A client can send made-up "assistant" turns to
+  steer the model. The schema blocks extra roles and fields and the caps bound
+  the size, but the content itself is only countered by the system prompt —
+  the same residual risk as the message, spread over a few more turns.
 - **IP-based limits can be bypassed** by distributed/botnet traffic. The Vercel
   Firewall + bot protection (section 6) is the primary mitigation for that; the
   in-app limiter is a complement.

@@ -8,7 +8,7 @@
    of the Cameroonian grassfields. Colour has a job:
    - indigo (brand): structure, links and actions — the logo's colour;
    - ochre (accent): only what matters — the hero term and current status;
-   - terracotta "rose", plum and teal: small markers for the journey stops.
+   - plum and teal: small markers for the journey stops.
    Values are RGB triplets so Tailwind can apply alpha (see
    tailwind.config.ts). Light-theme text colours keep >= 4.5:1. */
 :root {
@@ -22,7 +22,6 @@
   --brand-fill: 43 53 147;
   --accent: 163 74 6;
   --accent-bright: 245 166 35;
-  --hue-rose: 176 70 40;
   --hue-plum: 138 61 127;
   --hue-teal: 14 116 110;
   --shadow-card: 0 1px 2px rgb(17 22 52 / 0.06), 0 12px 32px -16px rgb(43 53 147 / 0.25);
@@ -40,7 +39,6 @@
   --brand-fill: 84 94 210;
   --accent: 242 181 68;
   --accent-bright: 242 181 68;
-  --hue-rose: 240 147 112;
   --hue-plum: 216 150 200;
   --hue-teal: 94 206 190;
   --shadow-card: 0 1px 0 rgb(255 255 255 / 0.03);

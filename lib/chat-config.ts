@@ -13,11 +13,11 @@ export type ChatConfig = {
   enabled: boolean;
   /** Per-client requests allowed per rolling 60s window. */
   maxRequestsPerMinute: number;
-  /** Reserved for a future server-side history contract (turns per session). */
+  /** Prior conversation entries (history) forwarded to the model; 0 turns memory off. */
   maxMessages: number;
   /** Hard cap on a single user message, in characters (after trim). */
   maxMessageLength: number;
-  /** Absolute upper bound on decoded message characters (defense in depth). */
+  /** Cap on the message plus the forwarded history, in characters. */
   maxTotalCharacters: number;
   /** Cap passed to the model as max_tokens. */
   maxOutputTokens: number;
@@ -60,9 +60,9 @@ export function getChatConfig(): ChatConfig {
       fallback: 8,
     }),
     maxMessages: readInt("CHAT_MAX_MESSAGES", {
-      min: 1,
+      min: 0,
       max: 100,
-      fallback: 10,
+      fallback: 6,
     }),
     maxMessageLength: readInt("CHAT_MAX_MESSAGE_LENGTH", {
       min: 1,

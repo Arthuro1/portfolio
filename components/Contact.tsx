@@ -13,16 +13,16 @@ export default function Contact() {
   const c = t.contact;
 
   return (
-    <Section id="contact" index={5} hue="accent" kicker={c.kicker} title={c.title}>
+    <Section id="contact" index={4} hue="accent" kicker={c.kicker} title={c.title}>
       <Reveal>
-        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/90 px-6 py-12 sm:px-12 text-center shadow-card">
+        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/90 px-6 py-8 sm:px-12 sm:py-12 text-center shadow-card">
           <div className="ndop-lattice opacity-70" aria-hidden="true" />
           <div className="relative">
-            <p className="mx-auto max-w-xl text-xl leading-relaxed text-ink">
+            <p className="mx-auto max-w-xl text-lg leading-relaxed text-ink sm:text-xl">
               <Rich text={c.subtitle} />
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <EmailLink className="inline-flex items-center gap-2 rounded-full bg-brand-fill px-6 py-3 font-bold text-white shadow-[0_10px_30px_-10px_rgb(var(--brand-fill)/0.8)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright">
+              <EmailLink className="inline-flex items-center gap-2 rounded-full bg-brand-fill px-6 py-3 font-bold text-white shadow-[0_10px_30px_-10px_rgb(var(--brand-fill)/0.8)] transition-transform hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
                 {(copied) => (
                   <>
                     {copied ? <CheckIcon className="w-4 h-4" /> : <MailIcon className="w-4 h-4" />}
@@ -33,7 +33,7 @@ export default function Contact() {
               <a
                 href={t.hero.cvFile}
                 download
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <DownloadIcon className="w-4 h-4" />
                 {t.hero.cv}
@@ -41,17 +41,17 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={openChat}
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright"
+                className="inline-flex items-center gap-2 rounded-full border border-line bg-bg/40 px-6 py-3 font-bold text-ink transition-colors hover:border-accent-bright hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 <SparkleIcon className="w-4 h-4" />
                 {c.ask}
               </button>
             </div>
 
-            <div className="mt-12 grid gap-4 text-left sm:grid-cols-3">
+            <div className="mt-8 grid gap-4 text-left sm:mt-12 sm:grid-cols-3">
               <EmailLink className={CARD}>
                 {(copied) => (
-                  <CardBody icon={copied ? <CheckIcon className="w-5 h-5" /> : <MailIcon className="w-5 h-5" />} label={copied ? c.copied : "Email"} value={EMAIL} />
+                  <CardBody icon={copied ? <CheckIcon className="w-5 h-5" /> : <MailIcon className="w-5 h-5" />} label={copied ? c.copied : c.emailLabel} value={EMAIL} />
                 )}
               </EmailLink>
               <ContactCard
@@ -62,6 +62,14 @@ export default function Contact() {
               />
               <ContactCard icon={<GitHubIcon className="w-5 h-5" />} label="GitHub" value="github.com/Arthuro1" href="https://github.com/Arthuro1" />
             </div>
+
+            <div className="mt-8 border-t border-line pt-6 text-sm leading-relaxed text-ink/80 sm:mt-10">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{c.outside}</p>
+              <p className="mt-2">{c.interests}</p>
+              <p className="mt-1">
+                <Rich text={c.volunteering} />
+              </p>
+            </div>
           </div>
         </div>
       </Reveal>
@@ -69,7 +77,7 @@ export default function Contact() {
   );
 }
 
-const CARD = "group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-brand/40";
+const CARD = "group flex items-start gap-4 rounded-xl border border-line bg-surface p-4 shadow-card sm:p-5 transition-all hover:-translate-y-0.5 hover:border-brand/40";
 
 function ContactCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: string; href: string }) {
   return (

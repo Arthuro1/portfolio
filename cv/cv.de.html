@@ -25,11 +25,35 @@
   <main>
     <section>
       <h2>Profil</h2>
-      <p class="prose">Softwareentwickler seit 2018 – neben dem Studium in Teilzeit, seit 2023 in Vollzeit an Java-Unternehmenssystemen. Jetzt mit Fokus auf AI Engineering: Ich baue LLM-Anwendungen mit Retrieval und Evaluation, und meine App Qetoret nutzt drei Claude-Funktionen im Produktivbetrieb.</p>
+      <p class="prose">Softwareentwickler seit 2018 – neben dem Studium in Teilzeit, 2023–2026 in Vollzeit an Java-Unternehmenssystemen – jetzt mit Fokus auf LLM-Anwendungen, RAG und KI-Agenten. Ich betreibe KI-Funktionen in einer Live-App, messe die Retrieval-Qualität und sichere KI-gestützte Software mit automatisierten Tests ab.</p>
+    </section>
+
+    <section>
+      <h2>Ausgewählte Erfolge im AI Engineering</h2>
+      <dl class="highlights">
+        <div><dt>Qetoret</dt><dd>3 Claude-Funktionen im Produktivbetrieb (eigener Server, <span class="nobr">Token-Budgets</span>, <span class="nobr">Prompt-Caching</span>, Nutzerlimits); erste Nutzerzahlen: Ø&nbsp;34 monatlich aktive Nutzer (Google&nbsp;Play, Nov.&nbsp;2026); Lighthouse mobil: Performance 95, Barrierefreiheit 100</dd></div>
+        <div><dt>Knowledge Graph RAG</dt><dd>Hybrides Graph-/Vektor-Retrieval mit Evaluationsschicht, die zwei <span class="nobr">Retrieval-Fehler</span> aufdeckte; recall@5 1,0 und MRR 0,96 bei nur 20 Testfragen; 311 Tests</dd></div>
+        <div><dt>Parlons Ghomálá</dt><dd>Prototyp einer Sprachlern-PWA, spezifikationsgetrieben von KI-Agenten (Claude&nbsp;Code, Codex) gebaut: 19 Meilensteine in 6 Tagen, jeder von Prüf-Agenten bewertet (Schwelle&nbsp;85/100); 518 Unit- und 173 Datenbanktests</dd></div>
+        <div><dt>Forschung</dt><dd>Mitautor eines <a href="https://doi.org/10.1145/3636555.3636881">Papers der LAK ’24 (ACM)</a>, in das meine Masterarbeit einfloss</dd></div>
+      </dl>
     </section>
 
     <section>
       <h2>Berufserfahrung</h2>
+
+      <article class="entry">
+        <p class="meta"><span>07/2026 – heute</span><span class="kind">eigenständig</span></p>
+        <div class="body">
+          <h3>Schwerpunkt AI Engineering</h3>
+          <p class="org">Eigene Projekte · Turing College</p>
+          <ul>
+            <li>Knowledge Graph RAG gebaut und mit Metriken evaluiert</li>
+            <li>Claude-Funktionen von Qetoret für echte Nutzer im Betrieb gehalten</li>
+            <li>Zertifikate von DeepLearning.AI (09/2026): RAG; Knowledge Graphs for RAG</li>
+          </ul>
+          <p class="stack">Python · LangChain · Neo4J · ChromaDB · FastAPI · Claude API</p>
+        </div>
+      </article>
 
       <article class="entry">
         <p class="meta"><span>01/2024 – 06/2026</span><span class="kind">Vollzeit</span></p>
@@ -37,11 +61,11 @@
           <h3>IT-Berater</h3>
           <p class="org">Vision Consulting GmbH</p>
           <ul>
-            <li>Migration einer Fachanwendung von ISA-Dialog nach Java (KDialog) im agilen Team</li>
-            <li>Oberflächen entwickelt, Frontend-Logik nachgebaut und mit JUnit- und <span class="nobr">UIBot-Tests</span> abgesichert</li>
-            <li>Schulung zu Java Web Services: SOAP und REST mit Apache CXF, WS-Security</li>
+            <li>Fachanwendung im agilen Team von ISA-Dialog nach Java (KDialog) migriert</li>
+            <li>Neue Java-Oberfläche umgesetzt und die Frontend-Logik neu aufgebaut</li>
+            <li>Migration mit automatisierten JUnit- und <span class="nobr">UIBot-Tests</span> abgesichert</li>
           </ul>
-          <p class="stack">Java · Maven · Jenkins · GitLab · SoapUI · Postman · Jira</p>
+          <p class="stack">Java · Apache CXF · Maven · Jenkins · GitLab · SoapUI · Postman · Jira</p>
         </div>
       </article>
 
@@ -63,7 +87,7 @@
           <h3>Web-Entwickler</h3>
           <p class="org">adesso SE</p>
           <ul>
-            <li>Fedorov gebaut, eine Plattform zur Selbstdiagnose von Augenerkrankungen und zum Sehtraining</li>
+            <li>Fedorov gebaut, eine Plattform für Augen-Selbstdiagnose und Sehtraining</li>
             <li>REST-Backend mit Spring Boot, Hibernate, PostgreSQL und Flyway; <span class="nobr">Angular-Frontend</span>; JUnit, Mockito, Jasmine; Azure</li>
           </ul>
         </div>
@@ -87,42 +111,26 @@
       <h2>Ausgewählte Projekte</h2>
 
       <article class="entry">
+        <p class="meta link"><a href="https://qetoret.com">qetoret.com</a></p>
         <div class="body">
           <h3>Qetoret <span class="desc">– Gebets-App für Web und Android, 16 Sprachen</span></h3>
-          <p class="link"><a href="https://qetoret.com">qetoret.com</a></p>
-          <ul>
-            <li>Drei Claude-Haiku-Funktionen (Bibelhinweise, Gebetsvorschläge, Übersetzung) über den eigenen Server</li>
-            <li>Token-Budgets, Prompt-Caching, Nutzerlimits, Formatprüfung, Namen auf dem Gerät geschwärzt, Ende-zu-Ende-Verschlüsselung</li>
-          </ul>
+          <p>Claude Haiku für Bibelhinweise, Gebetsvorschläge und Übersetzung; Namen werden vor dem Senden auf dem Gerät geschwärzt</p>
         </div>
       </article>
 
       <article class="entry">
+        <p class="meta link"><a href="https://github.com/Arthuro1/knowledge-graph-rag">github.com/Arthuro1/<wbr>knowledge-graph-rag</a></p>
         <div class="body">
-          <h3>Knowledge Graph RAG</h3>
-          <p class="link"><a href="https://github.com/Arthuro1/knowledge-graph-rag">github.com/Arthuro1/knowledge-graph-rag</a></p>
-          <ul>
-            <li>Hybrides Retrieval über einen Neo4J-Graphen und Chroma-Vektoren, Entitäten vom LLM extrahiert, FastAPI mit Streaming</li>
-            <li>Evaluationsschicht: Referenz- und Retrieval-Metriken, LLM-Judge (Kalibrierung noch offen), jeder Lauf protokolliert – recall@5 1,0 und MRR 0,96 auf einem kleinen Testset mit 20 Fragen; 311 Tests</li>
-          </ul>
+          <h3>Knowledge Graph RAG <span class="desc">– Entitäten und Relationen per LLM in Neo4J</span></h3>
+          <p>Metriken: Exact Match, Token-F1, recall@k, MRR; LLM-Judge mit Kalibrierungs-Pipeline (menschliche Labels folgen)</p>
         </div>
       </article>
 
       <article class="entry">
+        <p class="meta link"><a href="https://my-goals-pwa.vercel.app">my-goals-pwa.<wbr>vercel.app</a></p>
         <div class="body">
           <h3>My Goals <span class="desc">– Offline-First-Ziel-Tracker (PWA)</span></h3>
-          <ul>
-            <li>IndexedDB mit Supabase-Sync, Web-Push und Google-Kalender; 624 Tests und Größenbudgets in der CI</li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="entry">
-        <div class="body">
-          <h3>Parlons Ghomálá <span class="desc">– Sprachlern-PWA (Prototyp)</span></h3>
-          <ul>
-            <li>Von KI-Agenten (Claude Code, Codex) nach Spezifikation gebaut: 19 Meilensteine in 6 Tagen, jeder von Prüf-Agenten bewertet (Schwelle 85/100); 518 Unit- und 173 Datenbanktests</li>
-          </ul>
+          <p>Supabase-Sync, Web-Push, Google-Kalender; 624 Tests und Größenbudgets in CI</p>
         </div>
       </article>
     </section>
@@ -144,7 +152,7 @@
         <div class="body">
           <h3>M.Sc. Angewandte Informatik</h3>
           <p class="org">Universität Duisburg-Essen</p>
-          <p>Masterarbeit: Lernressourcen-Empfehlung mit Wissensgraphen und NLP; mitverfasstes Paper auf der LAK ’24 (ACM)</p>
+          <p>Masterarbeit: Lernressourcen-Empfehlung mit Wissensgraphen und NLP</p>
         </div>
       </article>
 

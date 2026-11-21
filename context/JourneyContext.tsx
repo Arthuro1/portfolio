@@ -2,7 +2,9 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export const STOPS = ["about", "skills", "projects", "experience", "contact"] as const;
+// "more-projects" has no navbar link; it is a stop so that Skills stops being
+// marked active once that section is in view.
+export const STOPS = ["projects", "experience", "skills", "more-projects", "contact"] as const;
 export type Stop = (typeof STOPS)[number];
 
 // The section currently in view, for the navbar's active link.

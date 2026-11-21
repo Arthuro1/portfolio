@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Atkinson_Hyperlegible, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import { LangHtml } from "@/context/LanguageContext";
+import { SITE_META, SITE_URL } from "@/lib/site-meta";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Self-hosted at build time by next/font: no request to Google from visitors.
@@ -12,16 +14,12 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variab
 // Applies the stored theme before first paint so dark mode doesn't flash light.
 const themeScript = `try{if(localStorage.getItem("theme")!=="light")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}`;
 
-const SITE_URL = "https://paulmeteng.space";
-
+// Defaults for every route (the 404 page included). Each language page adds its own
+// title, description, canonical, hreflang alternates and Open Graph locale (lib/site-meta.ts).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Paul Arthur Meteng — AI Engineer",
-    template: "%s — Paul Arthur Meteng",
-  },
-  description:
-    "Portfolio of Paul Arthur Meteng — Software Engineer specialising in AI Engineering, RAG systems, LLMs and Conversational AI.",
+  title: SITE_META.en.title,
+  description: SITE_META.en.description,
   keywords: [
     "Paul Arthur Meteng",
     "AI Engineer",
@@ -36,23 +34,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Paul Arthur Meteng", url: SITE_URL }],
   creator: "Paul Arthur Meteng",
-  alternates: { canonical: "/" },
   icons: { icon: "/favicon.svg" },
-  openGraph: {
-    title: "Paul Arthur Meteng — AI Engineer",
-    description:
-      "Software Engineer specialising in AI Engineering, RAG systems and Conversational AI.",
-    url: SITE_URL,
-    siteName: "Paul Arthur Meteng",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Paul Arthur Meteng — AI Engineer",
-    description:
-      "Software Engineer specialising in AI Engineering, RAG systems and Conversational AI.",
-  },
   robots: {
     index: true,
     follow: true,
@@ -66,6 +48,7 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Paul Arthur Meteng",
+  alternateName: "Paul Arthur Meteng Kamdem",
   url: SITE_URL,
   jobTitle: "AI Engineer",
   description:
@@ -97,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+    <LangHtml className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
@@ -110,6 +93,6 @@ export default function RootLayout({
         <Providers>{children}</Providers>
         <SpeedInsights />
       </body>
-    </html>
+    </LangHtml>
   );
 }

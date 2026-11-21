@@ -23,9 +23,11 @@ Please **do not** open a public GitHub issue for security problems.
 ## Scope
 
 The main sensitive surface is the AI chat endpoint (`POST /api/chat`), which
-proxies requests to the OpenRouter API. Relevant hardening (rate limiting,
-request-size limits, strict input validation, prompt-injection resistance,
-kill switch, CSP, and security headers) is documented in
+proxies requests to the OpenRouter API. It accepts a question plus a short,
+capped conversation history that is validated and treated as untrusted.
+Relevant hardening (rate limiting, request-size limits, strict input
+validation, prompt-injection resistance, kill switch, CSP, and security
+headers) is documented in
 [`docs/SECURITY_DEPLOYMENT.md`](docs/SECURITY_DEPLOYMENT.md).
 
 ## Handling secrets

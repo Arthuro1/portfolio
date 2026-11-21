@@ -1,9 +1,11 @@
 "use client";
 
+import { useId } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
 import TechChip from "@/components/TechChip";
+import { useFindable } from "@/lib/use-findable";
 
 // One icon per category, in the order of t.skills.categories.
 const ICONS = [
@@ -15,18 +17,18 @@ const ICONS = [
   "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
 ];
 
-// Every category is on the page at once, so a reader scanning for one
-// technology (or searching the page for it) always finds it.
+// Core tools are always shown; the rest of each category is collapsed but
+// stays searchable with the browser's find-in-page (see useFindable).
 export default function Skills() {
   const { t } = useLanguage();
   const s = t.skills;
 
   return (
-    <Section id="skills" index={2} hue="plum" kicker={s.kicker} title={s.title} intro={s.intro}>
+    <Section id="skills" index={3} hue="plum" kicker={s.kicker} title={s.title} intro={s.intro}>
       <div className="grid gap-5 md:grid-cols-2">
         {s.categories.map((c, i) => (
           <Reveal key={c.category} delay={(i % 2) * 80} className="h-full">
-            <article className="h-full rounded-2xl border border-line bg-surface/90 p-6 shadow-card">
+            <article className="h-full rounded-2xl border border-line bg-surface/90 p-5 shadow-card sm:p-6">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-brand">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -35,7 +37,7 @@ export default function Skills() {
                 </span>
                 <h3 className="font-display text-xl font-bold text-ink">{c.category}</h3>
               </div>
-              <p className="mt-3 text-ink/75">{c.blurb}</p>
+              <p className="mt-3 hidden text-ink/75 sm:block">{c.blurb}</p>
 
               <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-brand">{s.coreLabel}</p>
               <ul className="mt-2 flex flex-wrap gap-2">
@@ -46,18 +48,48 @@ export default function Skills() {
                 ))}
               </ul>
 
-              <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{s.moreLabel}</p>
-              <ul className="mt-2 flex flex-wrap gap-1.5">
-                {c.more.map((skill) => (
-                  <li key={skill}>
-                    <TechChip name={skill} className="border-line bg-bg/50" />
-                  </li>
-                ))}
-              </ul>
+              {c.more.length > 0 && <AlsoUsed skills={c.more} />}
             </article>
           </Reveal>
         ))}
       </div>
     </Section>
+  );
+}
+
+function AlsoUsed({ skills }: { skills: string[] }) {
+  const { t } = useLanguage();
+  const s = t.skills;
+  const { open, setOpen, ref } = useFindable<HTMLDivElement>();
+  const id = useId();
+
+  return (
+    <div ref={ref} className="mt-4">
+      <div className="flex flex-wrap items-center gap-x-3">
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">{s.moreLabel}</p>
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls={id}
+          className="-my-2.5 inline-flex min-h-10 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-brand transition-colors hover:bg-brand/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+        >
+          {open ? s.showLess : s.showMore.replace("{n}", String(skills.length))}
+          <svg className={`h-3.5 w-3.5 transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
+      {/* No margin or padding on this wrapper: hidden="until-found" keeps its box. */}
+      <div id={id} hidden={!open}>
+        <ul className="flex flex-wrap gap-1.5 pt-2.5">
+          {skills.map((skill) => (
+            <li key={skill}>
+              <TechChip name={skill} className="border-line bg-bg/50" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }

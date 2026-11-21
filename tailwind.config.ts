@@ -25,7 +25,6 @@ const config: Config = {
         "brand-fill": token("brand-fill"),
         accent: token("accent"),
         "accent-bright": token("accent-bright"),
-        "hue-rose": token("hue-rose"),
         "hue-plum": token("hue-plum"),
         "hue-teal": token("hue-teal"),
       },

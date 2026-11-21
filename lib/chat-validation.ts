@@ -1,17 +1,25 @@
 /**
  * Strict schema validation for the chat request body.
  *
- * The wire contract is intentionally tiny and closed:
+ * The wire contract is intentionally small and closed:
  *
- *     { "message": string }
+ *     { "message": string,
+ *       "history"?: [{ "role": "user" | "assistant", "content": string }, ...] }
  *
- * Anything else — extra fields, wrong types, nested objects, empty or
- * whitespace-only strings, control characters, absurd repetition, or content
- * over the configured length — is rejected. The client is never sent the
- * failure `code`; the route maps it to a generic, safe message.
+ * `history` is the visitor's own record of the last few turns. It comes from
+ * the browser, so it is untrusted like `message`: every entry passes the same
+ * character rules, it must alternate user/assistant starting with a question
+ * and ending with an answer, and assistant entries have their own length cap.
+ * Only the newest turns that fit CHAT_MAX_MESSAGES and CHAT_MAX_TOTAL_CHARACTERS
+ * are kept; older ones are dropped. Anything else — extra fields, wrong types,
+ * nested objects, empty strings, control characters, absurd repetition, or
+ * content over the configured length — is rejected. The client is never sent
+ * the failure `code`; the route maps it to a generic, safe message.
  */
 
 import type { ChatConfig } from "./chat-config";
+
+export type ChatTurn = { role: "user" | "assistant"; content: string };
 
 export type ValidationFailure =
   | "not_object"
@@ -20,11 +28,20 @@ export type ValidationFailure =
   | "empty_message"
   | "too_long"
   | "invalid_chars"
-  | "repetition";
+  | "repetition"
+  | "invalid_history"
+  | "history_order"
+  | "history_content";
 
 export type ValidationResult =
-  | { ok: true; message: string }
+  | { ok: true; message: string; history: ChatTurn[] }
   | { ok: false; code: ValidationFailure };
+
+/**
+ * Longest assistant answer accepted back as history. A 400-token answer fits;
+ * the widget shortens longer ones before sending them.
+ */
+export const MAX_HISTORY_ASSISTANT_CHARS = 2000;
 
 /**
  * Reject C0 control chars (except tab, newline, carriage-return), DEL, and C1
@@ -47,42 +64,104 @@ function hasDisallowedControlChar(input: string): boolean {
 // cost amplification attempt.
 const EXCESSIVE_RUN = /(.)\1{49,}/;
 
+export type TextCheck =
+  | { ok: true; text: string }
+  | { ok: false; code: "invalid_chars" | "empty_message" | "too_long" | "repetition" };
+
+/** The character rules every chat text (message or history entry) must pass. */
+export function checkText(raw: string, maxLength: number): TextCheck {
+  if (hasDisallowedControlChar(raw)) return { ok: false, code: "invalid_chars" };
+  const text = raw.trim();
+  if (text.length === 0) return { ok: false, code: "empty_message" };
+  if (text.length > maxLength) return { ok: false, code: "too_long" };
+  if (EXCESSIVE_RUN.test(text)) return { ok: false, code: "repetition" };
+  return { ok: true, text };
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readHistory(
+  raw: unknown,
+  maxUserLength: number,
+): { ok: true; turns: ChatTurn[] } | { ok: false; code: ValidationFailure } {
+  if (raw === undefined) return { ok: true, turns: [] };
+  if (!Array.isArray(raw)) return { ok: false, code: "invalid_history" };
+
+  const turns: ChatTurn[] = [];
+  for (let i = 0; i < raw.length; i++) {
+    const entry: unknown = raw[i];
+    if (!isPlainObject(entry)) return { ok: false, code: "invalid_history" };
+    for (const key of Object.keys(entry)) {
+      if (key !== "role" && key !== "content") return { ok: false, code: "invalid_history" };
+    }
+    const { role, content } = entry;
+    if ((role !== "user" && role !== "assistant") || typeof content !== "string") {
+      return { ok: false, code: "invalid_history" };
+    }
+    if (role !== (i % 2 === 0 ? "user" : "assistant")) {
+      return { ok: false, code: "history_order" };
+    }
+    const text = checkText(content, role === "user" ? maxUserLength : MAX_HISTORY_ASSISTANT_CHARS);
+    if (!text.ok) return { ok: false, code: "history_content" };
+    turns.push({ role, content: text.text });
+  }
+  // The new message is the next question, so the history must end on an answer.
+  if (turns.length % 2 !== 0) return { ok: false, code: "history_order" };
+  return { ok: true, turns };
+}
+
+/**
+ * Keep the newest complete question/answer pairs that fit both budgets: at
+ * most `maxMessages` entries, and `messageLength` plus every kept entry within
+ * `maxTotalCharacters`. Expects alternating pairs, as `validateChatBody`
+ * returns them.
+ */
+export function capHistory(
+  turns: ChatTurn[],
+  messageLength: number,
+  limits: Pick<ChatConfig, "maxMessages" | "maxTotalCharacters">,
+): ChatTurn[] {
+  let budget = limits.maxTotalCharacters - messageLength;
+  let start = turns.length;
+  while (start >= 2 && turns.length - start + 2 <= limits.maxMessages) {
+    const size = turns[start - 2].content.length + turns[start - 1].content.length;
+    if (size > budget) break;
+    budget -= size;
+    start -= 2;
+  }
+  return turns.slice(start);
+}
+
 export function validateChatBody(
   value: unknown,
   cfg: ChatConfig,
 ): ValidationResult {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+  if (!isPlainObject(value)) {
     return { ok: false, code: "not_object" };
   }
 
-  // Closed schema: reject any field other than `message`.
-  const keys = Object.keys(value as Record<string, unknown>);
-  for (const key of keys) {
-    if (key !== "message") return { ok: false, code: "extra_fields" };
+  // Closed schema: reject any field other than `message` and `history`.
+  for (const key of Object.keys(value)) {
+    if (key !== "message" && key !== "history") return { ok: false, code: "extra_fields" };
   }
 
-  const raw = (value as { message?: unknown }).message;
+  const raw = value.message;
   if (typeof raw !== "string") {
     return { ok: false, code: "missing_message" };
   }
 
-  if (hasDisallowedControlChar(raw)) {
-    return { ok: false, code: "invalid_chars" };
-  }
-
-  const message = raw.trim();
-  if (message.length === 0) {
-    return { ok: false, code: "empty_message" };
-  }
-
   const maxLength = Math.min(cfg.maxMessageLength, cfg.maxTotalCharacters);
-  if (message.length > maxLength) {
-    return { ok: false, code: "too_long" };
-  }
+  const message = checkText(raw, maxLength);
+  if (!message.ok) return message;
 
-  if (EXCESSIVE_RUN.test(message)) {
-    return { ok: false, code: "repetition" };
-  }
+  const history = readHistory(value.history, maxLength);
+  if (!history.ok) return history;
 
-  return { ok: true, message };
+  return {
+    ok: true,
+    message: message.text,
+    history: capHistory(history.turns, message.text.length, cfg),
+  };
 }

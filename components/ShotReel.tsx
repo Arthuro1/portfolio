@@ -8,13 +8,18 @@ type Labels = { open: string; close: string; prev: string; next: string };
 
 const FIRST_STEP_MS = 700;
 const STEP_MS = 2200;
+// Slower on touch screens, where it plays without being asked for.
+const TOUCH_STEP_MS = 3500;
 
 /**
  * A project's screenshots, shown whole at their own 16:10 ratio. The first one
- * is the cover; while the card (the closest `[data-reel-host]`) is hovered or
- * focused, the reel crossfades through the others. Touch screens have no
- * hover, so there it plays while the card is on screen. Reduced-motion users
- * step through with the dots. A click opens the shot full size.
+ * is the cover; while the card (the closest `[data-reel-host]`) is hovered,
+ * the reel crossfades through the others. Keyboard focus does not start it:
+ * the zoom button's name follows the shot, so a screen reader would read
+ * every step. Touch screens have no hover, so there it plays while the card
+ * is on screen. Keyboard and reduced-motion users step through with the dots,
+ * and a click on a dot stops the auto-play for good: the visitor has taken
+ * over. A click on the shot opens it full size.
  */
 export default function ShotReel({ shots, label, labels, className = "" }: { shots: Shot[]; label: string; labels: Labels; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,6 +29,9 @@ export default function ShotReel({ shots, label, labels, className = "" }: { sho
   // Only the cover loads up front; the rest load on the first activation.
   const [armed, setArmed] = useState(false);
   const [viewing, setViewing] = useState<number | null>(null);
+  const [manual, setManual] = useState(false);
+  // Read out only when the visitor picks a shot; auto-play stays silent.
+  const [announced, setAnnounced] = useState("");
   const many = shots.length > 1;
 
   useEffect(() => {
@@ -35,9 +43,6 @@ export default function ShotReel({ shots, label, labels, className = "" }: { sho
       setActive(true);
     };
     const off = () => setActive(false);
-    const offIfOutside = (e: FocusEvent) => {
-      if (!host.contains(e.relatedTarget as Node | null)) off();
-    };
 
     if (window.matchMedia("(hover: none)").matches) {
       const observer = new IntersectionObserver(([entry]) => (entry.isIntersecting ? on() : off()), { threshold: 0.6 });
@@ -47,28 +52,26 @@ export default function ShotReel({ shots, label, labels, className = "" }: { sho
 
     host.addEventListener("pointerenter", on);
     host.addEventListener("pointerleave", off);
-    host.addEventListener("focusin", on);
-    host.addEventListener("focusout", offIfOutside);
     return () => {
       host.removeEventListener("pointerenter", on);
       host.removeEventListener("pointerleave", off);
-      host.removeEventListener("focusin", on);
-      host.removeEventListener("focusout", offIfOutside);
     };
   }, [many]);
 
   useEffect(() => {
+    if (manual) return;
     if (!active || viewing !== null) {
       if (!active) setIndex(0);
       return;
     }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const stepMs = window.matchMedia("(hover: none)").matches ? TOUCH_STEP_MS : STEP_MS;
     let timer = window.setTimeout(function step() {
       setIndex((i) => (i + 1) % shots.length);
-      timer = window.setTimeout(step, STEP_MS);
+      timer = window.setTimeout(step, stepMs);
     }, FIRST_STEP_MS);
     return () => window.clearTimeout(timer);
-  }, [active, viewing, shots.length]);
+  }, [active, viewing, manual, shots.length]);
 
   const open = () => {
     setViewing(index);
@@ -111,28 +114,29 @@ export default function ShotReel({ shots, label, labels, className = "" }: { sho
       {many && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-black/70 via-black/25 to-transparent px-4 pb-3 pt-10">
           <p
-            className={`min-w-0 truncate rounded-full bg-black/45 px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-opacity duration-300 ${
-              active || index > 0 ? "opacity-100" : "opacity-0"
+            className={`min-w-0 truncate rounded-full bg-black/45 px-2.5 py-1 font-mono text-[11px] font-medium uppercase tracking-wider text-white backdrop-blur-sm transition-opacity duration-300 motion-reduce:transition-none ${
+              active || manual || index > 0 ? "opacity-100" : "opacity-0"
             }`}
-            aria-live="polite"
           >
             {shots[index].caption}
           </p>
-          <div className="pointer-events-auto flex shrink-0 gap-1.5">
+          <div className="pointer-events-auto -my-2 flex shrink-0">
             {shots.map((shot, i) => (
               <button
                 key={shot.src}
                 type="button"
                 onClick={() => {
                   setArmed(true);
+                  setManual(true);
                   setIndex(i);
+                  setAnnounced(shot.caption);
                 }}
                 aria-label={shot.caption}
                 aria-current={i === index}
-                className="group/dot flex h-6 items-center"
+                className="group/dot flex h-10 min-w-6 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent-bright"
               >
                 <span
-                  className={`block h-1.5 rounded-full transition-all duration-300 ${
+                  className={`block h-1.5 rounded-full transition-all duration-300 motion-reduce:transition-none ${
                     i === index ? "w-6 bg-white" : "w-1.5 bg-white/55 group-hover/dot:bg-white/85"
                   }`}
                 />
@@ -140,6 +144,11 @@ export default function ShotReel({ shots, label, labels, className = "" }: { sho
             ))}
           </div>
         </div>
+      )}
+      {many && (
+        <p className="sr-only" aria-live="polite">
+          {announced}
+        </p>
       )}
 
       <dialog
