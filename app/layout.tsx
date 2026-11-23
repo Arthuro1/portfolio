@@ -1,15 +1,34 @@
 import type { Metadata } from "next";
-import { Atkinson_Hyperlegible, Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { LangHtml } from "@/context/LanguageContext";
 import { SITE_META, SITE_URL } from "@/lib/site-meta";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Self-hosted at build time by next/font: no request to Google from visitors.
-const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display", display: "swap" });
-const body = Atkinson_Hyperlegible({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-body", display: "swap" });
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
+// Latin subsets of the Google Fonts files, committed so neither visitors nor the build
+// contact Google. next/font/google crashed builds when Google intermittently served
+// extensionless /l/font?kit= URLs (vercel/next.js#99114, unfixed in Next 15).
+const display = localFont({
+  src: "./fonts/bricolage-grotesque-latin-var.woff2",
+  weight: "200 800",
+  variable: "--font-display",
+  display: "swap",
+});
+const body = localFont({
+  src: [
+    { path: "./fonts/atkinson-hyperlegible-latin-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/atkinson-hyperlegible-latin-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-body",
+  display: "swap",
+});
+const mono = localFont({
+  src: "./fonts/jetbrains-mono-latin-var.woff2",
+  weight: "400 500",
+  variable: "--font-mono",
+  display: "swap",
+});
 
 // Applies the stored theme before first paint so dark mode doesn't flash light.
 const themeScript = `try{if(localStorage.getItem("theme")!=="light")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}`;
