@@ -63,7 +63,7 @@ export default function Image() {
         </div>
 
         <div style={{ fontSize: "30px", color: "#a0aacb", maxWidth: "980px" }}>
-          LLM applications · RAG systems · Conversational AI · Available from March 2027
+          LLM applications · RAG systems · Conversational AI · Available at short notice
         </div>
       </div>
     ),

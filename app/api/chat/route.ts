@@ -172,7 +172,7 @@ Three months full-time at 30 hours a week, live classes online. Three sprints: (
 
 Paul is targeting **AI Engineer** roles — building LLM applications, RAG systems, conversational AI, and intelligent agents. He is open to both product and consulting environments, and is comfortable working in German and English.
 
-- **Available:** from March 2027 (after the Turing College programme), full-time
+- **Available:** at short notice, full-time. The start date is flexible: the Turing College programme does not delay it.
 - **Location:** Ruhr area, North Rhine-Westphalia, Germany
 - **Work mode:** remote or hybrid
 - **CV:** downloadable as a PDF on this site (English and German)`;
