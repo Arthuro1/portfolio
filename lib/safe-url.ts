@@ -44,10 +44,13 @@ const ALLOWED_HTTPS_HOSTS = new Set<string>([
   "www.uni-due.de",
 ]);
 
-const ALLOWED_MAILTO = new Set<string>([
-  "arthur.meteng@gmail.com",
-  "arthur.meteng@yahoo.com",
-]);
+// Base64, so the addresses are not readable in the browser bundle (email harvesters).
+const ALLOWED_MAILTO = new Set<string>(
+  [
+    "YXJ0aHVyLm1ldGVuZ0BnbWFpbC5jb20=", // Gmail
+    "YXJ0aHVyLm1ldGVuZ0B5YWhvby5jb20=", // Yahoo
+  ].map((encoded) => atob(encoded)),
+);
 
 export type SafeHref =
   | { safe: false }

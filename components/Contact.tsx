@@ -5,7 +5,7 @@ import Section from "@/components/Section";
 import Reveal from "@/components/Reveal";
 import Rich from "@/components/Rich";
 import { openChat } from "@/lib/chat-events";
-import EmailLink, { EMAIL } from "@/components/EmailLink";
+import EmailLink from "@/components/EmailLink";
 import { CheckIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon, SparkleIcon } from "@/components/icons";
 
 export default function Contact() {
@@ -49,9 +49,9 @@ export default function Contact() {
             </div>
 
             <div className="mt-8 grid gap-4 text-left sm:mt-12 sm:grid-cols-3">
-              <EmailLink className={CARD}>
-                {(copied) => (
-                  <CardBody icon={copied ? <CheckIcon className="w-5 h-5" /> : <MailIcon className="w-5 h-5" />} label={copied ? c.copied : c.emailLabel} value={EMAIL} />
+              <EmailLink className={`${CARD} text-left`}>
+                {(copied, address) => (
+                  <CardBody icon={copied ? <CheckIcon className="w-5 h-5" /> : <MailIcon className="w-5 h-5" />} label={copied ? c.copied : c.emailLabel} value={address ?? c.showEmail} />
                 )}
               </EmailLink>
               <ContactCard
