@@ -437,6 +437,7 @@ export const translations = {
       subtitle: "Open to **AI Engineer** roles, available **at short notice** — remote or hybrid, based in the Ruhr area. I work in German or English.",
       email: "Email me",
       emailLabel: "Email",
+      showEmail: "Show address",
       copied: "Address copied",
       ask: "Ask my AI assistant",
       outside: "Outside work",
@@ -915,6 +916,7 @@ export const translations = {
       subtitle: "Offen für **AI-Engineer**-Stellen, **kurzfristig verfügbar** — remote oder hybrid, Standort Ruhrgebiet. Ich arbeite auf Deutsch oder Englisch.",
       email: "E-Mail schreiben",
       emailLabel: "E-Mail",
+      showEmail: "Adresse anzeigen",
       copied: "Adresse kopiert",
       ask: "Meinen KI-Assistenten fragen",
       outside: "Neben dem Beruf",
@@ -1393,6 +1395,7 @@ export const translations = {
       subtitle: "Ouvert aux postes d'**AI Engineer**, disponible **rapidement** — télétravail ou hybride, depuis la Ruhr. Je travaille en allemand ou en anglais.",
       email: "M'écrire",
       emailLabel: "E-mail",
+      showEmail: "Afficher l'adresse",
       copied: "Adresse copiée",
       ask: "Demander à mon assistant IA",
       outside: "En dehors du travail",
@@ -1491,7 +1494,7 @@ export type Translations = {
     education: { degree: string; institution: string; period: string; thesis: string }[];
   };
   contact: {
-    title: string; kicker: string; subtitle: string; email: string; emailLabel: string; copied: string; ask: string;
+    title: string; kicker: string; subtitle: string; email: string; emailLabel: string; showEmail: string; copied: string; ask: string;
     outside: string; interests: string; volunteering: string;
   };
   footer: { built: string; top: string };
